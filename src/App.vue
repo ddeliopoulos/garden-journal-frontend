@@ -1,16 +1,16 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <h1>GARDEN JOURNAL</h1>
+  <AddPlantForm/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
+import AddPlantForm from './components/AddPlantForm.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
+    AddPlantForm,
   }
 })
 </script>
@@ -23,5 +23,10 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+body{
+  margin: 0;
+  background: #eee;
 }
 </style>
