@@ -2,35 +2,91 @@
   <form>
     <h2>Add a Plant!</h2>
     <label>Plant Name: </label>
-    <input type="plantName" required v-model="name">
+    <input :value="plantNameField" @input="updateText" required v-model="name"/>
     <label>Plant Type: </label>
-    <input type="plantType" v-model="type">
+    <input :value="plantTypeField" @input="updateText" v-model="type">
     <label>Date Planted: </label>
-    <input type="date" v-model="myDate">
-    <button @click="onFormSubmit" type="button">Submit</button>
+    <input :value="plantDateField" @input="updateText" v-model="date">
+    <button @click="onFormSubmit" class="button">Submit</button>
   </form>
+
+  <div id="listOfPlants"></div>
 </template>
 
 <script>
+import {sendRequest} from "./request.ts";
+const plantNameField = document.getElementById("plantNameField");
+const plantTypeField = document.getElementById("plantTypeField");
+const plantDateField = document.getElementById("plantDateField");
+const listOfPlants = document.getElementById('listOfPlants');
+
+
 
 export default {
   data() {
+
     return {
       name: '',
-      type: ''
+      type: '',
+      date: ''
     }
   },
   methods: {
-    onFormSubmit(event) {
+    createListOfPlants: function (callback) {
+      sendRequest({
+        method: 'GET',
+        url: '/plants',
+        data: null
+      }).then(response => {
+        if (response.status !== 200) {
+          throw new Error(`status is ${this.status}`);
+        }
+
+        const listOfPlantsFromResponse = response.data;
+        listOfPlants.innerHTML = '';
+
+        for (let i = 0; i < listOfPlantsFromResponse.length; ++i) {
+          const newDiv = document.createElement('div');
+          newDiv.className = 'plant-box';
+          listOfPlants.appendChild(newDiv);
+          newDiv.innerText = `Plant Name: ${listOfPlantsFromResponse[i].nameOfPlant},
+                \nDate Planted: ${listOfPlantsFromResponse[i].heightInInches}`;
+
+        }
+      });
+    }
+
+
+
+    onFormSubmit: function (event) {
       // `this` inside methods points to the current active instance
       alert('Hello ' + this.name + '!')
       // `event` is the native DOM event
       if (event) {
-        console.log(event.target.tagName)
+        const plant = {
+
+        };
+
+        sendRequest({
+          method: 'POST',
+          url: '/plants/' + plantIdTextField.value;
+          data: plant
+        }).then(response => {
+          if (response.status !== 200) {
+            throw new Error(`status is ${this.status}`);
+          }
+
+          const plantId = response.data;
+
+          console.log('created a plant', plantId, plant);
+
+          // clear the input fields
+
+          createListOfPlants();
+        });
+        }
       }
-    }
-  }
-};
+    };
 </script>
 
 
@@ -66,7 +122,8 @@ input {
   color: #555;
 }
 
-.submit {
+
+button {
   cursor: pointer;
   background: #0066A2;
   color: white;
@@ -77,6 +134,7 @@ input {
   font: bold 15px arial, sans-serif;
   text-shadow: none;
   margin-top: 25px;
+  margin-left: 180px;
 }
 
 h2 {

@@ -22,8 +22,8 @@ interface Output {
     data?:any;
 }
 
-const sendRequest = (input:Input):Promise<Output> => {
-    const httpMethod = input.method;
+const sendRequest = (input:input):Promise<unknown> => {
+    const httpMethod = input.httpMethod;
     const url = input.url;
     const data = input.data;
 
@@ -41,7 +41,7 @@ const sendRequest = (input:Input):Promise<Output> => {
         httpRequest.onerror = error => reject(error);
     });
 
-    httpRequest.open(httpMethod, `http://localhost:8080/api/v1${url}`, true);
+    httpRequest.open(String(httpMethod), `http://localhost:8080/api/v1${url}`, true);
     // tell the server we are sending a JSON
     httpRequest.setRequestHeader('Content-Type', 'application/json');
     // actually send the request
