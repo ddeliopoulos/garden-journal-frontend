@@ -1,105 +1,75 @@
 <template>
-  <form>
-    <h2>Add a Plant!</h2>
-    <label>Plant Name: </label>
-    <input :value="plantNameField" @input="updateText" required v-model="name"/>
-    <label>Plant Type: </label>
-    <input :value="plantTypeField" @input="updateText" v-model="type">
-    <label>Date Planted: </label>
-    <input :value="plantDateField" @input="updateText" v-model="date">
-    <button @click="onFormSubmit" class="button">Submit</button>
-  </form>
 
-  <div id="listOfPlants"></div>
+  <div class="container">
+    <h1>Add a Plant!</h1>
+    <label>Plant Name: </label>
+      <input type="text"
+             v-model="name"
+             required>
+
+    <label>Plant Type: </label>
+      <input type="text"
+             v-model="type">
+
+    <label>Date Planted: </label>
+      <input type="text"
+             v-model="date">
+
+    <button @click="onFormSubmit" class="button">Submit</button>
+  </div>
 </template>
 
 <script>
-import {sendRequest} from "./request.ts";
-const plantNameField = document.getElementById("plantNameField");
-const plantTypeField = document.getElementById("plantTypeField");
-const plantDateField = document.getElementById("plantDateField");
-const listOfPlants = document.getElementById('listOfPlants');
+import {sendRequest} from '../request.ts'
 
-
-
+//emit an event from the button component
 export default {
-  data() {
+  name: 'AddPlantForm',
 
+
+ data(){
     return {
       name: '',
       type: '',
-      date: ''
+      date: '',
     }
-  },
+ },
+
   methods: {
-    createListOfPlants: function (callback) {
-      sendRequest({
-        method: 'GET',
-        url: '/plants',
-        data: null
-      }).then(response => {
-        if (response.status !== 200) {
-          throw new Error(`status is ${this.status}`);
-        }
+    async onFormSubmit() {
+      const response = await fetch('/api/plants', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: this.name,
+          type: this.type,
+          date: this.date,
+        }),
+      })
+      const data = await response.json()
 
-        const listOfPlantsFromResponse = response.data;
-        listOfPlants.innerHTML = '';
+      console.log(response)
 
-        for (let i = 0; i < listOfPlantsFromResponse.length; ++i) {
-          const newDiv = document.createElement('div');
-          newDiv.className = 'plant-box';
-          listOfPlants.appendChild(newDiv);
-          newDiv.innerText = `Plant Name: ${listOfPlantsFromResponse[i].nameOfPlant},
-                \nDate Planted: ${listOfPlantsFromResponse[i].heightInInches}`;
-
-        }
-      });
     }
+  }
+}
 
-
-
-    onFormSubmit: function (event) {
-      // `this` inside methods points to the current active instance
-      alert('Hello ' + this.name + '!')
-      // `event` is the native DOM event
-      if (event) {
-        const plant = {
-
-        };
-
-        sendRequest({
-          method: 'POST',
-          url: '/plants/' + plantIdTextField.value;
-          data: plant
-        }).then(response => {
-          if (response.status !== 200) {
-            throw new Error(`status is ${this.status}`);
-          }
-
-          const plantId = response.data;
-
-          console.log('created a plant', plantId, plant);
-
-          // clear the input fields
-
-          createListOfPlants();
-        });
-        }
-      }
-    };
 </script>
 
 
 <style>
-form {
+
+.container {
   width: 25%;
   margin: 30px auto;
-  backgroud: white;
+  background-color: white;
   text-align: left;
   padding: 40px;
   border-radius: 10px;
   float: left;
-  border: 1px solid #FFFFFF;
+  border: 1px solid steelblue;
 }
 
 label {

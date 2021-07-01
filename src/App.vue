@@ -1,17 +1,18 @@
 <template>
-  <h1>GARDEN JOURNAL</h1>
-  <AddPlantForm/>
+  <Main></Main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AddPlantForm from './components/AddPlantForm.vue'
+import Main from './components/Main.vue'
 
 export default defineComponent({
   name: 'App',
+
   components: {
-    AddPlantForm,
-  }
+    Main,
+  },
+
 })
 </script>
 
