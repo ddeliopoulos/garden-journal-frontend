@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import {sendRequest} from '../request.ts'
 
 //emit an event from the button component
 export default {
