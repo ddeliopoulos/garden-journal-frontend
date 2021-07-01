@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <h1>Add a Plant!</h1>
     <label>Plant Name: </label>
@@ -20,11 +19,10 @@
 </template>
 
 <script>
-
 //emit an event from the button component
 export default {
   name: 'AddPlantForm',
-
+  emits: ['plant-update'],
 
  data(){
     return {
@@ -47,19 +45,20 @@ export default {
           date: this.date,
         }),
       })
+
       const data = await response.json()
 
-      console.log(response)
+      console.log("")
+
+      this.$emit('plant-update', data)
 
     }
   }
 }
-
 </script>
 
 
-<style>
-
+<style scoped>
 .container {
   width: 25%;
   margin: 30px auto;

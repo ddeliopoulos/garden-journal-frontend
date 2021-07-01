@@ -1,36 +1,21 @@
 <template>
 <div class="container">
   <h1>Plant List</h1>
-  {{name}} , {{type}}, {{date}}
+  <div>{{plants}}</div>
 </div>
 </template>
 
 <script>
-
 export default {
   name: "PlantListDisplay",
-  props: {
-    name: String,
-    type: String,
-    date: String,
-  },
 
-
-  data(){
-    return {
-      name: this.name,
-      type: this.type,
-      date: this.date,
-    }
-  },
-
-
-
+  props:{
+    plants: Array
+  }
 }
 </script>
 
 <style scoped>
-
 *{
   box-sizing: border-box;
   margin: 0;
@@ -47,5 +32,4 @@ export default {
   float: right;
   border: 1px solid steelblue;
 }
-
 </style>

@@ -1,9 +1,8 @@
 <template>
   <h1>GARDEN JOURNAL</h1>
   <div>
-    <AddPlantForm @update-plant-list="updatePlantList"/>
-    <PlantListDisplay></PlantListDisplay>
-
+    <AddPlantForm @plant-update="updatePlantList"/>
+    <PlantListDisplay :plants="plants"></PlantListDisplay>
   </div>
 </template>
 
@@ -17,9 +16,7 @@ export default defineComponent({
 
   data(){
     return{
-      name: '',
-      type: '',
-      date: '',
+      plants: [],
     }
   },
 
@@ -28,11 +25,22 @@ export default defineComponent({
     PlantListDisplay,
   },
   methods:{
-    updatePlantList(event: any) {
-      this.name = event.name;
-      this.type = event.type;
-      this.date = event.date;
+    async updatePlantList() {
+      const response = await fetch('/api/plants', {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+
+      });
+
+      this.plants = await response.json();
+
+      console.log(response);
     }
+  },
+  created() {
+    this.updatePlantList();
   }
 
 })
