@@ -1,25 +1,12 @@
 <template>
 <div class="container">
-  <h1>Plant List</h1>
-  <div>{{plants}}</div>
-  <div class="single-plant-info">
-    <Plant/>
-  </div>
+  "Plant Name"
 </div>
 </template>
 
 <script>
-import Plant from './Plant.vue'
 export default {
-  name: "PlantListDisplay",
-
-  components:{
-    Plant,
-  },
-
-  props:{
-    plants: Array
-  }
+  name: "Plant.vue"
 }
 </script>
 
@@ -31,7 +18,7 @@ export default {
 }
 
 .container {
-  background-color: white;
+  background-color: cornflowerblue;
   width: 25%;
   margin: 30px auto;
   text-align: left;
