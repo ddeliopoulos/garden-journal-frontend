@@ -1,18 +1,30 @@
 <template>
 <div class="container">
   <h1>Plant List</h1>
-  <div>{{plants}}</div>
+  <div :key="plant.id" v-for="plant in plants">
+    <Plant @delete-plant="$emit('delete-plant', plant.id)" :plant="plant"/>
+  </div>
 </div>
 </template>
 
 <script>
-export default {
+import Plant from './Plant.vue'
+import {defineComponent} from "vue";
+
+export default defineComponent({
   name: "PlantListDisplay",
+
+  components: {
+    Plant,
+  },
+
+  emits:['delete-plant'],
 
   props:{
     plants: Array
-  }
-}
+    }
+
+})
 </script>
 
 <style scoped>
@@ -24,7 +36,7 @@ export default {
 
 .container {
   background-color: white;
-  width: 25%;
+  width: 50%;
   margin: 30px auto;
   text-align: left;
   padding: 40px;

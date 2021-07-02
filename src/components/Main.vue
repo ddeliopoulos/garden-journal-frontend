@@ -2,7 +2,7 @@
   <h1>GARDEN JOURNAL</h1>
   <div>
     <AddPlantForm @plant-update="updatePlantList"/>
-    <PlantListDisplay :plants="plants"></PlantListDisplay>
+    <PlantListDisplay @delete-plant="deletePlant" :plants="plants"></PlantListDisplay>
   </div>
 </template>
 
@@ -25,6 +25,16 @@ export default defineComponent({
     PlantListDisplay,
   },
   methods:{
+    async deletePlant(id : any) {
+      if (confirm('Are you sure, bitch?')) {
+        const response = await fetch(`api/plants/${id}`, {
+          method: 'DELETE'
+        })
+
+      this.plants = this.plants.filter((plant : any) => plant.id !== id)
+      }
+    },
+
     async updatePlantList() {
       const response = await fetch('/api/plants', {
         method: 'GET',
@@ -36,7 +46,6 @@ export default defineComponent({
 
       this.plants = await response.json();
 
-      console.log(response);
     }
   },
   created() {

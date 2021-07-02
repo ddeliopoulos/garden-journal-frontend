@@ -48,8 +48,6 @@ export default {
 
       const data = await response.json()
 
-      console.log("")
-
       this.$emit('plant-update', data)
 
     }
