@@ -1,19 +1,19 @@
 <template>
   <div class="container">
-    <h1>Add a Plant!</h1>
+    <h1>Add Plant</h1>
     <label>Plant Name: </label>
-      <input type="text"
+      <input type="text" placeholder="Name of plant"
              v-model="name"
              required>
-
+    <br/>
     <label>Plant Type: </label>
-      <input type="text"
+      <input type="text" placeholder="Type of plant"
              v-model="type">
-
+    <br/>
     <label>Date Planted: </label>
-      <input type="text"
+      <input type="date"
              v-model="date">
-
+    <br/>
     <button @click="onFormSubmit" class="button">Submit</button>
   </div>
 </template>
@@ -50,6 +50,10 @@ export default {
 
       this.$emit('plant-update', data)
 
+      this.name = "";
+      this.type = "";
+      this.date = "";
+
     }
   }
 }
@@ -57,21 +61,23 @@ export default {
 
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap');
+
+
+
 .container {
-  width: 25%;
+  flex-direction: column;
+  min-height: 20vh;  width: 50%;
   margin: 30px auto;
   background-color: white;
-  text-align: left;
-  padding: 40px;
   border-radius: 10px;
-  float: left;
   border: 1px solid steelblue;
 }
 
 label {
-  color: #aaa;
-  display: inline-block;
-  margin: 25px 0 15px;
+
+  padding: 5px;
+  display: block;
   font-size: 1em;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -79,32 +85,33 @@ label {
 }
 
 input {
-  display: block;
-  padding: 10px 6px;
-  width: 100%;
-  box-sizing: border-box;
+  width: 25%;
   border: none;
-  border-bottom: 1px solid #ddd;
-  color: #555;
+  border-bottom: 2px solid #ddd;
+  font-size:16px;
+  margin: 15px 15px 15px 55px;
 }
-
 
 button {
-  cursor: pointer;
-  background: #0066A2;
-  color: white;
-  border-style: outset;
-  border-color: #0066A2;
-  height: 50px;
-  width: 100px;
-  font: bold 15px arial, sans-serif;
-  text-shadow: none;
-  margin-top: 25px;
-  margin-left: 180px;
+  margin: 35px auto;
+  display: block;
+  box-shadow:inset 0 1px 0 0 #54a3f7;
+  background: #007dc1 linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+  border-radius:3px;
+  border:1px solid #124d77;
+  cursor:pointer;
+  color:#ffffff;
+  font-size:18px;
+  padding:6px 24px;
+  text-decoration:none;
+  text-shadow:0 1px 0 #154682;
+
 }
 
-h2 {
+h1{
   text-align: center;
-  padding-top: -20px;
+  margin: 10px auto;
+  font-family: Catamaran, serif;
+  text-decoration: underline;
 }
 </style>

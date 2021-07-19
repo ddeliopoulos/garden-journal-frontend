@@ -1,15 +1,13 @@
 <template>
-  <h1>GARDEN JOURNAL</h1>
   <div>
     <AddPlantForm @plant-update="updatePlantList"/>
-    <PlantListDisplay @delete-plant="deletePlant" :plants="plants"></PlantListDisplay>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AddPlantForm from './AddPlantForm.vue'
-import PlantListDisplay from './PlantListDisplay.vue'
+import AddPlantForm from '../components/AddPlantForm.vue'
+import PlantListDisplay from '../components/PlantListDisplay.vue'
 
 export default defineComponent({
   name: 'App',
@@ -31,7 +29,7 @@ export default defineComponent({
           method: 'DELETE'
         })
 
-      this.plants = this.plants.filter((plant : any) => plant.id !== id)
+        this.plants = this.plants.filter((plant : any) => plant.id !== id)
       }
     },
 
@@ -56,14 +54,6 @@ export default defineComponent({
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 
 body{
   margin: 0;
