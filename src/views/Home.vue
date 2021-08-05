@@ -1,4 +1,7 @@
 <template>
+<div>
+  <AddPlantButton></AddPlantButton>
+</div>
   <div>
     <PlantListDisplay @delete-plant="deletePlant" :plants="plants"></PlantListDisplay>
   </div>
@@ -8,8 +11,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AddPlantForm from '../components/AddPlantForm.vue'
 import PlantListDisplay from '../components/PlantListDisplay.vue'
+import AddPlantButton from "@/components/AddPlantButton.vue";
 
 export default defineComponent({
   name: 'App',
@@ -21,7 +24,7 @@ export default defineComponent({
   },
 
   components: {
-    AddPlantForm,
+    AddPlantButton,
     PlantListDisplay,
   },
   methods:{
@@ -62,4 +65,5 @@ body{
   margin: 0;
   background: #eee;
 }
+
 </style>

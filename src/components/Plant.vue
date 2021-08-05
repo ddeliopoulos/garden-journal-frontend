@@ -1,5 +1,9 @@
 <template>
-  <div class="plant-container">
+  <div class="plant-card">
+    <div class="image-cropper">
+      <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
+    </div>
+    <WaterDroplet/>
     <h2><b>Name:</b> {{ plant.name }}</h2>
     <button @click="onDelete(plant.id) " class="deleteBtn">Delete</button>
     <router-link class="editBtn" :to="`/plant?id=${plant.id}`">Edit</router-link>
@@ -7,21 +11,27 @@
       <b>Type:</b>  {{plant.type}}<br><b>Date:  </b>{{plant.date}}
     </p>
   </div>
+
 </template>
 <script>
 
 import {defineComponent} from 'vue';
+import WaterDroplet from "@/components/WaterDroplet.vue";
+
 
 export default defineComponent({
   name: "Plant.vue",
   props:{
-    plant: Object
+    plant: Object,
+  },
+  components: {
+    WaterDroplet,
   },
 
   methods:{
     onDelete(id){
       this.$emit('delete-plant', id)
-    }
+    },
   },
 })
 </script>
@@ -29,9 +39,25 @@ export default defineComponent({
 
 <style scoped>
 
+
 p{
   letter-spacing: 2px;
   margin-left: 15px;
+}
+.image-cropper {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.default-plant {
+  display: inline;
+  margin: auto;
+  height: 100%;
+  width: auto;
 }
 
 .deleteBtn{
@@ -66,10 +92,15 @@ p{
   text-shadow:0 1px 0 #154682;
 }
 
-.plant-container{
+.plant-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.plant-card{
   background-color: #f4f4f4;
-  margin: 5px;
-  padding: 10px 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+  margin: auto;
+  width: 30%;
 }
 
 h2{
