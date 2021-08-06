@@ -5,18 +5,17 @@
     </div>
   <div class="plant-list">
     <div class="single-plant-container" :key="plant.id" v-for="plant in plants">
-      <Plant @delete-plant="$emit('delete-plant', plant.id)" @update-plant="$emit('update-plant')" :plant="plant"/>
+      <Plant @delete-plant="$emit('delete-plant', plant.id)" @update-plant="$emit('update-plant')" @get-plant-info="$emit('get-plant-info')" :plant="plant"/>
     </div>
   </div>
   </div>
 </template>
 
 <script>
-import Plant from './Plant.vue'
+import Plant from '@/components/Plant.vue'
 import AddPlantForm from "@/components/AddPlantForm.vue";
-import {defineComponent} from "vue";
 
-export default defineComponent({
+export default {
   name: "PlantListDisplay",
 
   data(){
@@ -30,30 +29,14 @@ export default defineComponent({
     AddPlantForm,
   },
 
-  emits:['delete-plant','update-plant'],
+  emits:['delete-plant','update-plant', 'get-plant-info'],
 
   props:{
     plants: Array
   },
 
-  methods: {
-    async updatePlantList() {
-      const response = await fetch('/api/plants', {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
+}
 
-      });
-
-      this.plants = await response.json();
-
-      this.$emit('update-plant')
-
-    },
-  },
-
-})
 </script>
 
 <style scoped>

@@ -1,4 +1,5 @@
 <template>
+  {{plant.id}}
   <div id="app">
       <div class="plant-card" @click="directToDetailPlantPage(plant.id)">
         <router-link style="text-decoration: none; color: inherit" class="plant-card-route" :to="{name: 'PlantDetails', params: {id: plant.id}}">
@@ -23,11 +24,9 @@
 </template>
 <script>
 
-import {defineComponent} from 'vue';
 import WaterDroplet from "@/components/WaterDroplet.vue";
 
-
-export default defineComponent({
+export default {
   name: 'Plant',
 
   props: {
@@ -45,11 +44,13 @@ export default defineComponent({
     },
 
     directToDetailPlantPage(id){
+      console.log(id)
       this.$emit('get-plant-info', id)
       this.$router.push({name: 'PlantDetails'})
     }
   },
-})
+}
+
 </script>
 
 <style scoped>

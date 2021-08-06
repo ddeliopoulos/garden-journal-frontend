@@ -20,6 +20,10 @@ import PlantDetails from "@/views/PlantDetails.vue";
 export default defineComponent({
   name: 'App',
 
+  props: {
+    plant: Object
+  },
+
   data(){
     return{
       plants: [],
@@ -44,7 +48,6 @@ export default defineComponent({
     },
 
 
-
     async updatePlantList() {
       const response = await fetch('/api/plants', {
         method: 'GET',
@@ -58,6 +61,7 @@ export default defineComponent({
 
     }
   },
+
   created() {
     this.updatePlantList();
   }

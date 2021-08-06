@@ -21,21 +21,20 @@
 
 export default {
   name: 'AddPlantForm',
-  emits: ['plant-update'],
+  emits: ['plant-update', 'get-plant-info'],
 
   props:{
     plant: Object,
   },
 
-
- data(){
+  data(){
     return {
       name: '',
       type: '',
       date: '',
       thirstLevel: '',
     }
- },
+  },
 
   methods: {
     async onFormSubmit() {
@@ -55,6 +54,8 @@ export default {
       const data = await response.json()
 
       this.$emit('plant-update', data)
+      this.$emit('get-plant-info', data)
+
 
       this.name = "";
       this.type = "";
