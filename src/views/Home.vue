@@ -74,6 +74,7 @@ export default defineComponent({
 .add-plant-button{
   float: left;
 }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

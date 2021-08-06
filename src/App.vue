@@ -85,7 +85,6 @@ export default defineComponent({
 
 body{
   margin: 0;
-  background: #eee;
 }
 
 .navigation{
