@@ -1,15 +1,23 @@
 <template>
-  <div class="plant-card">
-    <div class="image-cropper">
-      <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
-    </div>
+  <div id="app">
+      <div class="plant-card" @click="directToDetailPlantPage(plant.id)">
+        <router-link style="text-decoration: none; color: inherit" class="plant-card-route" :to="{name: 'PlantDetails', params: {id: plant.id}}">
+        <h2><b></b> {{ plant.name }}</h2>
+      <div class="image-cropper">
+        <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
+      </div>
+
     <WaterDroplet/>
-    <h2><b>Name:</b> {{ plant.name }}</h2>
-    <button @click="onDelete(plant.id) " class="deleteBtn">Delete</button>
-    <router-link class="editBtn" :to="`/plant?id=${plant.id}`">Edit</router-link>
-    <p>
-      <b>Type:</b>  {{plant.type}}<br><b>Date:  </b>{{plant.date}}
-    </p>
+
+      <b><h4>Type: </h4>
+          <p>{{plant.type}}</p>
+          <br/>
+      <h4>Date: </h4>
+          <p>{{plant.date}}</p>
+          <br/></b>
+        <button @click="onDelete(plant.id) " class="deleteBtn">Delete</button>
+        </router-link>
+  </div>
   </div>
 
 </template>
@@ -20,29 +28,50 @@ import WaterDroplet from "@/components/WaterDroplet.vue";
 
 
 export default defineComponent({
-  name: "Plant.vue",
-  props:{
+  name: 'Plant',
+
+  props: {
     plant: Object,
   },
+
   components: {
     WaterDroplet,
   },
 
   methods:{
+
     onDelete(id){
       this.$emit('delete-plant', id)
     },
+
+    directToDetailPlantPage(id){
+      this.$emit('get-plant-info', id)
+      this.$router.push({name: 'PlantDetails'})
+    }
   },
 })
 </script>
 
-
 <style scoped>
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 3px;
+}
 
 p{
-  letter-spacing: 2px;
-  margin-left: 15px;
+  letter-spacing: 1px;
+  color: #06466e;
+  display: inline;
 }
 .image-cropper {
   width: 150px;
@@ -54,15 +83,13 @@ p{
 }
 
 .default-plant {
-  display: inline;
+  display: inline-block;
   margin: auto;
   height: 100%;
   width: auto;
 }
 
 .deleteBtn{
-  float: right;
-  margin-right: 15px;
   box-shadow:inset 0 1px 0 0 #cf866c;
   background: #d0451b linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
   border-radius:3px;
@@ -71,25 +98,10 @@ p{
   cursor:pointer;
   color:#ffffff;
   font-size:13px;
-  padding:6px 24px;
+  padding:6px 25px;
   text-decoration:none;
   text-shadow:0 1px 0 #854629;
-}
-
-.editBtn{
-  float: right;
-  margin-right: 15px;
-  box-shadow:inset 0 1px 0 0 #54a3f7;
-  background: #007dc1 linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
-  border-radius:3px;
-  border:1px solid #124d77;
-  display:inline-block;
-  cursor:pointer;
-  color:#ffffff;
-  font-size:13px;
-  padding:6px 24px;
-  text-decoration:none;
-  text-shadow:0 1px 0 #154682;
+  margin: 25px 0 0 0;
 }
 
 .plant-card:hover {
@@ -97,25 +109,32 @@ p{
 }
 
 .plant-card{
-  background-color: #f4f4f4;
+  background-color: #b19d7a;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   margin: auto;
-  width: 30%;
+  width: 60%;
+  padding: 20px;
+  border-radius:3px;
+  border:1px solid black;
 }
 
 h2{
-  background: #2c3e50;
-  border-radius: 6px 6px 6px 6px;
-  box-shadow: 0 0 0 1px #5F5A4B, 1px 1px 6px 1px rgba(10, 10, 0, 0.5);
-  color: #FFFFFF;
-  font-size: 15px;
+  display: inline-block;
+  color: floralwhite;
+  font-size: 23px;
   font-weight: bold;
-  height: 24px;
-  line-height: 20px;
-  margin: 12px 0 !important;
-  padding: 5px 0 5px 10px;
+  width: 70%;
+  height: 30px;
+  line-height: 25px;
+  margin: auto;
   text-shadow: 2px 2px 3px #2c3e50;
   text-align: center;
+
+}
+
+h4{
+  display: inline;
+  color: black;
 }
 
 </style>

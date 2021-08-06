@@ -18,10 +18,15 @@
 </template>
 
 <script>
-//emit an event from the button component
+
 export default {
   name: 'AddPlantForm',
   emits: ['plant-update'],
+
+  props:{
+    plant: Object,
+  },
+
 
  data(){
     return {
@@ -55,17 +60,16 @@ export default {
       this.type = "";
       this.date = "";
 
-    }
+      window.location.reload();
+
+    },
+
   }
 }
 </script>
 
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap');
-
-
-
 
 label {
   padding: 5px;

@@ -1,60 +1,25 @@
 {
   "plants": [
     {
-      "id": "2",
-      "name": "Dim",
-      "type": "Hungarian Wax Pepper",
-      "date": "01/01/1337",
-      "thirstLevel": "dying"
-    },
-    {
-      "id": "3",
-      "name": "Pawel",
-      "type": "Zucchini",
-      "date": "12/21/1997",
-      "thirstLevel": "dying"
-    },
-    {
-      "id": "4",
-      "name": "Kasi",
-      "type": "Cubanelle Pepper",
-      "date": "10/06/2021",
-      "thirstLevel": "dying"
-    },
-    {
-      "name": "",
-      "type": "",
-      "date": "",
-      "thirstLevel": "dying",
-      "id": "Bdv-NFG"
-    },
-    {
-      "name": "",
-      "type": "",
-      "date": "",
-      "thirstLevel": "dying",
-      "id": "72spcCx"
-    },
-    {
-      "name": "",
-      "type": "",
-      "date": "",
-      "thirstLevel": "dying",
-      "id": "0U-Nyhz"
-    },
-    {
-      "name": "",
-      "type": "",
-      "date": "",
-      "thirstLevel": "dying",
-      "id": "5UbHoA3"
-    },
-    {
       "name": "Christini",
-      "type": "Cucumber",
-      "date": "2021-08-04",
+      "type": "Tomato",
+      "date": "2021-08-05",
       "thirstLevel": "dying",
-      "id": "oS63W4a"
+      "id": "-_9KIa2"
+    },
+    {
+      "name": "Kasi",
+      "type": "Zucchini",
+      "date": "2021-08-03",
+      "thirstLevel": "dying",
+      "id": "Qx8nMZO"
+    },
+    {
+      "name": "Dimitra",
+      "type": "Bean",
+      "date": "2021-08-05",
+      "thirstLevel": "dying",
+      "id": "tTlafxr"
     }
   ]
 }

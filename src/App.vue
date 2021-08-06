@@ -1,4 +1,5 @@
 <template>
+  <div id="app">
   <div class="header">
     <div class="inner-header">
       <div class="logo-container">
@@ -11,11 +12,12 @@
         <router-link to="/Plant-List">
           <a><li>Add Plant</li></a>
         </router-link>
-        <a><li>About</li></a>
+        <a><li>Users</li></a>
       </ul>
     </div>
   </div>
   <router-view></router-view>
+  </div>
 </template>
 
 <script lang="ts">

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '@/views/Home.vue'
 import AddPlantForm from "@/components/AddPlantForm.vue";
-import PlantEditor from "@/components/PlantEditorDisplay.vue";
+import PlantDetails from "@/views/PlantDetails.vue";
 import Testin from "@/views/Testin.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -11,9 +11,10 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
-    path: '/plant/:id',
-    name: 'PlantEditorDisplay',
-    component: PlantEditor,
+    path: '/:id/plant-details',
+    name: 'PlantDetails',
+    component: PlantDetails,
+    props: true
   },
   {
     path: '/plant-list',

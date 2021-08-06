@@ -1,17 +1,19 @@
 <template>
-  <div id="plants-title">
-    <h1>My Plants</h1>
+  <div id="app">
+    <div id="plants-title">
+      <h1>My Plants</h1>
+    </div>
+  <div class="plant-list">
+    <div class="single-plant-container" :key="plant.id" v-for="plant in plants">
+      <Plant @delete-plant="$emit('delete-plant', plant.id)" @update-plant="$emit('update-plant')" :plant="plant"/>
+    </div>
   </div>
-<div class="plant-list">
-  <div class="single-plant-container" :key="plant.id" v-for="plant in plants">
-    <Plant @delete-plant="$emit('delete-plant', plant.id)" @update-plant="$emit('update-plant')" :plant="plant"/>
   </div>
-</div>
 </template>
 
 <script>
 import Plant from './Plant.vue'
-import AddPlantForm from "@/components/AddPlantForm";
+import AddPlantForm from "@/components/AddPlantForm.vue";
 import {defineComponent} from "vue";
 
 export default defineComponent({
@@ -49,26 +51,7 @@ export default defineComponent({
       this.$emit('update-plant')
 
     },
-
-    async addNewPlant(){
-      const response = await fetch('/api/plants', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: "Edit to Add Name",
-          type: "Edit to Add Type",
-          date: "Edit to Add Date",
-        }),
-      })
-
-      window.location.reload();
-
-    },
   },
-
-
 
 })
 </script>
@@ -82,9 +65,23 @@ export default defineComponent({
   padding: 0;
 }
 
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 3px;
+}
+
 .single-plant-container{
-  background-color: #bc3315;
-  display: inline;
+  display: block;
+  width: 50%;
+
+}
+
+.plant-list{
+  display: flex;
 }
 
 #plants-title h1{

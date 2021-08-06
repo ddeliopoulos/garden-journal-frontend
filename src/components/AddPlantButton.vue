@@ -14,10 +14,14 @@
 </template>
 
 <script>
-import AddPlantForm from "@/components/AddPlantForm";
+import AddPlantForm from "@/components/AddPlantForm.vue";
+
 export default {
   name: "AddPlantButton",
-  components: {AddPlantForm},
+  components: {
+    AddPlantForm
+  },
+
   data(){
     return{
       showAddPlantForm: false
@@ -27,6 +31,11 @@ export default {
 </script>
 
 <style scoped>
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 10px;
+}
 
 .close-form-button {
   position: absolute;
@@ -62,7 +71,8 @@ export default {
   z-index: 99;
 
   width: 100%;
-  max-width: 400px;
+  max-width: 800px;
+  max-height: 600px;
   background-color: #FFF;
   border-radius: 16px;
 
@@ -74,6 +84,7 @@ export default {
   outline: none;
   border: none;
   cursor: pointer;
+  float: right;
 
   display: inline-block;
   padding: 15px 25px;

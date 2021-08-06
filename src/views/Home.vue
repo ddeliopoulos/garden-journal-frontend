@@ -1,18 +1,21 @@
 <template>
-<div>
-  <AddPlantButton></AddPlantButton>
-</div>
+  <div id="app">
+    <div id="add-plant-button">
+      <AddPlantButton></AddPlantButton>
+    </div>
   <div>
     <PlantListDisplay @delete-plant="deletePlant" :plants="plants"></PlantListDisplay>
   </div>
-  <div>
+    <div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import {defineComponent, reactive} from 'vue'
 import PlantListDisplay from '../components/PlantListDisplay.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue";
+import PlantDetails from "@/views/PlantDetails.vue";
 
 export default defineComponent({
   name: 'App',
@@ -24,9 +27,11 @@ export default defineComponent({
   },
 
   components: {
+    PlantDetails,
     AddPlantButton,
     PlantListDisplay,
   },
+
   methods:{
     async deletePlant(id : any) {
       if (confirm('Are you sure, bitch?')) {
@@ -37,6 +42,7 @@ export default defineComponent({
         this.plants = this.plants.filter((plant : any) => plant.id !== id)
       }
     },
+
 
 
     async updatePlantList() {
@@ -61,9 +67,21 @@ export default defineComponent({
 
 <style>
 
-body{
+*{
+  box-sizing: border-box;
   margin: 0;
-  background: #eee;
+  padding: 0;
+}
+.add-plant-button{
+  float: left;
+}
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 3px;
 }
 
 </style>

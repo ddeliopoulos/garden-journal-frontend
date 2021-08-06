@@ -1,7 +1,7 @@
 <template>
   <div id="water-droplet-container">
-    <h4>click to water plant</h4>
-    <div v-if="false" >
+    <h3>click to water plant</h3>
+    <div v-if="true" >
       <img id="water-plant-icon-red" src="../assets/water-droplet-red.png" alt="red-droplet" class="red-droplet">
     </div>
 <!--    <div v-else-if="plant.waterState === 'yellow'">-->
@@ -40,6 +40,10 @@ export default {
   border-radius: 50%;
   margin: auto;
 
+}
+
+h3{
+  color: #06466e;
 }
 #water-plant-icon-yellow{
   width: 50px;
