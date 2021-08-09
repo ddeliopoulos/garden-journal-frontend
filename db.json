@@ -1,32 +1,11 @@
 {
   "plants": [
     {
-      "name": "Christini",
-      "type": "Tomato",
-      "date": "2021-08-05",
+      "name": "asdas",
+      "type": "asdas",
+      "date": "2021-08-01",
       "thirstLevel": "dying",
-      "id": "-_9KIa2"
-    },
-    {
-      "name": "Kasi",
-      "type": "Zucchini",
-      "date": "2021-08-03",
-      "thirstLevel": "dying",
-      "id": "Qx8nMZO"
-    },
-    {
-      "name": "Dimitra",
-      "type": "Bean",
-      "date": "2021-08-05",
-      "thirstLevel": "dying",
-      "id": "tTlafxr"
-    },
-    {
-      "name": "65465",
-      "type": "5665",
-      "date": "2021-08-05",
-      "thirstLevel": "dying",
-      "id": "q4Jy5Ju"
+      "id": 1
     }
   ]
 }

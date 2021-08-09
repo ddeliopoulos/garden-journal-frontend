@@ -4,7 +4,7 @@
       <AddPlantButton></AddPlantButton>
     </div>
   <div>
-    <PlantListDisplay @delete-plant="deletePlant" :plants="plants"></PlantListDisplay>
+    <PlantListDisplay :plants="plants"></PlantListDisplay>
   </div>
     <div>
     </div>
@@ -12,10 +12,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive} from 'vue'
+import { defineComponent } from 'vue'
 import PlantListDisplay from '../components/PlantListDisplay.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue";
-import PlantDetails from "@/views/PlantDetails.vue";
 
 export default defineComponent({
   name: 'App',
@@ -41,7 +40,6 @@ export default defineComponent({
         this.plants = this.plants.filter((plant : any) => plant.id !== id)
       }
     },
-
 
     async updatePlantList() {
       const response = await fetch('/api/plants', {
@@ -71,6 +69,7 @@ export default defineComponent({
   margin: 0;
   padding: 0;
 }
+
 .add-plant-button{
   float: left;
 }

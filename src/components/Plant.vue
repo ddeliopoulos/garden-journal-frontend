@@ -16,11 +16,9 @@
       <h4>Date: </h4>
           <p>{{plant.date}}</p>
           <br/></b>
-        <button @click="onDelete(plant.id) " class="deleteBtn">Delete</button>
         </router-link>
   </div>
   </div>
-
 </template>
 <script>
 
@@ -39,13 +37,10 @@ export default {
 
   methods:{
 
-    onDelete(id){
-      this.$emit('delete-plant', id)
-    },
+
 
     directToDetailPlantPage(id){
       console.log(id)
-      this.$emit('get-plant-info', id)
       this.$router.push({name: 'PlantDetails'})
     }
   },

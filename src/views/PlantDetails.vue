@@ -8,6 +8,9 @@
               <div class="relative">
               </div>
             </div>
+            <div class="delete-plant-icon" @click=deletePlant()>
+            <i class="far fa-window-close"></i>
+            </div>
             <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
             </div>
             <div class="w-full lg:w-4/12 px-4 lg:order-1">
@@ -45,7 +48,6 @@
                     Submit
                   </button>
                 </div>
-
               </div>
             </div>
           </div>
@@ -55,7 +57,7 @@
   </section>
 </template>
 
-<script>
+<script lang = "ts">
 import Plant from "@/components/Plant.vue";
 import WaterDroplet from "@/components/WaterDroplet.vue";
 
@@ -63,7 +65,7 @@ import WaterDroplet from "@/components/WaterDroplet.vue";
 export default {
   name: 'PlantDetails',
 
-  props:{
+  props: {
     id: String
   },
 
@@ -72,14 +74,25 @@ export default {
     WaterDroplet,
   },
 
-  data(){
-    return{
-      plant: null
+  data() {
+    return {
+      plant: null,
     }
   },
 
-  methods:{
-    async getPlantInfo(){
+  methods: {
+    async deletePlant() {
+      if (confirm('Are you sure, bitch?')) {
+        const response = await fetch(`/api/plants/${this.id}`, {
+          method: 'DELETE'
+        })
+        console.log("im here")
+        await this.$router.push('/');
+        window.location.reload();
+      }
+    },
+
+    async getPlantInfo() {
       console.log(this.id);
       const response = await fetch(`/api/plants/${this.id}`, {
         method: 'GET',
@@ -88,16 +101,26 @@ export default {
         },
       })
       this.plant = await response.json()
-    }
+    },
+
   },
-  created(){
+
+  created() {
     this.getPlantInfo()
   }
 }
-
 </script>
 
 <style scoped>
+
+.fa-window-close{
+  color: red;
+  font-size: 27px;
+  position: relative;
+  top: 10px;
+  left: 600px;
+  cursor: pointer;
+}
 
 h2{
   float: left;

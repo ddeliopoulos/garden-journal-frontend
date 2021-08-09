@@ -30,8 +30,6 @@ export default defineComponent({
   components: {
     Home,
   },
-
-
 })
 </script>
 
