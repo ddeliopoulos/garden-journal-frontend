@@ -1,11 +1,25 @@
 {
   "plants": [
     {
-      "name": "asdas",
-      "type": "asdas",
+      "name": "asdasa",
+      "type": "asdasda",
       "date": "2021-08-01",
       "thirstLevel": "dying",
       "id": 1
+    },
+    {
+      "name": "sdffgsf",
+      "type": "ssdfsf",
+      "date": "2021-08-05",
+      "thirstLevel": "dying",
+      "id": 2
+    },
+    {
+      "name": "jkhljhkh",
+      "type": "ghgjh",
+      "date": "2021-08-25",
+      "thirstLevel": "dying",
+      "id": 3
     }
   ]
 }

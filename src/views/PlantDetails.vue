@@ -57,7 +57,7 @@
   </section>
 </template>
 
-<script lang = "ts">
+<script>
 import Plant from "@/components/Plant.vue";
 import WaterDroplet from "@/components/WaterDroplet.vue";
 
