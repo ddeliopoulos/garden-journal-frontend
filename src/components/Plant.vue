@@ -1,15 +1,11 @@
 <template>
-  {{plant.id}}
-  <div id="app">
-      <div class="plant-card" @click="directToDetailPlantPage(plant.id)">
-        <router-link style="text-decoration: none; color: inherit" class="plant-card-route" :to="{name: 'PlantDetails', params: {id: plant.id}}">
+      <div class="plant-card" >
+        <router-link :to="{name: 'PlantDetails', params: {id: plant.id}}">
         <h2><b></b> {{ plant.name }}</h2>
       <div class="image-cropper">
         <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
       </div>
-
-    <WaterDroplet/>
-
+          <br/>
       <b><h4>Type: </h4>
           <p>{{plant.type}}</p>
           <br/>
@@ -18,11 +14,9 @@
           <br/></b>
         </router-link>
   </div>
-  </div>
 </template>
 <script>
 
-import WaterDroplet from "@/components/WaterDroplet.vue";
 
 export default {
   name: 'Plant',
@@ -31,14 +25,7 @@ export default {
     plant: Object,
   },
 
-  components: {
-    WaterDroplet,
-  },
-
   methods:{
-
-
-
     directToDetailPlantPage(id){
       console.log(id)
       this.$router.push({name: 'PlantDetails'})
@@ -85,21 +72,6 @@ p{
   width: auto;
 }
 
-.deleteBtn{
-  box-shadow:inset 0 1px 0 0 #cf866c;
-  background: #d0451b linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
-  border-radius:3px;
-  border:1px solid #942911;
-  display:inline-block;
-  cursor:pointer;
-  color:#ffffff;
-  font-size:13px;
-  padding:6px 25px;
-  text-decoration:none;
-  text-shadow:0 1px 0 #854629;
-  margin: 25px 0 0 0;
-}
-
 .plant-card:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
@@ -108,7 +80,7 @@ p{
   background-color: #b19d7a;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   margin: auto;
-  width: 60%;
+  width: 30%;
   padding: 20px;
   border-radius:3px;
   border:1px solid black;

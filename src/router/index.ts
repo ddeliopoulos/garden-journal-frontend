@@ -1,8 +1,12 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Home from '@/views/Home.vue'
 import AddPlantForm from "@/components/AddPlantForm.vue";
 import PlantDetails from "@/views/PlantDetails.vue";
 import Testin from "@/views/Testin.vue";
+import Privacy from "@/views/Privacy.vue";
+import About from "@/views/About.vue";
+
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,6 +14,17 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Home',
     component: Home
   },
+  {
+    path: '/privacy',
+    name: 'Privacy',
+    component: Privacy
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
+  },
+
   {
     path: '/plant-details/:id',
     name: 'PlantDetails',
@@ -32,7 +47,7 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes: routes
 })
 
 export default router

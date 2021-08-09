@@ -85,6 +85,7 @@ export default {
   border: none;
   cursor: pointer;
   float: right;
+  margin-top: 15px;
 
   display: inline-block;
   padding: 15px 25px;

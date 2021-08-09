@@ -1,34 +1,21 @@
 <template>
   <div id="app">
-  <div class="header">
-    <div class="inner-header">
-      <div class="logo-container">
-        <h1>GARDEN<span>JOURNAL</span></h1>
-      </div>
-      <ul class="navigation">
-        <router-link to="/">
-          <a><li>Home</li></a>
-        </router-link>
-        <router-link to="/Plant-List">
-          <a><li>Add Plant</li></a>
-        </router-link>
-        <a><li>Users</li></a>
-      </ul>
-    </div>
-  </div>
-  <router-view></router-view>
+    <Header></Header>
+    <router-view/>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Home from './views/Home.vue'
+import Header from "@/components/Header.vue"
 
 export default defineComponent({
   name: 'App',
 
   components: {
     Home,
+    Header,
   },
 })
 </script>
@@ -46,26 +33,6 @@ export default defineComponent({
   margin-top: 3px;
 }
 
-.header{
-  width: 100%;
-  height: 120px;
-  display: block;
-  background-color: #101010;
-}
-
-.inner-header{
-  width: 1000px;
-  height: 100%;
-  display: block;
-  margin: 0 auto;
-
-}
-
-.logo-container {
-  height: 100%;
-  display: table;
-  float: left;
-}
 
 .logo-container h1 {
   color: white;
@@ -83,11 +50,6 @@ export default defineComponent({
 
 body{
   margin: 0;
-}
-
-.navigation{
-  float:right;
-  height: 100%;
 }
 
 .navigation a{

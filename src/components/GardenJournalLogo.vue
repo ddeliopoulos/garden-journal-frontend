@@ -1,0 +1,34 @@
+<template>
+  <div class="logo-container">
+    <h1>GARDEN<span>JOURNAL</span></h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "GardenJournalLogo"
+}
+</script>
+
+<style scoped>
+
+.logo-container {
+  float: left;
+  margin-top: 29px;
+}
+
+.logo-container h1 {
+  color: white;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  font-weight: 200;
+}
+
+.logo-container h1 span {
+  font-weight: 800;
+}
+
+</style>

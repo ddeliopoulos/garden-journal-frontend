@@ -1,8 +1,5 @@
 <template>
-  <div id="app">
-    <div id="add-plant-button">
-      <AddPlantButton></AddPlantButton>
-    </div>
+  <div id="home">
   <div>
     <PlantListDisplay :plants="plants"></PlantListDisplay>
   </div>
@@ -11,10 +8,9 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue'
 import PlantListDisplay from '../components/PlantListDisplay.vue'
-import AddPlantButton from "@/components/AddPlantButton.vue";
 
 export default defineComponent({
   name: 'App',
@@ -26,18 +22,17 @@ export default defineComponent({
   },
 
   components: {
-    AddPlantButton,
     PlantListDisplay,
   },
 
   methods:{
-    async deletePlant(id : any) {
+    async deletePlant(id) {
       if (confirm('Are you sure, bitch?')) {
         const response = await fetch(`api/plants/${id}`, {
           method: 'DELETE'
         })
 
-        this.plants = this.plants.filter((plant : any) => plant.id !== id)
+        this.plants = this.plants.filter((plant) => plant.id !== id)
       }
     },
 
@@ -70,17 +65,5 @@ export default defineComponent({
   padding: 0;
 }
 
-.add-plant-button{
-  float: left;
-}
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 3px;
-}
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="plant-list-display">
     <div id="plants-title">
       <h1>My Plants</h1>
     </div>
@@ -48,14 +48,6 @@ export default {
   padding: 0;
 }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 3px;
-}
 
 .single-plant-container{
   display: block;
