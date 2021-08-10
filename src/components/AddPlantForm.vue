@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 
 export default {
   name: 'AddPlantForm',
@@ -61,6 +61,7 @@ export default {
       this.type = "";
       this.date = "";
 
+      window.location.reload();
 
     },
 

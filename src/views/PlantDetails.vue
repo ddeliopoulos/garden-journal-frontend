@@ -8,9 +8,9 @@
               <div class="relative">
               </div>
             </div>
-<!--            <div class="delete-plant-icon" @click=deletePlant()>-->
-<!--              <i class="far fa-window-close"></i>-->
-<!--            </div>-->
+            <div class="delete-plant-icon" @click=deletePlant()>
+              <i class="far fa-window-close"></i>
+            </div>
             <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
             </div>
             <div class="w-full lg:w-4/12 px-4 lg:order-1">

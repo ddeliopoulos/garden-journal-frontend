@@ -1,15 +1,15 @@
 <template>
-
+  <PlantList/>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
 
-export default defineComponent({
+import PlantList from "@/components/PlantList.vue";
+
+export default {
   name: 'Testin',
-
-
-})
+  components: {PlantList},
+}
 </script>
 
 <style>

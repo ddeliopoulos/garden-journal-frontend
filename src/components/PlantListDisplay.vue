@@ -26,8 +26,20 @@ export default {
 
   data(){
     return{
-      showAddPlantForm: false
+      showAddPlantForm: false,
+      plants: [],
     }
+  },
+  methods: {
+    async loadPlants() {
+      const response = await fetch('/api/plants', {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+      this.plants = await response.json();
+    },
   },
 
   components: {
@@ -38,9 +50,9 @@ export default {
 
   emits:['delete-plant','update-plant', 'get-plant-info'],
 
-  props:{
-    plants: Array
-  },
+  // props:{
+  //   plants: Array
+  // },
 
 }
 

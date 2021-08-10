@@ -27,12 +27,7 @@ export default {
     plant: Object,
   },
 
-  methods:{
-    directToDetailPlantPage(id){
-      console.log(id)
-      this.$router.push({name: 'PlantDetails'})
-    }
-  },
+
 }
 
 </script>
