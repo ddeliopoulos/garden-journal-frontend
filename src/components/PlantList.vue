@@ -4,13 +4,13 @@ import {ref, watch} from "vue";
 export default {
   setup(){
     const plants = ref([])
-
-    watch(
-        () => [...plants.value],
-        async () => {
-      const response = await fetch("api/plants");
-      plants.value = await response.json();
-    });
+    //
+    // watch(
+    //     () => [...plants.value],
+    //     async () => {
+    //   const response = await fetch("api/plants");
+    //   plants.value = await response.json();
+    // });
 
     return{ plants };
   }

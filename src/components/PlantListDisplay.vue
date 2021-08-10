@@ -50,9 +50,9 @@ export default {
 
   emits:['delete-plant','update-plant', 'get-plant-info'],
 
-  // props:{
-  //   plants: Array
-  // },
+  props:{
+    plants: Array
+  },
 
 }
 
