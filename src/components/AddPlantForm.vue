@@ -2,69 +2,72 @@
   <div class="container">
     <label>Plant Name: </label>
       <input type="text" placeholder="Name of plant"
-             v-model="name"
+             v-model="plant.name"
              required>
     <br/>
     <label>Plant Type: </label>
       <input type="text" placeholder="Type of plant"
-             v-model="type">
+             v-model="plant.type">
     <br/>
     <label>Date Planted: </label>
       <input type="date"
-             v-model="date">
+             v-model="plant.date">
     <br/>
     <button @click="onFormSubmit" class="button">Submit</button>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {ref} from "vue";
+
+interface Plant {
+  name: string
+  type: string
+  date: string
+}
 
 export default {
-  name: 'AddPlantForm',
+
   emits: ['plant-update', 'get-plant-info'],
 
-  props:{
-    plant: Object,
-  },
+  setup(props : any, {emit} : any){
 
-  data(){
-    return {
-      name: '',
-      type: '',
-      date: '',
-      thirstLevel: '',
-    }
-  },
+    const plant = ref<Plant>({
+      name: "",
+      type: "",
+      date: "",
+    })
 
-  methods: {
-    async onFormSubmit() {
+    const onFormSubmit = async () => {
       const response = await fetch('/api/plants', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
         },
         body: JSON.stringify({
-          name: this.name,
-          type: this.type,
-          date: this.date,
-          thirstLevel: 'dying',
+          name: plant.value.name,
+          type: plant.value.type,
+          date: plant.value.date,
+          thirstLevel: "dying"
         }),
       })
 
       const data = await response.json()
 
-      this.$emit('plant-update', data)
-      this.$emit('get-plant-info', data)
+      emit('plant-update', data)
+      emit('get-plant-info', data)
 
 
-      this.name = "";
-      this.type = "";
-      this.date = "";
+      plant.value.name = "";
+      plant.value.type = "";
+      plant.value.date = "";
+
 
       window.location.reload();
 
-    },
 
+    }
+    return {onFormSubmit, plant}
   }
 }
 </script>

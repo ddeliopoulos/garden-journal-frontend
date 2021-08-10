@@ -18,7 +18,6 @@
 
 <script>
 import Plant from '@/components/Plant.vue'
-import AddPlantForm from "@/components/AddPlantForm.vue";
 import AddPlantButton from "@/components/AddPlantButton.vue"
 
 export default {
@@ -44,7 +43,6 @@ export default {
 
   components: {
     Plant,
-    AddPlantForm,
     AddPlantButton,
   },
 
