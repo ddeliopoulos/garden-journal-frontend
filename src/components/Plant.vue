@@ -1,3 +1,23 @@
+<script lang="ts">
+interface Plant {
+  name: string
+  type: string
+  date: string
+  thirstLevel: string
+  id: number
+}
+
+export default {
+  props: {
+    plant: {
+      type: Object as () => Plant,
+      required: true
+    }
+  },
+}
+
+</script>
+
 <template>
   <div class="garden">
       <div class="plant-card" >
@@ -16,21 +36,8 @@
         </router-link>
   </div>
   </div>
+
 </template>
-<script>
-
-
-export default {
-  name: 'Plant',
-
-  props: {
-    plant: Object,
-  },
-
-
-}
-
-</script>
 
 <style scoped>
 
