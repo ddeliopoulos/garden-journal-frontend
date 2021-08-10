@@ -1,6 +1,7 @@
 <template>
+  <div class="garden">
       <div class="plant-card" >
-        <router-link :to="{name: 'PlantDetails', params: {id: plant.id}}">
+        <router-link style="text-decoration: none; color: inherit;" :to="{name: 'PlantDetails', params: {id: plant.id}}">
         <h2><b></b> {{ plant.name }}</h2>
       <div class="image-cropper">
         <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
@@ -13,6 +14,7 @@
           <p>{{plant.date}}</p>
           <br/></b>
         </router-link>
+  </div>
   </div>
 </template>
 <script>
@@ -36,19 +38,11 @@ export default {
 </script>
 
 <style scoped>
+
 *{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 3px;
 }
 
 p{
@@ -77,12 +71,10 @@ p{
 }
 
 .plant-card{
-  background-color: #b19d7a;
+  background-color: antiquewhite;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   margin: auto;
-  width: 30%;
-  padding: 20px;
-  border-radius:3px;
+  width: 190px;
   border:1px solid black;
 }
 

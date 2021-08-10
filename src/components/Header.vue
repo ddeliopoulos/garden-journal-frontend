@@ -10,9 +10,9 @@
       </div>
       <div class="garden-journal-logo">
         <GardenJournalLogo></GardenJournalLogo>
-      </div>
-      <div id="add-plant-button">
-        <AddPlantButton></AddPlantButton>
+      </div><br/>
+      <div class="search-bar">
+        <SearchBar></SearchBar>
       </div>
     </div>
   </div>
@@ -22,6 +22,7 @@
 import { Slide } from 'vue3-burger-menu';
 import AddPlantButton from "@/components/AddPlantButton.vue";
 import GardenJournalLogo from "@/components/GardenJournalLogo.vue";
+import SearchBar from "@/components/SearchBar.vue"
 
 export default {
   name: "Header",
@@ -30,10 +31,10 @@ export default {
     GardenJournalLogo,
     Slide,
     AddPlantButton,
+    SearchBar,
   },
-  mounted(){
-    console.log("ComponentName mounted...")
-  }}
+}
+
 </script>
 
 <style scoped>
@@ -47,7 +48,7 @@ body{
   width: 100%;
   height: 100px;
   display: block;
-  background-color: #101010;
+  background-color: black;
 }
 
 .inner-header{
@@ -55,5 +56,6 @@ body{
   height: 100%;
   display: block;
   margin: 0 auto;
+
 }
 </style>

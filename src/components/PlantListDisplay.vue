@@ -1,11 +1,16 @@
 <template>
   <div id="plant-list-display">
     <div id="plants-title">
-      <h1>My Plants</h1>
+      <h1>My Garden</h1>
+    </div>
+    <div id="add-plant-button">
+      <AddPlantButton></AddPlantButton>
     </div>
   <div class="plant-list">
+    <div class="plant-garden">
     <div class="single-plant-container" :key="plant.id" v-for="plant in plants">
       <Plant @delete-plant="$emit('delete-plant', plant.id)" @update-plant="$emit('update-plant')" @get-plant-info="$emit('get-plant-info')" :plant="plant"/>
+    </div>
     </div>
   </div>
   </div>
@@ -14,6 +19,7 @@
 <script>
 import Plant from '@/components/Plant.vue'
 import AddPlantForm from "@/components/AddPlantForm.vue";
+import AddPlantButton from "@/components/AddPlantButton.vue"
 
 export default {
   name: "PlantListDisplay",
@@ -27,6 +33,7 @@ export default {
   components: {
     Plant,
     AddPlantForm,
+    AddPlantButton,
   },
 
   emits:['delete-plant','update-plant', 'get-plant-info'],
@@ -48,15 +55,19 @@ export default {
   padding: 0;
 }
 
+h1{
+padding: 30px;
+}
 
 .single-plant-container{
-  display: block;
-  width: 50%;
-
+  margin: auto;
+  display: inline-block;
+  padding: 5px;
 }
 
 .plant-list{
-  display: flex;
+  display: inline-block;
+  width: 100%;
 }
 
 #plants-title h1{

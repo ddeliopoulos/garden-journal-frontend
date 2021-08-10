@@ -1,5 +1,5 @@
 <template>
-  <section class="relative py-16 bg-gray-300">
+  <section v-if="!isLoading" class="relative py-16 bg-gray-300">
     <div class="container mx-auto px-4">
       <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
         <div class="px-6">
@@ -8,9 +8,9 @@
               <div class="relative">
               </div>
             </div>
-            <div class="delete-plant-icon" @click=deletePlant()>
-            <i class="far fa-window-close"></i>
-            </div>
+<!--            <div class="delete-plant-icon" @click=deletePlant()>-->
+<!--              <i class="far fa-window-close"></i>-->
+<!--            </div>-->
             <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
             </div>
             <div class="w-full lg:w-4/12 px-4 lg:order-1">
@@ -42,9 +42,9 @@
                 <h2>Journal Entry</h2><br/>
                 <div>
                   <div class="form-group shadow-textarea">
-                    <textarea name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
+                    <textarea name="styled-textarea" id="styled"  rows="3" placeholder="Write something here..."></textarea>
                   </div>
-                  <button type="button" class="btn btn-light btn-lg btn-rounded float-end">
+                  <button type="button" @click="onFormSubmit()" class="btn btn-light btn-lg btn-rounded float-end">
                     Submit
                   </button>
                 </div>
@@ -66,7 +66,7 @@ export default {
   name: 'PlantDetails',
 
   props: {
-    id: String
+    id: String,
   },
 
   components: {
@@ -76,11 +76,32 @@ export default {
 
   data() {
     return {
-      plant: null,
+      isLoading: true,
+      plant: null
     }
   },
 
   methods: {
+    async onFormSubmit() {
+      const response = await fetch('/api/journal-entries', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          entry: this.entry,
+
+        }),
+      })
+
+      const data = await response.json()
+
+
+      this.entry = "";
+
+      window.location.reload();
+
+    },
     async deletePlant() {
       if (confirm('Are you sure, bitch?')) {
         const response = await fetch(`/api/plants/${this.id}`, {
@@ -105,8 +126,9 @@ export default {
 
   },
 
-  created() {
-    this.getPlantInfo()
+  async created() {
+    await this.getPlantInfo()
+    this.isLoading = false;
   }
 }
 </script>

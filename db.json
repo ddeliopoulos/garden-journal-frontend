@@ -1,11 +1,26 @@
 {
+  "journal-entries": [],
   "plants": [
     {
-      "name": "Christini",
-      "type": "Tomato",
+      "name": "Dim",
+      "type": "Cucumber",
       "date": "2021-08-09",
       "thirstLevel": "dying",
-      "id": 4
+      "id": 7
+    },
+    {
+      "name": "Kasi",
+      "type": "Zucchini",
+      "date": "2021-08-12",
+      "thirstLevel": "dying",
+      "id": 8
+    },
+    {
+      "name": "Pawel",
+      "type": "Carrot",
+      "date": "2021-08-07",
+      "thirstLevel": "dying",
+      "id": 9
     }
   ]
 }
