@@ -6,15 +6,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import Home from './views/Home.vue'
+import {defineComponent} from 'vue'
 import Header from "@/components/Header.vue"
 
 export default defineComponent({
   name: 'App',
 
   components: {
-    Home,
     Header,
   },
 })
@@ -48,22 +46,22 @@ export default defineComponent({
   font-weight: 800;
 }
 
-body{
+body {
   margin: 0;
 }
 
-.navigation a{
+.navigation a {
   height: 100%;
   display: table;
   float: left;
   padding: 0 20px;
 }
 
-.navigation a:last-child{
+.navigation a:last-child {
   padding-right: 0;
 }
 
-.navigation a li{
+.navigation a li {
   display: table-cell;
   vertical-align: middle;
   height: 100%;

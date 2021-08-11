@@ -2,13 +2,6 @@
   "journal-entries": [],
   "plants": [
     {
-      "name": "Dim",
-      "type": "Cucumber",
-      "date": "2021-08-09",
-      "thirstLevel": "dying",
-      "id": 7
-    },
-    {
       "name": "Kasi",
       "type": "Zucchini",
       "date": "2021-08-12",

@@ -3,7 +3,7 @@
     <div class="inner-header">
       <div class="slide-dashboard">
         <Slide>
-          <router-link to="/"><span>Home</span></router-link>
+          <router-link to="/"><span>My Garden</span></router-link>
           <router-link to="/privacy"><span>Privacy</span></router-link>
           <router-link to="/about"><span>About</span></router-link>
         </Slide>
@@ -20,7 +20,6 @@
 
 <script>
 import { Slide } from 'vue3-burger-menu';
-import AddPlantButton from "@/components/AddPlantButton.vue";
 import GardenJournalLogo from "@/components/GardenJournalLogo.vue";
 import SearchBar from "@/components/SearchBar.vue"
 
@@ -30,7 +29,6 @@ export default {
   components: {
     GardenJournalLogo,
     Slide,
-    AddPlantButton,
     SearchBar,
   },
 }

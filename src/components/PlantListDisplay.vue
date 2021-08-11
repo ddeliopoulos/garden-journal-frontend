@@ -9,51 +9,49 @@
   <div class="plant-list">
     <div class="plant-garden">
     <div class="single-plant-container" :key="plant.id" v-for="plant in plants">
-      <Plant @delete-plant="$emit('delete-plant', plant.id)" @update-plant="$emit('update-plant')" @get-plant-info="$emit('get-plant-info')" :plant="plant"/>
+      <Plant @update-plant="$emit('update-plant')" @get-plant-info="$emit('get-plant-info')" :plant="plant"/>
     </div>
     </div>
   </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
+import { ref , onMounted} from 'vue'
+
+
+interface PlantType {
+  name: string
+  type: string
+  date: string
+  thirstLevel: string
+  id: number
+}
+
 
 export default {
-  name: "PlantListDisplay",
+  components: {Plant, AddPlantButton},
 
-  data(){
-    return{
-      showAddPlantForm: false,
-      plants: [],
-    }
-  },
-  methods: {
-    async loadPlants() {
+  setup() {
+    const plants = ref<PlantType[]>([]);
+
+    async function loadPlants() {
       const response = await fetch('/api/plants', {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
         },
       })
-      this.plants = await response.json();
-    },
-  },
+      plants.value = await response.json();
+    }
 
-  components: {
-    Plant,
-    AddPlantButton,
-  },
+    onMounted(loadPlants)
 
-  emits:['delete-plant','update-plant', 'get-plant-info'],
-
-  props:{
-    plants: Array
-  },
-
+    return {plants}
+  }
 }
-
 </script>
 
 <style scoped>
@@ -63,6 +61,7 @@ export default {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+
 }
 
 h1{

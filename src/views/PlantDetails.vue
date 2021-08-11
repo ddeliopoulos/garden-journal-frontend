@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import Plant from "@/components/Plant.vue";
 import WaterDroplet from "@/components/WaterDroplet.vue";
 
 
@@ -70,7 +69,6 @@ export default {
   },
 
   components: {
-    Plant,
     WaterDroplet,
   },
 

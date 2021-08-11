@@ -1,17 +1,17 @@
 <template>
-  <div class="container">
+  <div v-if="showForm" class="container">
     <label>Plant Name: </label>
-      <input type="text" placeholder="Name of plant"
-             v-model="plant.name"
-             required>
+    <input type="text" placeholder="Name of plant"
+           v-model="plant.name"
+           required>
     <br/>
     <label>Plant Type: </label>
-      <input type="text" placeholder="Type of plant"
-             v-model="plant.type">
+    <input type="text" placeholder="Type of plant"
+           v-model="plant.type">
     <br/>
     <label>Date Planted: </label>
-      <input type="date"
-             v-model="plant.date">
+    <input type="date"
+           v-model="plant.date">
     <br/>
     <button @click="onFormSubmit" class="button">Submit</button>
   </div>
@@ -30,7 +30,9 @@ export default {
 
   emits: ['plant-update', 'get-plant-info'],
 
-  setup(props : any, {emit} : any){
+  setup(props: any, {emit}: any) {
+    const showForm = true;
+
 
     const plant = ref<Plant>({
       name: "",
@@ -63,9 +65,6 @@ export default {
       plant.value.date = "";
 
 
-      window.location.reload();
-
-
     }
     return {onFormSubmit, plant}
   }
@@ -89,7 +88,7 @@ input {
   width: 25%;
   border: none;
   border-bottom: 2px solid #ddd;
-  font-size:16px;
+  font-size: 16px;
   margin: 15px 15px 15px 55px;
 }
 
@@ -111,7 +110,7 @@ button {
   box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
 }
 
-h1{
+h1 {
   text-align: center;
   margin: 10px auto;
   font-family: Catamaran, serif;
