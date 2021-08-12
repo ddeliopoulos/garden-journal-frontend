@@ -1,20 +1,15 @@
 {
-  "journal-entries": [],
+  "journal-entries": [
+    {
+      "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in efficitur nibh, eu luctus ligula. Nullam rutrum felis lectus, non rhoncus lorem ornare sit amet. Maecenas congue faucibus pulvinar. Pellentesque imperdiet sem ac turpis facilisis egestas. Fusce luctus euismod velit, at sollicitudin tellus aliquet vitae. Phasellus fermentum purus a nulla condimentum egestas sit amet id ligula. Fusce malesuada neque ligula, vel sagittis felis fermentum nec. Suspendisse potenti. Nam ultrices sollicitudin neque vitae ultricies.\n\nNulla pellentesque ante eget est semper, in semper ex lacinia. Donec et turpis at tortor ornare maximus quis quis turpis. Aenean risus dui, molestie id molestie eget, lacinia ac odio. Duis ultricies eget nisi sed bibendum. Proin ultrices nec libero non interdum. Suspendisse rutrum diam consequat, euismod mauris non, congue diam. Sed sit amet lorem at nunc mattis luctus a sed libero.\n\n",
+      "id": 1
+    },
+    {
+      "note": "jeerushjfodksl",
+      "id": 2
+    }
+  ],
   "plants": [
-    {
-      "name": "Kasi",
-      "type": "Zucchini",
-      "date": "2021-08-12",
-      "thirstLevel": "dying",
-      "id": 8
-    },
-    {
-      "name": "Pawel",
-      "type": "Carrot",
-      "date": "2021-08-07",
-      "thirstLevel": "dying",
-      "id": 9
-    },
     {
       "name": "Christini",
       "type": "Tomato",
@@ -23,11 +18,25 @@
       "id": 10
     },
     {
-      "name": "TestReload",
-      "type": "poop",
-      "date": "2021-08-10",
+      "name": "Kasi",
+      "type": "Zucchini",
+      "date": "2021-08-11",
       "thirstLevel": "dying",
-      "id": 11
+      "id": 12
+    },
+    {
+      "name": "Dim",
+      "type": "Cucumber",
+      "date": "2021-08-12",
+      "thirstLevel": "dying",
+      "id": 13
+    },
+    {
+      "name": "Pawel",
+      "type": "Carrot",
+      "date": "2021-08-09",
+      "thirstLevel": "dying",
+      "id": 14
     }
   ]
 }

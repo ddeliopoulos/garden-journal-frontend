@@ -1,3 +1,20 @@
+<!--Cannot switch to TypeScript language because are using burger that is not compatible-->
+<script>
+import { Slide } from 'vue3-burger-menu';
+import GardenJournalLogo from "@/components/GardenJournalLogo.vue";
+import SearchBar from "@/components/SearchBar.vue"
+
+export default {
+  name: "Header",
+
+  components: {
+    GardenJournalLogo,
+    Slide,
+    SearchBar,
+  },
+}
+</script>
+
 <template>
   <div class="header">
     <div class="inner-header">
@@ -17,23 +34,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { Slide } from 'vue3-burger-menu';
-import GardenJournalLogo from "@/components/GardenJournalLogo.vue";
-import SearchBar from "@/components/SearchBar.vue"
-
-export default {
-  name: "Header",
-
-  components: {
-    GardenJournalLogo,
-    Slide,
-    SearchBar,
-  },
-}
-
-</script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');

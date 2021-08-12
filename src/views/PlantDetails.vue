@@ -1,5 +1,79 @@
+<script lang="ts">
+import WaterDroplet from "@/components/WaterDroplet.vue";
+import router from "@/router";
+import {useRoute} from 'vue-router'
+import {ref, onMounted} from "vue";
+
+interface JournalEntries {
+  note: string
+}
+
+interface PlantType {
+  name: string
+  type: string
+  date: string
+  id: number
+}
+
+export default {
+  name: 'PlantDetails',
+  components: {WaterDroplet},
+
+  setup() {
+    const route = useRoute()
+    const id = route.params.id
+    const plant = ref<PlantType>({})
+
+    const journalEntry = ref<JournalEntries>({
+      note: "",
+    })
+
+    const getPlantInfo = async () => {
+      const response = await fetch(`/api/plants/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+
+      plant.value = await response.json()
+
+    }
+
+    const deletePlant = async () => {
+      if (confirm('Are you sure, bitch?')) {
+        await fetch(`/api/plants/${id}`, {
+          method: 'DELETE'
+        })
+        await router.push('/');
+      }
+    }
+
+    const onFormSubmit = async () => {
+      await fetch('/api/journal-entries', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          note: journalEntry.value.note
+        }),
+      })
+
+      window.location.reload();
+
+      journalEntry.value.note = "";
+
+    }
+    onMounted(getPlantInfo);
+
+    return {onFormSubmit, plant, deletePlant, journalEntry}
+  }
+}
+</script>
+
 <template>
-  <section v-if="!isLoading" class="relative py-16 bg-gray-300">
+  <section class="relative py-16 bg-gray-300">
     <div class="container mx-auto px-4">
       <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
         <div class="px-6">
@@ -42,7 +116,8 @@
                 <h2>Journal Entry</h2><br/>
                 <div>
                   <div class="form-group shadow-textarea">
-                    <textarea name="styled-textarea" id="styled"  rows="3" placeholder="Write something here..."></textarea>
+                    <textarea v-model="journalEntry.note" name="styled-textarea" id="styled" rows="3"
+                              placeholder="Write something here..."></textarea>
                   </div>
                   <button type="button" @click="onFormSubmit()" class="btn btn-light btn-lg btn-rounded float-end">
                     Submit
@@ -57,83 +132,9 @@
   </section>
 </template>
 
-<script>
-import WaterDroplet from "@/components/WaterDroplet.vue";
-
-
-export default {
-  name: 'PlantDetails',
-
-  props: {
-    id: String,
-  },
-
-  components: {
-    WaterDroplet,
-  },
-
-  data() {
-    return {
-      isLoading: true,
-      plant: null
-    }
-  },
-
-  methods: {
-    async onFormSubmit() {
-      const response = await fetch('/api/journal-entries', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          entry: this.entry,
-
-        }),
-      })
-
-      const data = await response.json()
-
-
-      this.entry = "";
-
-      window.location.reload();
-
-    },
-    async deletePlant() {
-      if (confirm('Are you sure, bitch?')) {
-        const response = await fetch(`/api/plants/${this.id}`, {
-          method: 'DELETE'
-        })
-        console.log("im here")
-        await this.$router.push('/');
-        window.location.reload();
-      }
-    },
-
-    async getPlantInfo() {
-      console.log(this.id);
-      const response = await fetch(`/api/plants/${this.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
-      this.plant = await response.json()
-    },
-
-  },
-
-  async created() {
-    await this.getPlantInfo()
-    this.isLoading = false;
-  }
-}
-</script>
-
 <style scoped>
 
-.fa-window-close{
+.fa-window-close {
   color: red;
   font-size: 27px;
   position: relative;
@@ -142,7 +143,7 @@ export default {
   cursor: pointer;
 }
 
-h2{
+h2 {
   float: left;
 }
 
@@ -213,8 +214,6 @@ img {
 
 button,
 input,
-
-
 button,
 input {
   overflow: visible

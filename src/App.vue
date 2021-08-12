@@ -1,10 +1,3 @@
-<template>
-  <div id="app">
-    <Header></Header>
-    <router-view/>
-  </div>
-</template>
-
 <script lang="ts">
 import {defineComponent} from 'vue'
 import Header from "@/components/Header.vue"
@@ -18,8 +11,14 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<template>
+  <div id="app">
+    <Header></Header>
+    <router-view/>
+  </div>
+</template>
 
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 #app {
@@ -30,7 +29,6 @@ export default defineComponent({
   color: #2c3e50;
   margin-top: 3px;
 }
-
 
 .logo-container h1 {
   color: white;
@@ -70,5 +68,4 @@ body {
   font-size: 16px;
   font-weight: bold;
 }
-
 </style>

@@ -1,3 +1,9 @@
+<script lang="ts" >
+export default {
+  name: "SearchBar.vue",
+}
+</script>
+
 <template>
   <div class="search-holder">
     <div class="search-holder__banner">
@@ -22,25 +28,6 @@
   </div>
 </template>
 
-<script >
-export default {
-  name: "SearchBar.vue",
-
-  computed: {},
-  data() {
-    return {
-      searchText: "",
-    };
-  },
-  methods: {
-    onChange() {
-      this.$emit("search", this.searchText);
-    },
-  },
-}
-
-</script>
-
 <style scoped>
 
 .submit-search, .navbarSearch{
@@ -63,9 +50,8 @@ export default {
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
-
-
 }
+
 .navbar-search-input {
   z-index: 1 !important;
   height: 45px;

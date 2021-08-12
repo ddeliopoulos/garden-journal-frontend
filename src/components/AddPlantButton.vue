@@ -1,3 +1,19 @@
+<script lang="ts">
+import AddPlantForm from "@/components/AddPlantForm.vue";
+import {ref} from "vue";
+
+export default {
+  name: 'AddPlantButton',
+  components: {AddPlantForm},
+
+  setup() {
+    const showAddPlantForm = ref(false);
+
+    return {showAddPlantForm}
+  }
+}
+</script>
+
 <template>
   <div id="add-plant-btn">
     <button class="add-plant-button" @click="showAddPlantForm = true">ADD PLANT</button>
@@ -13,25 +29,8 @@
   </div>
 </template>
 
-<script>
-import AddPlantForm from "@/components/AddPlantForm.vue";
-
-export default {
-  name: "AddPlantButton",
-  components: {
-    AddPlantForm
-  },
-
-  data(){
-    return{
-      showAddPlantForm: false
-    }
-  },
-}
-</script>
-
 <style scoped>
-*{
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 10px;
@@ -45,9 +44,11 @@ export default {
   height: 25px;
   opacity: 0.3;
 }
+
 .close-form-button:hover {
   opacity: 1;
 }
+
 .close-form-button:before, .close-form-button:after {
   position: absolute;
   left: 15px;
@@ -56,14 +57,16 @@ export default {
   width: 2px;
   background-color: #333;
 }
+
 .close-form-button:before {
   transform: rotate(45deg);
 }
+
 .close-form-button:after {
   transform: rotate(-45deg);
 }
 
-.modal{
+.modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -79,7 +82,7 @@ export default {
   padding: 25px;
 }
 
-.add-plant-button{
+.add-plant-button {
   appearance: none;
   outline: none;
   border: none;
@@ -95,11 +98,12 @@ export default {
   transition: 0.4s ease-out;
 
 }
-.add-plant-button:hover{
+
+.add-plant-button:hover {
   box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
 }
 
-.plant-form-overlay{
+.plant-form-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -118,10 +122,12 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
+
 .slide-enter-active,
 .slide-leave-active {
   transition: transform .5s;
 }
+
 .slide-enter,
 .slide-leave-to {
   transform: translateY(-50%) translateX(100vw);

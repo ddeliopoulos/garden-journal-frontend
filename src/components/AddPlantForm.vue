@@ -1,5 +1,49 @@
+<script lang="ts">
+import {ref} from "vue";
+
+interface Plant {
+  name: string
+  type: string
+  date: string
+}
+
+export default {
+
+  setup() {
+    const plant = ref<Plant>({
+      name: "",
+      type: "",
+      date: "",
+    })
+
+    const onFormSubmit = async () => {
+      await fetch('/api/plants', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: plant.value.name,
+          type: plant.value.type,
+          date: plant.value.date,
+          thirstLevel: "dying"
+        }),
+      })
+
+      window.location.reload()
+
+      plant.value.name = "";
+      plant.value.type = "";
+      plant.value.date = "";
+
+    }
+    return {onFormSubmit, plant}
+  }
+}
+</script>
+
 <template>
-  <div v-if="showForm" class="container">
+  <div class="container">
     <label>Plant Name: </label>
     <input type="text" placeholder="Name of plant"
            v-model="plant.name"
@@ -16,60 +60,6 @@
     <button @click="onFormSubmit" class="button">Submit</button>
   </div>
 </template>
-
-<script lang="ts">
-import {ref} from "vue";
-
-interface Plant {
-  name: string
-  type: string
-  date: string
-}
-
-export default {
-
-  emits: ['plant-update', 'get-plant-info'],
-
-  setup(props: any, {emit}: any) {
-    const showForm = true;
-
-
-    const plant = ref<Plant>({
-      name: "",
-      type: "",
-      date: "",
-    })
-
-    const onFormSubmit = async () => {
-      const response = await fetch('/api/plants', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: plant.value.name,
-          type: plant.value.type,
-          date: plant.value.date,
-          thirstLevel: "dying"
-        }),
-      })
-
-      const data = await response.json()
-
-      emit('plant-update', data)
-      emit('get-plant-info', data)
-
-
-      plant.value.name = "";
-      plant.value.type = "";
-      plant.value.date = "";
-
-
-    }
-    return {onFormSubmit, plant}
-  }
-}
-</script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap');

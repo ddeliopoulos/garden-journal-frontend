@@ -1,11 +1,13 @@
 <script lang="ts">
+
+
 export default {
-  name: "About.vue"
+  name: 'Testing',
 }
 </script>
 
 <template>
-<h1>ABOUT THE WONDERFUL GARDEN JOURNAL</h1>
+<h1>Test Page</h1>
 </template>
 
 <style scoped>

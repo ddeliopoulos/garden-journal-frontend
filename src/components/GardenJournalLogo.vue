@@ -1,14 +1,14 @@
+<script lang="ts">
+export default {
+  name: "GardenJournalLogo"
+}
+</script>
+
 <template>
   <div class="logo-container">
     <h1>GARDEN<span>JOURNAL</span></h1>
   </div>
 </template>
-
-<script>
-export default {
-  name: "GardenJournalLogo"
-}
-</script>
 
 <style scoped>
 
