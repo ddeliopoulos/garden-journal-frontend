@@ -12,7 +12,7 @@ interface PlantType {
   name: string
   type: string
   date: string
-  id: number
+  id: string
 }
 
 export default {
@@ -22,7 +22,12 @@ export default {
   setup() {
     const route = useRoute()
     const id = route.params.id
-    const plant = ref<PlantType>({})
+    const plant = ref<PlantType>({
+      name: '',
+      type: '',
+      date: '',
+      id: 'W'
+    })
 
     const journalEntry = ref<JournalEntries>({
       note: "",

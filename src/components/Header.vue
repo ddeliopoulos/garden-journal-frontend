@@ -1,6 +1,6 @@
 <!--Cannot switch to TypeScript language because are using burger that is not compatible-->
-<script>
-import { Slide } from 'vue3-burger-menu';
+<script lang="ts">
+import SliderWrapped from './wrapped/SliderWrapped.vue';
 import GardenJournalLogo from "@/components/GardenJournalLogo.vue";
 import SearchBar from "@/components/SearchBar.vue"
 
@@ -9,8 +9,8 @@ export default {
 
   components: {
     GardenJournalLogo,
-    Slide,
-    SearchBar,
+    SliderWrapped,
+    SearchBar
   },
 }
 </script>
@@ -19,11 +19,11 @@ export default {
   <div class="header">
     <div class="inner-header">
       <div class="slide-dashboard">
-        <Slide>
+        <SliderWrapped>
           <router-link to="/"><span>My Garden</span></router-link>
           <router-link to="/privacy"><span>Privacy</span></router-link>
           <router-link to="/about"><span>About</span></router-link>
-        </Slide>
+        </SliderWrapped>
       </div>
       <div class="garden-journal-logo">
         <GardenJournalLogo></GardenJournalLogo>
