@@ -1,4 +1,5 @@
 <script lang="ts">
+
 interface Plant {
   name: string
   type: string

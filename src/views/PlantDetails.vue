@@ -3,9 +3,14 @@ import WaterDroplet from "@/components/WaterDroplet.vue";
 import router from "@/router";
 import {useRoute} from 'vue-router'
 import {ref, onMounted} from "vue";
+import FileUploader from "@/components/FileUploader.vue"
 
 interface JournalEntries {
-  note: string
+  id: string
+  plantId: string
+  createdAt: string
+  data: string
+  type: string
 }
 
 interface PlantType {
@@ -15,23 +20,52 @@ interface PlantType {
   id: string
 }
 
+
 export default {
   name: 'PlantDetails',
-  components: {WaterDroplet},
+  components: {WaterDroplet, FileUploader},
 
   setup() {
     const route = useRoute()
     const id = route.params.id
     const plant = ref<PlantType>({
-      name: '',
-      type: '',
-      date: '',
-      id: 'W'
+      name: "",
+      type: "",
+      date: "",
+      id: ""
+    })
+    const journalEntry = ref<JournalEntries>({
+      id: "",
+      plantId: "",
+      createdAt: "",
+      data: "",
+      type: ""
     })
 
-    const journalEntry = ref<JournalEntries>({
-      note: "",
-    })
+    const onFormSubmit = async () => {
+      await fetch('/api/journal-entries', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: journalEntry.value.id,
+          plantId: plant.value.id,
+          createdAt: Date.now(),
+          data: journalEntry.value.data,
+          type: "TEXT"
+        }),
+      })
+
+      window.location.reload();
+
+      journalEntry.value.id = "";
+      journalEntry.value.plantId = "";
+      journalEntry.value.createdAt = "";
+      journalEntry.value.data = "";
+      journalEntry.value.type = "TEXT";
+
+    }
 
     const getPlantInfo = async () => {
       const response = await fetch(`/api/plants/${id}`, {
@@ -54,25 +88,9 @@ export default {
       }
     }
 
-    const onFormSubmit = async () => {
-      await fetch('/api/journal-entries', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          note: journalEntry.value.note
-        }),
-      })
-
-      window.location.reload();
-
-      journalEntry.value.note = "";
-
-    }
     onMounted(getPlantInfo);
 
-    return {onFormSubmit, plant, deletePlant, journalEntry}
+    return {onFormSubmit, plant, deletePlant, journalEntry }
   }
 }
 </script>
@@ -96,6 +114,7 @@ export default {
             </div>
           </div>
           <div class="text-center mt-12">
+            <div class="move-left">
             <div class="image-cropper">
               <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
             </div>
@@ -106,6 +125,7 @@ export default {
               <i class="fa fa-leaf mr-2 text-lg text-gray-500"></i>
               {{ plant.type }}
             </div>
+              <div class="move-more-left">
             <div class="fas fa-map-marker-alt mb-2 text-gray-700 mt-10">
               <i class=" mr-2 text-lg text-gray-500"></i>
               United States, PA
@@ -114,6 +134,11 @@ export default {
               <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
               {{ plant.date }}
             </div>
+              </div>
+            </div>
+          </div> <br/>
+          <div class="uploader">
+            <FileUploader />
           </div>
           <div class="mt-10 py-10 border-t border-gray-300 text-center">
             <div class="flex flex-wrap justify-center">
@@ -121,8 +146,9 @@ export default {
                 <h2>Journal Entry</h2><br/>
                 <div>
                   <div class="form-group shadow-textarea">
-                    <textarea v-model="journalEntry.note" name="styled-textarea" id="styled" rows="3"
-                              placeholder="Write something here..."></textarea>
+                    <textarea v-model="journalEntry.data" name="styled-textarea" id="styled" rows="3"
+                              placeholder="Write something here...">
+                    </textarea>
                   </div>
                   <button type="button" @click="onFormSubmit()" class="btn btn-light btn-lg btn-rounded float-end">
                     Submit
@@ -214,7 +240,7 @@ small {
 }
 
 img {
-  border-style: none
+  border-style: none;
 }
 
 button,
@@ -569,9 +595,7 @@ img {
   color: #a0aec0
 }
 
-.text-gray-600 {
-  color: #718096
-}
+
 
 .text-gray-700 {
   color: #4a5568

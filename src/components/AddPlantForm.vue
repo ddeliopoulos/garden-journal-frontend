@@ -13,7 +13,7 @@ export default {
     const plant = ref<Plant>({
       name: "",
       type: "",
-      date: "",
+      date: ""
     })
 
     const onFormSubmit = async () => {
@@ -26,7 +26,6 @@ export default {
           name: plant.value.name,
           type: plant.value.type,
           date: plant.value.date,
-          thirstLevel: "dying"
         }),
       })
 
