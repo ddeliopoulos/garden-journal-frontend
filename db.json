@@ -1,83 +1,48 @@
 {
   "journal-entries": [
     {
+      "id": 1,
+      "plantId": 1,
+      "createdAt": 1628993729021,
+      "data": [
+        {
+          "audio": "C:\\fakepath\\Kalimba.mp3",
+          "image": "",
+          "text": "Journal entry example"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "plantId": 1,
+      "createdAt": 1628993964459,
+      "data": [
+        {
+          "audio": "C:\\fakepath\\Kalimba.mp3",
+          "image": "",
+          "text": "k;k;k;k"
+        }
+      ]
+    },
+    {
       "id": 3,
-      "plantId": 10,
-      "createdAt": 1628797367,
-      "data": "jeerushjfodksl",
-      "type": "TEXT"
-    },
-    {
-      "id": 4,
-      "plantId": "",
-      "createdAt": "",
-      "data": "",
-      "type": ""
-    },
-    {
-      "id": 5,
-      "plantId": "",
-      "createdAt": "",
-      "data": "",
-      "type": ""
-    },
-    {
-      "id": 6,
-      "plantId": "",
-      "createdAt": "",
-      "data": "success?",
-      "type": ""
-    },
-    {
-      "id": 7,
-      "plantId": 10,
-      "createdAt": "",
-      "data": "MORE SUCCESS??",
-      "type": "TEXT"
-    },
-    {
-      "id": 8,
-      "plantId": 10,
-      "createdAt": 1628865960260,
-      "data": "test",
-      "type": "TEXT"
-    },
-    {
-      "id": 9,
-      "plantId": 10,
-      "createdAt": 1628872263791,
-      "data": "sADKAOLDJASDOAKS",
-      "type": "TEXT"
+      "plantId": 1,
+      "createdAt": 1628994689070,
+      "data": [
+        {
+          "audio": "C:\\fakepath\\Kalimba.mp3",
+          "image": "",
+          "text": "TESTINGadssadadadad"
+        }
+      ]
     }
   ],
   "plants": [
     {
-      "name": "Christini",
-      "type": "Tomato",
-      "date": "2021-08-10",
-      "thirstLevel": "dying",
-      "id": 10
-    },
-    {
-      "name": "Kasi",
-      "type": "Zucchini",
-      "date": "2021-08-11",
-      "thirstLevel": "dying",
-      "id": 12
-    },
-    {
-      "name": "Dim",
+      "name": "Dimitra",
       "type": "Cucumber",
-      "date": "2021-08-12",
-      "thirstLevel": "dying",
-      "id": 13
-    },
-    {
-      "name": "Pawel",
-      "type": "Carrot",
-      "date": "2021-08-09",
-      "thirstLevel": "dying",
-      "id": 14
+      "date": "2021-08-14",
+      "id": 1
     }
   ]
 }

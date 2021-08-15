@@ -29,7 +29,9 @@ export default defineComponent({
   color: #2c3e50;
   margin-top: 3px;
 }
-
+html{
+  background-color: #E2E8F0;
+}
 .logo-container h1 {
   color: white;
   height: 100%;

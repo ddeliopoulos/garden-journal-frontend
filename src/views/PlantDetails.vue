@@ -3,14 +3,19 @@ import WaterDroplet from "@/components/WaterDroplet.vue";
 import router from "@/router";
 import {useRoute} from 'vue-router'
 import {ref, onMounted} from "vue";
-import FileUploader from "@/components/FileUploader.vue"
+import ImageUploader from "@/components/ImageUploader.vue"
+import AudioRecorder from "@/components/AudioRecorder.vue"
+
 
 interface JournalEntries {
   id: string
   plantId: string
   createdAt: string
-  data: string
-  type: string
+  data: {
+      audio: string,
+      image: string,
+      text: string,
+  }
 }
 
 interface PlantType {
@@ -23,24 +28,40 @@ interface PlantType {
 
 export default {
   name: 'PlantDetails',
-  components: {WaterDroplet, FileUploader},
+  components: {WaterDroplet, ImageUploader, AudioRecorder},
 
-  setup() {
+   setup() {
     const route = useRoute()
     const id = route.params.id
+
     const plant = ref<PlantType>({
       name: "",
       type: "",
       date: "",
       id: ""
     })
+
     const journalEntry = ref<JournalEntries>({
       id: "",
       plantId: "",
       createdAt: "",
-      data: "",
-      type: ""
+      data: {
+        audio: "",
+        image: "",
+        text: "",
+      }
     })
+
+    const updateAudioEntry = async (e : any) => {
+      console.log(e)
+      journalEntry.value.data.audio = e;
+    }
+
+    const UpdateImageEntry = async (e : any) => {
+      console.log(e)
+      journalEntry.value.data.image = e;
+
+    }
 
     const onFormSubmit = async () => {
       await fetch('/api/journal-entries', {
@@ -52,18 +73,17 @@ export default {
           id: journalEntry.value.id,
           plantId: plant.value.id,
           createdAt: Date.now(),
-          data: journalEntry.value.data,
-          type: "TEXT"
+          data: [
+            {
+              audio: journalEntry.value.data.audio,
+              image: journalEntry.value.data.image,
+              text: journalEntry.value.data.text
+            }
+          ]
         }),
       })
 
       window.location.reload();
-
-      journalEntry.value.id = "";
-      journalEntry.value.plantId = "";
-      journalEntry.value.createdAt = "";
-      journalEntry.value.data = "";
-      journalEntry.value.type = "TEXT";
 
     }
 
@@ -90,7 +110,9 @@ export default {
 
     onMounted(getPlantInfo);
 
-    return {onFormSubmit, plant, deletePlant, journalEntry }
+    return {onFormSubmit, plant,
+      deletePlant, journalEntry, updateAudioEntry,
+      UpdateImageEntry }
   }
 }
 </script>
@@ -118,52 +140,82 @@ export default {
             <div class="image-cropper">
               <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
             </div>
-            <h3 class="text-4xl font-semibold leading-normal mb-2 text-gray-800 mb-2">
+            <h3 class="text-4xl font-semisolid leading-normal mb-2 text-gray-800 mb-2">
               {{ plant.name }}
             </h3>
             <div class="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
               <i class="fa fa-leaf mr-2 text-lg text-gray-500"></i>
               {{ plant.type }}
             </div>
-              <div class="move-more-left">
-            <div class="fas fa-map-marker-alt mb-2 text-gray-700 mt-10">
+              <div class="fas fa-map-marker-alt mb-2 text-gray-700 mt-10">
               <i class=" mr-2 text-lg text-gray-500"></i>
               United States, PA
             </div>
+              <div class="move-date">
             <div class="mb-2 text-gray-700">
               <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
               {{ plant.date }}
             </div>
               </div>
             </div>
-          </div> <br/>
-          <div class="uploader">
-            <FileUploader />
+          </div>
           </div>
           <div class="mt-10 py-10 border-t border-gray-300 text-center">
             <div class="flex flex-wrap justify-center">
               <div class="w-full lg:w-9/12 px-4">
-                <h2>Journal Entry</h2><br/>
+                <AudioRecorder @inputAudio="updateAudioEntry($event)"/>
+                <ImageUploader @inputImage="updateImageEntry($event)"/>
+                <h3><b>Journal Entry</b></h3><br/>
                 <div>
                   <div class="form-group shadow-textarea">
-                    <textarea v-model="journalEntry.data" name="styled-textarea" id="styled" rows="3"
+                    <textarea v-model="journalEntry.data.text" name="styled-textarea" id="styled" rows="3"
                               placeholder="Write something here...">
                     </textarea>
                   </div>
-                  <button type="button" @click="onFormSubmit()" class="btn btn-light btn-lg btn-rounded float-end">
-                    Submit
-                  </button>
+                  <button class="submit-entry" @click="onFormSubmit()">
+                   Submit Entry
+                    </button>
+                  </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   </section>
 </template>
 
 <style scoped>
+html{
+  background-color: #E2E8F0;
+}
+.container {
+  position: relative;
+  top: -31px;
+}
+.move-left{
+  width: 725px;
+  height: 315px;
+  margin: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+}
+.move-date{
+  position: relative;
+  top: -35px;
+}
+.submit-entry {
+  appearance: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  padding: 15px 25px;
+  background-image: linear-gradient(to right, #CC2E5D, #FF5858);
+  border-radius: 8px;
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+}
 
 .fa-window-close {
   color: red;
@@ -175,7 +227,13 @@ export default {
 }
 
 h2 {
-  float: left;
+  position: center;
+
+}
+
+.fas{
+  position: relative;
+  top: -35px;
 }
 
 textarea#styled {
@@ -187,6 +245,7 @@ textarea#styled {
   background-position: bottom right;
   background-repeat: no-repeat;
 }
+
 
 .image-cropper {
   width: 150px;
@@ -403,7 +462,8 @@ h4,
 h5,
 h6 {
   font-size: inherit;
-  font-weight: inherit
+  font-weight: inherit;
+
 }
 
 a {

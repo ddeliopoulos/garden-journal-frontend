@@ -77,23 +77,20 @@ p {
 }
 
 .plant-card {
-  background-color: antiquewhite;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   margin: auto;
   width: 190px;
-  border: 1px solid black;
 }
 
 h2 {
   display: inline-block;
-  color: floralwhite;
+  color: #06466e;
   font-size: 23px;
   font-weight: bold;
   width: 70%;
   height: 30px;
   line-height: 25px;
   margin: auto;
-  text-shadow: 2px 2px 3px #2c3e50;
   text-align: center;
 
 }

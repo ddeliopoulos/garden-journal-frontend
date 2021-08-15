@@ -87,16 +87,16 @@ export default {
   outline: none;
   border: none;
   cursor: pointer;
-  position: center;
   display: inline-block;
-  background-image: linear-gradient(to right, #2EB62C, #C5E8B7);
+  padding: 15px 25px;
+  background-image: linear-gradient(to right, #CC2E5D, #FF5858);
   border-radius: 8px;
-  color: #191101;
+  color: #FFF;
   font-size: 18px;
   font-weight: 700;
   box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
   transition: 0.4s ease-out;
-
+  position: center;
 }
 
 .add-plant-button:hover {
