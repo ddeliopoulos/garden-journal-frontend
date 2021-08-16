@@ -52,15 +52,35 @@ export default {
       }
     })
 
-    const updateAudioEntry = async (e : any) => {
-      console.log(e)
-      journalEntry.value.data.audio = e;
+    const updateAudioEntry = async (filePath : string) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", filePath);
+      xhr.responseType = "blob";
+      const fileContentsPromise = new Promise(resolve => {
+        xhr.onreadystatechange = () =>{
+          if(xhr.readyState == 4) {
+            resolve(xhr.responseText)
+          }
+        }
+      })
+      xhr.send();
+
+      journalEntry.value.data.audio = (await fileContentsPromise) as string;
     }
 
-    const UpdateImageEntry = async (e : any) => {
-      console.log(e)
-      journalEntry.value.data.image = e;
+    const updateImageEntry = async (e : any) => {
 
+      const reader = new FileReader();
+
+      reader.onload = function() {
+        const arrayBuffer = this.result,
+            array = new Uint8Array(arrayBuffer as ArrayBufferLike) as any,
+            fileContents = String.fromCharCode.apply(null, array);
+
+        console.log(fileContents);
+        journalEntry.value.data.image = fileContents;
+      }
+      reader.readAsArrayBuffer(e);
     }
 
     const onFormSubmit = async () => {
@@ -110,9 +130,14 @@ export default {
 
     onMounted(getPlantInfo);
 
-    return {onFormSubmit, plant,
-      deletePlant, journalEntry, updateAudioEntry,
-      UpdateImageEntry }
+    return {
+      onFormSubmit,
+      plant,
+      deletePlant,
+      journalEntry,
+      updateAudioEntry,
+      updateImageEntry
+    }
   }
 }
 </script>

@@ -1,6 +1,13 @@
 <script lang="ts" >
+import {ref} from "vue";
+
 export default {
   name: "SearchBar.vue",
+  setup(){
+    const searchText = ref("");
+
+    return {}
+  }
 }
 </script>
 

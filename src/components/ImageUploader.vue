@@ -1,5 +1,5 @@
 <script lang="ts">
-import {onMounted, ref} from 'vue';
+import {onMounted,  ref, watchEffect} from 'vue';
 
 interface ImageEntry {
   image: string
@@ -15,15 +15,20 @@ export default {
       image: ""
     })
 
-
     const updateImageFile = async (event : any) => {
       if(event.target.files.length === 0){
         return;
       }
-      imageEntry.value = event.target.value;
-      context.emit("inputImage", imageEntry.value)
+      // this is what you want to emit and hold
+      const imageFile = event.target.files[0]; // this holds the File object, which is just a reference to the file
+      imageEntry.value = imageFile;
 
-
+      let reader = new FileReader();
+      reader.onload =  evt => {
+        // this is what you want to upload to server
+        const imageFileBytes = evt.target?.result; // do this when user clicks submit
+      }
+      reader.readAsText(imageFile, "UTF-8");
 
     }
     return {updateImageFile, imageEntry};
