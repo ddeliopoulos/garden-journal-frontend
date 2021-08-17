@@ -3,36 +3,12 @@
     {
       "id": 1,
       "plantId": 1,
-      "createdAt": 1628993729021,
+      "createdAt": 1629136899882,
       "data": [
         {
-          "audio": "C:\\fakepath\\Kalimba.mp3",
+          "audio": "",
           "image": "",
-          "text": "Journal entry example"
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "plantId": 1,
-      "createdAt": 1628993964459,
-      "data": [
-        {
-          "audio": "C:\\fakepath\\Kalimba.mp3",
-          "image": "",
-          "text": "k;k;k;k"
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "plantId": 1,
-      "createdAt": 1628994689070,
-      "data": [
-        {
-          "audio": "C:\\fakepath\\Kalimba.mp3",
-          "image": "",
-          "text": "TESTINGadssadadadad"
+          "text": ""
         }
       ]
     }

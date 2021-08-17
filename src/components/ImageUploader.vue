@@ -26,7 +26,9 @@ export default {
       let reader = new FileReader();
       reader.onload =  evt => {
         // this is what you want to upload to server
-        const imageFileBytes = evt.target?.result; // do this when user clicks submit
+        const imageFileBytes = evt.target?.result;
+
+        context.emit("inputImage", imageFileBytes)
       }
       reader.readAsText(imageFile, "UTF-8");
 

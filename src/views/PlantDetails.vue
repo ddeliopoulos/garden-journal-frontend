@@ -65,24 +65,30 @@ export default {
       })
       xhr.send();
 
-      journalEntry.value.data.audio = (await fileContentsPromise) as string;
+      const fileContents = await fileContentsPromise
+
+      const response = await fetch(`file://${filePath}`, {
+        method: 'GET'
+      });
+
+      journalEntry.value.data.audio = await response.text();
     }
 
     const updateImageEntry = async (e : any) => {
 
-      const reader = new FileReader();
-
-      reader.onload = function() {
-        const arrayBuffer = this.result,
-            array = new Uint8Array(arrayBuffer as ArrayBufferLike) as any,
-            fileContents = String.fromCharCode.apply(null, array);
-
-        console.log(fileContents);
-        journalEntry.value.data.image = fileContents;
-      }
-      reader.readAsArrayBuffer(e);
+      journalEntry.value.data.image =  arrayBufferToBase64(e);
     }
 
+     function arrayBufferToBase64( buffer : any ) {
+       let binary = '';
+       let bytes = new Uint8Array( buffer );
+       let len = bytes.byteLength;
+       for (let i = 0; i < len; i++) {
+         binary += String.fromCharCode( bytes[ i ] );
+       }
+       return window.btoa( binary );
+
+     }
     const onFormSubmit = async () => {
       await fetch('/api/journal-entries', {
         method: 'POST',
