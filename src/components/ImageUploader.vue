@@ -7,13 +7,21 @@ interface ImageEntry {
 
 export default {
   name: "ImageUploader",
-  emits: ["inputImage"],
+  emits: ["inputImage", "closeImageComponent", "showImageComponent"],
 
    setup(props : any, context : any){
 
     const imageEntry = ref<ImageEntry>({
       image: ""
     })
+
+     const emitClose = async (e : any) =>{
+       context.emit("closeImageComponent")
+     }
+
+     const emitShowImageIcon = async () => {
+       context.emit("showImageComponent")
+     }
 
     const updateImageFile = async (event : any) => {
       if(event.target.files.length === 0){
@@ -33,7 +41,7 @@ export default {
       reader.readAsText(imageFile, "UTF-8");
 
     }
-    return {updateImageFile, imageEntry};
+    return {updateImageFile, imageEntry, emitClose, emitShowImageIcon};
   }
 }
 
@@ -41,16 +49,44 @@ export default {
 
 <template>
   <div class="upload-image">
+    <div class="audio-recorder">
+      <div class="close-image" @click=emitClose>
+        <button @click="emitShowImageIcon" class="icon-close-btn">
+          <i class="far fa-window-close"></i>
+        </button>
+      </div>
     <h3>Upload Image</h3>
-
     <input type="file"
            id="img" name="img"
            @change="updateImageFile"
            accept="image/png, image/jpeg"> <br/><br/>
   </div>
-
+  </div>
 </template>
 
 <style scoped>
+
+.upload-image{
+  border: 3px solid black;
+  border-radius: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+
+}
+
+.fa-window-close {
+  color: #CC2E5D;
+  font-size: 27px;
+  float: right;
+  cursor: pointer;
+}
+
+button.icon-close-btn{
+  border: none;
+  background-size: auto;
+  background-color:white ;
+  box-shadow: none;
+}
 
 </style>

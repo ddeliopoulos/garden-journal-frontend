@@ -5,6 +5,7 @@ import {useRoute} from 'vue-router'
 import {ref, onMounted} from "vue";
 import ImageUploader from "@/components/ImageUploader.vue"
 import AudioRecorder from "@/components/AudioRecorder.vue"
+import AddJournalButton from "@/components/AddJournalButton.vue";
 
 
 interface JournalEntries {
@@ -28,7 +29,7 @@ interface PlantType {
 
 export default {
   name: 'PlantDetails',
-  components: {WaterDroplet, ImageUploader, AudioRecorder},
+  components: {AddJournalButton, WaterDroplet, ImageUploader, AudioRecorder},
 
    setup() {
     const route = useRoute()
@@ -166,6 +167,8 @@ export default {
             <div class="w-full lg:w-4/12 px-4 lg:order-1">
             </div>
           </div>
+          <div class="add-journal-button">
+          </div>
           <div class="text-center mt-12">
             <div class="move-left">
             <div class="image-cropper">
@@ -194,20 +197,8 @@ export default {
           <div class="mt-10 py-10 border-t border-gray-300 text-center">
             <div class="flex flex-wrap justify-center">
               <div class="w-full lg:w-9/12 px-4">
-                <AudioRecorder @inputAudio="updateAudioEntry($event)"/>
-                <ImageUploader @inputImage="updateImageEntry($event)"/>
-                <h3><b>Journal Entry</b></h3><br/>
-                <div>
-                  <div class="form-group shadow-textarea">
-                    <textarea v-model="journalEntry.data.text" name="styled-textarea" id="styled" rows="3"
-                              placeholder="Write something here...">
-                    </textarea>
-                  </div>
-                  <button class="submit-entry" @click="onFormSubmit()">
-                   Submit Entry
-                    </button>
-                  </div>
-                </div>
+                <AddJournalButton/>
+              </div>
             </div>
           </div>
         </div>
@@ -233,23 +224,10 @@ html{
   position: relative;
   top: -35px;
 }
-.submit-entry {
-  appearance: none;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-  padding: 15px 25px;
-  background-image: linear-gradient(to right, #CC2E5D, #FF5858);
-  border-radius: 8px;
-  color: #FFF;
-  font-size: 18px;
-  font-weight: 700;
-  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
-}
+
 
 .fa-window-close {
-  color: red;
+  color: #CC2E5D;
   font-size: 27px;
   position: relative;
   top: 10px;
@@ -266,17 +244,6 @@ h2 {
   position: relative;
   top: -35px;
 }
-
-textarea#styled {
-  width: 600px;
-  height: 120px;
-  border: 3px solid #cccccc;
-  padding: 5px;
-  font-family: Tahoma, sans-serif;
-  background-position: bottom right;
-  background-repeat: no-repeat;
-}
-
 
 .image-cropper {
   width: 150px;
