@@ -12,11 +12,8 @@ interface JournalEntries {
   id: string
   plantId: string
   createdAt: string
-  data: {
-      audio: string,
-      image: string,
-      text: string,
-  }
+  type: string
+  data: string
 }
 
 interface PlantType {
@@ -31,7 +28,7 @@ export default {
   name: 'PlantDetails',
   components: {AddJournalButton, WaterDroplet, ImageUploader, AudioRecorder},
 
-   setup() {
+  setup() {
     const route = useRoute()
     const id = route.params.id
 
@@ -46,20 +43,17 @@ export default {
       id: "",
       plantId: "",
       createdAt: "",
-      data: {
-        audio: "",
-        image: "",
-        text: "",
-      }
+      type: "",
+      data: ""
     })
 
-    const updateAudioEntry = async (filePath : string) => {
+    const updateAudioEntry = async (filePath: string) => {
       const xhr = new XMLHttpRequest();
       xhr.open("GET", filePath);
       xhr.responseType = "blob";
       const fileContentsPromise = new Promise(resolve => {
-        xhr.onreadystatechange = () =>{
-          if(xhr.readyState == 4) {
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState == 4) {
             resolve(xhr.responseText)
           }
         }
@@ -72,45 +66,22 @@ export default {
         method: 'GET'
       });
 
-      journalEntry.value.data.audio = await response.text();
+      //journalEntry.value.data.audio = await response.text();
     }
 
-    const updateImageEntry = async (e : any) => {
+    const updateImageEntry = async (e: any) => {
 
-      journalEntry.value.data.image =  arrayBufferToBase64(e);
+      //journalEntry.value.data.image = arrayBufferToBase64(e);
     }
 
-     function arrayBufferToBase64( buffer : any ) {
-       let binary = '';
-       let bytes = new Uint8Array( buffer );
-       let len = bytes.byteLength;
-       for (let i = 0; i < len; i++) {
-         binary += String.fromCharCode( bytes[ i ] );
-       }
-       return window.btoa( binary );
-
-     }
-    const onFormSubmit = async () => {
-      await fetch('/api/journal-entries', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: journalEntry.value.id,
-          plantId: plant.value.id,
-          createdAt: Date.now(),
-          data: [
-            {
-              audio: journalEntry.value.data.audio,
-              image: journalEntry.value.data.image,
-              text: journalEntry.value.data.text
-            }
-          ]
-        }),
-      })
-
-      window.location.reload();
+    function arrayBufferToBase64(buffer: any) {
+      let binary = '';
+      let bytes = new Uint8Array(buffer);
+      let len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
 
     }
 
@@ -138,7 +109,6 @@ export default {
     onMounted(getPlantInfo);
 
     return {
-      onFormSubmit,
       plant,
       deletePlant,
       journalEntry,
@@ -171,60 +141,62 @@ export default {
           </div>
           <div class="text-center mt-12">
             <div class="move-left">
-            <div class="image-cropper">
-              <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
-            </div>
-            <h3 class="text-4xl font-semisolid leading-normal mb-2 text-gray-800 mb-2">
-              {{ plant.name }}
-            </h3>
-            <div class="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
-              <i class="fa fa-leaf mr-2 text-lg text-gray-500"></i>
-              {{ plant.type }}
-            </div>
-              <div class="fas fa-map-marker-alt mb-2 text-gray-700 mt-10">
-              <i class=" mr-2 text-lg text-gray-500"></i>
-              United States, PA
-            </div>
-              <div class="move-date">
-            <div class="mb-2 text-gray-700">
-              <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
-              {{ plant.date }}
-            </div>
+              <div class="image-cropper">
+                <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
               </div>
-            </div>
-          </div>
-          </div>
-          <div class="mt-10 py-10 border-t border-gray-300 text-center">
-            <div class="flex flex-wrap justify-center">
-              <div class="w-full lg:w-9/12 px-4">
-                <AddJournalButton/>
+              <h3 class="text-4xl font-semisolid leading-normal mb-2 text-gray-800 mb-2">
+                {{ plant.name }}
+              </h3>
+              <div class="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
+                <i class="fa fa-leaf mr-2 text-lg text-gray-500"></i>
+                {{ plant.type }}
+              </div>
+              <div class="fas fa-map-marker-alt mb-2 text-gray-700 mt-10">
+                <i class=" mr-2 text-lg text-gray-500"></i>
+                United States, PA
+              </div>
+              <div class="move-date">
+                <div class="mb-2 text-gray-700">
+                  <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
+                  {{ plant.date }}
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="mt-10 py-10 border-t border-gray-300 text-center">
+          <div class="flex flex-wrap justify-center">
+            <div class="w-full lg:w-9/12 px-4">
+              <AddJournalButton/>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </section>
 </template>
 
 <style scoped>
-html{
+html {
   background-color: #E2E8F0;
 }
+
 .container {
   position: relative;
   top: -31px;
 }
-.move-left{
+
+.move-left {
   width: 725px;
   height: 315px;
   margin: auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
 }
-.move-date{
+
+.move-date {
   position: relative;
   top: -35px;
 }
-
 
 .fa-window-close {
   color: #CC2E5D;
@@ -240,7 +212,7 @@ h2 {
 
 }
 
-.fas{
+.fas {
   position: relative;
   top: -35px;
 }
@@ -652,7 +624,6 @@ img {
 .text-gray-500 {
   color: #a0aec0
 }
-
 
 
 .text-gray-700 {

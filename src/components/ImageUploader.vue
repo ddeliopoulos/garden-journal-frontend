@@ -49,18 +49,14 @@ export default {
 
 <template>
   <div class="upload-image">
-    <div class="audio-recorder">
       <div class="close-image" @click=emitClose>
         <button @click="emitShowImageIcon" class="icon-close-btn">
           <i class="far fa-window-close"></i>
         </button>
       </div>
-    <h3>Upload Image</h3>
-    <input type="file"
-           id="img" name="img"
-           @change="updateImageFile"
-           accept="image/png, image/jpeg"> <br/><br/>
-  </div>
+    <h3>Upload Image</h3> <br/>
+    <input type="file" id="img" name="img" @change="updateImageFile" accept="image/png, image/jpeg"> <br/><br/>
+    <button class="add-journal-entry">Submit</button>
   </div>
 </template>
 
@@ -72,7 +68,6 @@ export default {
   margin-top: 15px;
   margin-bottom: 15px;
   text-align: center;
-
 }
 
 .fa-window-close {
@@ -87,6 +82,35 @@ button.icon-close-btn{
   background-size: auto;
   background-color:white ;
   box-shadow: none;
+  float: left;
+  position: relative;
+  right: -4px;
+  top: 2px;
 }
 
+#img{
+  cursor: pointer;
+  padding: 6px 12px;
+  color: black;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+}
+
+.add-journal-entry {
+  appearance: none;
+  outline: none;
+  border: 3px black;
+  cursor: pointer;
+  display: inline-block;
+  padding: 6px 12px;
+  background-image: linear-gradient(to right, #141e30, #243b55);
+  border-radius: 8px;
+  color: #FFF;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  position: relative;
+  bottom: 5px;
+}
 </style>

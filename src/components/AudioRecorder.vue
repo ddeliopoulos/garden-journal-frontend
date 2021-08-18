@@ -11,13 +11,13 @@ export default {
   emits: ["inputAudio", "closeAudioComponent", "emitShowAudioIcon"],
 
 
-  setup( props : any, context : any) {
+  setup(props: any, context: any) {
 
     const audioEntry = ref<AudioEntry>({
       audio: "",
     })
 
-    const emitClose = async (e : any) => {
+    const emitClose = async (e: any) => {
       context.emit("closeAudioComponent")
     }
 
@@ -25,16 +25,16 @@ export default {
       context.emit("showAudioComponent")
     }
 
-    const updateAudioFile = async (event : any) => {
+    const updateAudioFile = async (event: any) => {
 
-      if(event.target.files.length === 0){
+      if (event.target.files.length === 0) {
         return;
       }
       audioEntry.value = event.target.value;
       context.emit("inputAudio", audioEntry.value)
     }
-      return { updateAudioFile, audioEntry, emitClose, emitShowAudioIcon }
-    }
+    return {updateAudioFile, audioEntry, emitClose, emitShowAudioIcon}
+  }
 }
 
 </script>
@@ -46,14 +46,15 @@ export default {
         <i class="far fa-window-close"></i>
       </button>
     </div>
-    <h3>Upload Audio</h3>
-    <input accept="audio/*" capture="recorder" type="file" @change="updateAudioFile"><br/>
+    <h3>Upload Audio</h3> <br/>
+    <input id="inputA" accept="audio/*" type="file" @change="updateAudioFile"><br/><br/>
+    <button class="add-journal-entry">Submit</button>
   </div>
 </template>
 
 <style scoped>
 
-.audio-recorder{
+.audio-recorder {
   border: 3px solid black;
   border-radius: 10px;
   margin-top: 15px;
@@ -68,11 +69,43 @@ export default {
   cursor: pointer;
 }
 
-button.icon-close-btn{
-  border: none;
-  background-size: auto;
-  background-color:white ;
-  box-shadow: none;
+#inputA {
+  cursor: pointer;
+  display: inline-block;
+  padding: 6px 12px;
+  color: black;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  position: relative;
+  bottom: 5px;
 }
 
+button.icon-close-btn {
+  border: none;
+  background-size: auto;
+  background-color: white;
+  box-shadow: none;
+  float: left;
+  position: relative;
+  right: -4px;
+  top: 2px;
+}
+
+.add-journal-entry {
+  appearance: none;
+  outline: none;
+  border: 3px black;
+  cursor: pointer;
+  display: inline-block;
+  padding: 6px 12px;
+  background-image: linear-gradient(to right, #141e30, #243b55);
+  border-radius: 8px;
+  color: #FFF;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  position: relative;
+  bottom: 5px;
+}
 </style>

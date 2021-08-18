@@ -2,15 +2,59 @@
   "journal-entries": [
     {
       "id": 1,
+      "plantId": "1",
+      "createdAt": 1629322594409,
+      "type": "text",
+      "data": "dasdasdasdasdasdasdadasdasda"
+    },
+    {
+      "id": 2,
       "plantId": 1,
-      "createdAt": 1629136899882,
-      "data": [
-        {
-          "audio": "",
-          "image": "",
-          "text": ""
-        }
-      ]
+      "createdAt": 1629322696712,
+      "type": "text",
+      "data": "adaddsa"
+    },
+    {
+      "id": 3,
+      "plantId": "1",
+      "createdAt": 1629322730174,
+      "type": "text",
+      "data": "sfsdfsfsdfsfsd"
+    },
+    {
+      "id": 4,
+      "plantId": 1,
+      "createdAt": 1629322814673,
+      "type": "text",
+      "data": ""
+    },
+    {
+      "id": 5,
+      "plantId": 1,
+      "createdAt": 1629322816582,
+      "type": "",
+      "data": "asdasd"
+    },
+    {
+      "id": 6,
+      "plantId": 1,
+      "createdAt": 1629322820099,
+      "type": "",
+      "data": "asdasd"
+    },
+    {
+      "id": 7,
+      "plantId": 1,
+      "createdAt": 1629322829989,
+      "type": "text",
+      "data": "asdada"
+    },
+    {
+      "id": 8,
+      "plantId": 1,
+      "createdAt": 1629322849781,
+      "type": "text",
+      "data": "asdadas"
     }
   ],
   "plants": [
