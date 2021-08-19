@@ -17,7 +17,7 @@ export default {
   margin-top: 29px;
 }
 
-.logo-container h1 {
+.logo-container h3 {
   color: white;
   height: 100%;
   display: table-cell;
@@ -27,7 +27,7 @@ export default {
   font-weight: 200;
 }
 
-.logo-container h1 span {
+.logo-container h3 span {
   font-weight: 800;
 }
 

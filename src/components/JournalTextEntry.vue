@@ -7,8 +7,9 @@
     </div>
     <h3>Write Entry</h3>
     <div class="form-group shadow-textarea">
+      <p id="three">
       <textarea v-model='textEntry.text' name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
-      <button @click="addToTimeline" class="add-journal-entry">Submit</button>
+      </p>
     </div>
   </div>
 </template>
@@ -67,6 +68,7 @@ export default {
     }
 
     const emitClose = async (e: any) => {
+      console.log(plantId.value)
       context.emit("closeTextComponent")
       console.log(plantId.value)
 
@@ -99,34 +101,30 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap');
 
-.add-journal-entry {
-  appearance: none;
-  outline: none;
-  border: 3px black;
-  cursor: pointer;
-  display: inline-block;
-  padding: 6px 12px;
-  background-image: linear-gradient(to right, #141e30, #243b55);
-  border-radius: 8px;
-  color: #FFF;
-  font-size: 15px;
-  font-weight: 700;
-  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+h3{
+  text-align: center;
   position: relative;
-  bottom: 5px;
+  top: -1rem;
+  margin: 13px;
 }
 
 .text-component-container {
-  border: 3px solid black;
-  border-radius: 10px;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  width: 100%;
+  margin-top: 5%;
+  text-align: center;
+  background: hsla(213, 24%, 93%,1);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  display: inline-block;
+  padding: 1em;
+  line-height: 1.5em;
+  border: dotted 5px hsla(0, 95%, 35%, 1);
 }
 
 .fa-window-close {
   color: #CC2E5D;
-  font-size: 27px;
+  font-size: 22px;
   float: right;
   cursor: pointer;
 }
@@ -136,21 +134,24 @@ button.icon-close-btn {
   background-size: auto;
   background-color: white;
   box-shadow: none;
-  float: left;
+  float: right;
   position: relative;
-  right: -4px;
-  top: 2px;
+  bottom: 13px;
+  left: 6px;
 }
 
 textarea#styled {
+  font-size: 19px;
+  font-family: 'Gochi Hand', cursive;
   width: 500px;
-  height: 120px;
+  height: 215px;
   border: 3px solid #cccccc;
   padding: 15px;
-  font-family: Tahoma, sans-serif;
   background-position: bottom right;
   background-repeat: no-repeat;
-
+  resize: vertical;
+  max-height: 350px;
+  min-height: 215px;
 }
 
 </style>

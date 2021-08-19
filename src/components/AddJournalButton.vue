@@ -8,9 +8,15 @@
   <MyModal>
   -->
   <Modal v-model="isShow" :close="closeModal">
-
     <div class="modal">
-
+      <div class="close-image" >
+        <button @click="closeModal" class="icon-close-btn">
+          <i class="far fa-window-close"></i>
+        </button>
+      </div>
+      <div class="logo-container">
+        <h3>GARDEN<span>JOURNAL</span></h3>
+      </div>
       <button @emitShowAudioIcon="showAudio" class="journal-icon-audio">
         <img v-show="!showAudio" @click="showAudioComponent()" src="../assets/audio.svg" alt="audio-journal-entry"
              class="audio-journal" width="75" height="75">
@@ -37,13 +43,11 @@
       <div v-show="showDocument">
         <JournalTextEntry @closeTextComponent="closeTextComponent()"/>
       </div>
-
       <br/>
 
-      <button class="add-journal-entry-close" @click="closeModal">
-        close
+      <button class="add-journal-entry-close" >
+        Submit
       </button>
-
     </div>
   </Modal>
 
@@ -85,7 +89,6 @@ export default defineComponent({
       showAudio.value = false
     }
 
-
     function showModal() {
       isShow.value = true
     }
@@ -117,6 +120,42 @@ export default defineComponent({
 
 <style scoped>
 
+.fa-window-close {
+  color: #CC2E5D;
+  font-size: 27px;
+  float: right;
+  cursor: pointer;
+}
+
+button.icon-close-btn {
+  border: none;
+  background-size: auto;
+  background-color: white;
+  box-shadow: none;
+  float: left;
+  position: relative;
+  bottom: 1.5rem;
+  right: 1.2rem;
+}
+
+
+.logo-container h3 {
+  color: black;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  font-weight: 200;
+  position: relative;
+  left: 6.7rem;
+}
+
+.logo-container h3 span {
+  font-weight: 800;
+}
+
+
 .add-journal-entry {
   appearance: none;
   outline: none;
@@ -139,11 +178,11 @@ export default defineComponent({
   border: none;
   cursor: pointer;
   display: inline-block;
-  padding: 6px 12px;
-  background-image: linear-gradient(to right, #eb3349, #f45c43);
+  padding: 7px 25px;
+  background-image: linear-gradient(to right, #141e30, #243b55);
   border-radius: 8px;
   color: #FFF;
-  font-size: 16px;
+  font-size: 22px;
   font-weight: 700;
   box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
   position: relative;

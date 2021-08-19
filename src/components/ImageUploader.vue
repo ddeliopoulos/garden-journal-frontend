@@ -56,23 +56,26 @@ export default {
       </div>
     <h3>Upload Image</h3> <br/>
     <input type="file" id="img" name="img" @change="updateImageFile" accept="image/png, image/jpeg"> <br/><br/>
-    <button class="add-journal-entry">Submit</button>
   </div>
 </template>
 
 <style scoped>
 
-.upload-image{
-  border: 3px solid black;
-  border-radius: 10px;
-  margin-top: 15px;
-  margin-bottom: 15px;
+.upload-image {
+  width: 100%;
+  margin-top: 5%;
   text-align: center;
+  background: hsla(213, 24%, 93%, 1);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  display: inline-block;
+  padding: 1em;
+  line-height: 1.5em;
+  border: dotted 5px hsla(0, 95%, 35%, 1);
 }
 
 .fa-window-close {
   color: #CC2E5D;
-  font-size: 27px;
+  font-size: 22px;
   float: right;
   cursor: pointer;
 }
@@ -80,12 +83,12 @@ export default {
 button.icon-close-btn{
   border: none;
   background-size: auto;
-  background-color:white ;
+  background-color: white;
   box-shadow: none;
-  float: left;
+  float: right;
   position: relative;
-  right: -4px;
-  top: 2px;
+  bottom: 13px;
+  left: 6px;
 }
 
 #img{
