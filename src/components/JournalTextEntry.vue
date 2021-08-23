@@ -8,7 +8,7 @@
     <h3>Write Entry</h3>
     <div class="form-group shadow-textarea">
       <p id="three">
-      <textarea v-model='textEntry.text' name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
+      <textarea @addToTimeline="addToTimeline" v-model='textEntry.text' name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
       </p>
     </div>
   </div>
@@ -36,7 +36,7 @@ interface PlantType {
 export default {
   name: "JournalTextEntry",
   emits: ["closeTextComponent", "emitShowTextIcon"],
-
+  props: ['textEntry'],
 
   setup(props: any, context: any) {
     const route = useRoute()
@@ -93,14 +93,16 @@ export default {
         }),
       })
       textEntry.value.text=""
+      console.log("i am in the child, omg this is so wrong")
     }
+
 
     return {emitClose, textEntry, emitShowTextIcon, addToTimeline, getJournalId}
   }
 }
 </script>
 
-<style scoped>
+<style scoped >
 @import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap');
 
 h3{

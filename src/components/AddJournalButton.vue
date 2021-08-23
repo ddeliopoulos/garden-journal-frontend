@@ -41,11 +41,11 @@
       </div>
 
       <div v-show="showDocument">
-        <JournalTextEntry @closeTextComponent="closeTextComponent()"/>
+        <JournalTextEntry :textEntry="textEntryTrigger" @closeTextComponent="closeTextComponent()"/>
       </div>
       <br/>
 
-      <button class="add-journal-entry-close" >
+      <button @click=onSubmitJournal class="add-journal-entry-close" >
         Submit
       </button>
     </div>
@@ -60,13 +60,18 @@ import ImageUploader from "@/components/ImageUploader.vue";
 import JournalTextEntry from "@/components/JournalTextEntry.vue"
 
 export default defineComponent({
+  emits: ["addToTimeline"],
   components: {ImageUploader, AudioRecorder, JournalTextEntry},
   setup() {
+
 
     const showAudio = ref(false)
     const showImage = ref(false)
     const showDocument = ref(false)
     const isShow = ref(false)
+
+    const textEntryTrigger = ref("")
+
 
     const showDocumentComponent = async () => {
       showDocument.value = true
@@ -100,11 +105,13 @@ export default defineComponent({
       showImage.value = false
     }
 
+
     return {
       showAudio,
       isShow,
       showImage,
       showDocument,
+      textEntryTrigger,
       showModal,
       closeModal,
       showAudioComponent,

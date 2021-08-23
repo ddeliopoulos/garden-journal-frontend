@@ -1,16 +1,18 @@
 <script lang="ts">
 import SassExample from '@/components/SassExample.vue';
+import CallingParent from '@/components/CallingParent.vue';
 
 export default {
   name: 'Testing',
   components: {
-    SassExample
+    SassExample,
+    CallingParent
   }
 }
 </script>
 
 <template>
-  <SassExample></SassExample>
+  <CallingParent></CallingParent>
 
   <section class="relative py-16 bg-gray-300">
     <div class="container mx-auto px-4">
