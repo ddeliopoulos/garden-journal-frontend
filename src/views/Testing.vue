@@ -1,10 +1,17 @@
 <script lang="ts">
+import SassExample from '@/components/SassExample.vue';
+
 export default {
   name: 'Testing',
+  components: {
+    SassExample
+  }
 }
 </script>
 
 <template>
+  <SassExample></SassExample>
+
   <section class="relative py-16 bg-gray-300">
     <div class="container mx-auto px-4">
       <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
