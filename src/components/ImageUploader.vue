@@ -1,21 +1,44 @@
 <script lang="ts">
-import {onMounted,  ref, watchEffect} from 'vue';
+import { ref} from 'vue';
+import {useRoute} from "vue-router";
 
 interface ImageEntry {
+  createdAt: string
   image: string
+  type: string
+}
+
+interface JournalEntries {
+  id: string
+}
+
+interface PlantType {
+  plantId: string
 }
 
 export default {
   name: "ImageUploader",
-  emits: ["inputImage", "closeImageComponent", "showImageComponent"],
+  emits: ["closeImageComponent", "showImageComponent"],
 
-   setup(props : any, context : any){
+   setup(props : any, context : any) {
+     const route = useRoute()
+     const id = parseInt(route.params.id as string);
 
-    const imageEntry = ref<ImageEntry>({
-      image: ""
-    })
+     const imageEntry = ref<ImageEntry>({
+       createdAt: "",
+       image: "",
+       type: "image"
+     })
 
-     const emitClose = async (e : any) =>{
+     const journalId = ref<JournalEntries>({
+       id: "",
+     })
+
+     const plantId = ref<PlantType>({
+       plantId: "",
+     })
+
+       const emitClose = async () => {
        context.emit("closeImageComponent")
      }
 
@@ -23,26 +46,51 @@ export default {
        context.emit("showImageComponent")
      }
 
-    const updateImageFile = async (event : any) => {
-      if(event.target.files.length === 0){
-        return;
-      }
-      // this is what you want to emit and hold
-      const imageFile = event.target.files[0]; // this holds the File object, which is just a reference to the file
-      imageEntry.value = imageFile;
+     const updateImageFile = async (event: any) => {
+           if (event.target.files.length === 0) {
+             return;
+           }
+           // this is what you want to emit and hold
+           const imageFile = event.target.files[0]; // this holds the File object, which is just a reference to the file
+           imageEntry.value = imageFile;
 
-      let reader = new FileReader();
-      reader.onload =  evt => {
-        // this is what you want to upload to server
-        const imageFileBytes = evt.target?.result;
+           let reader = new FileReader();
+           reader.onload = evt => {
+             // this is what you want to upload to server
+             imageEntry.value.image = <string>evt.target?.result
+           }
+           reader.readAsText(imageFile, "UTF-8");
+     }
 
-        context.emit("inputImage", imageFileBytes)
-      }
-      reader.readAsText(imageFile, "UTF-8");
+     const postImageJournal = async () => {
 
-    }
-    return {updateImageFile, imageEntry, emitClose, emitShowImageIcon};
-  }
+       await fetch('/api/journal-entries', {
+         method: 'POST',
+         headers: {
+           'Content-type': 'application/json',
+         },
+         body: JSON.stringify({
+           id: journalId.value.id,
+           plantId: id,
+           createdAt: Date.now(),
+           type: imageEntry.value.type,
+           data: imageEntry.value.image,
+         }),
+       })
+       console.log("Image Successfully Posted")
+
+       imageEntry.value.image = ""
+     }
+
+     return {
+       plantId,
+       imageEntry,
+       updateImageFile,
+       postImageJournal,
+       emitClose,
+       emitShowImageIcon,
+     }
+   }
 }
 
 </script>

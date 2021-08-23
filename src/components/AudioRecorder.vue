@@ -1,23 +1,45 @@
 <script lang="ts">
 import {ref} from "vue";
-
+import {useRoute} from "vue-router";
 
 interface AudioEntry {
-  audio: string
+  createdAt: string
+  audioData: string
+  type: string
+}
+
+interface JournalEntries {
+  id: string
+}
+
+interface PlantType {
+  plantId: string
 }
 
 export default {
   name: "AudioRecorder",
-  emits: ["inputAudio", "closeAudioComponent", "emitShowAudioIcon"],
+  emits: [ "closeAudioComponent", "showAudioComponent"],
 
 
   setup(props: any, context: any) {
+    const route = useRoute()
+    const id = parseInt(route.params.id as string);
 
     const audioEntry = ref<AudioEntry>({
-      audio: "",
+      createdAt: "",
+      audioData: "",
+      type: "audio"
     })
 
-    const emitClose = async (e: any) => {
+    const journalId = ref<JournalEntries>({
+      id: "",
+    })
+
+    const plantId = ref<PlantType>({
+      plantId: "",
+    })
+
+    const emitClose = async () => {
       context.emit("closeAudioComponent")
     }
 
@@ -26,14 +48,49 @@ export default {
     }
 
     const updateAudioFile = async (event: any) => {
-
       if (event.target.files.length === 0) {
         return;
       }
-      audioEntry.value = event.target.value;
-      context.emit("inputAudio", audioEntry.value)
+      const audioFile = event.target.files[0]
+      audioEntry.value = audioFile
+
+      let reader = new FileReader();
+      reader.onload = evt => {
+        // this is what you want to upload to server
+        audioEntry.value.audioData = <string>evt.target?.result
+      }
+      reader.readAsText(audioFile, "UTF-8");
     }
-    return {updateAudioFile, audioEntry, emitClose, emitShowAudioIcon}
+
+
+
+    const postAudioJournal = async () => {
+      await fetch('/api/journal-entries', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: journalId.value.id,
+          plantId: id,
+          createdAt: Date.now(),
+          type: audioEntry.value.type,
+          data: audioEntry.value.audioData,
+        }),
+      })
+      audioEntry.value.audioData = ""
+      console.log("Audio Successfully Posted")
+
+    }
+
+    return {
+      audioEntry,
+      plantId,
+      updateAudioFile,
+      postAudioJournal,
+      emitClose,
+      emitShowAudioIcon,
+    }
   }
 }
 
@@ -47,7 +104,7 @@ export default {
       </button>
     </div>
     <h3>Upload Audio</h3> <br/>
-    <input id="inputA" accept="audio/*" type="file" @change="updateAudioFile"><br/><br/>
+    <input ref="myFileInput" id="inputA" accept="audio/*" type="file" @change="updateAudioFile"><br/><br/>
   </div>
 </template>
 

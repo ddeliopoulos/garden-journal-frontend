@@ -33,19 +33,19 @@
       </button>
 
       <div v-show="showAudio">
-        <AudioRecorder @closeAudioComponent="closeAudioComponent()"/>
+        <AudioRecorder ref="audioEntry" @closeAudioComponent="closeAudioComponent()"/>
       </div>
 
       <div v-show="showImage">
-        <ImageUploader @closeImageComponent="closeImageComponent()"/>
+        <ImageUploader ref="imageEntry" @closeImageComponent="closeImageComponent()"/>
       </div>
 
       <div v-show="showDocument">
-        <JournalTextEntry :textEntry="textEntryTrigger" @closeTextComponent="closeTextComponent()"/>
+        <JournalTextEntry ref="textEntry" @closeTextComponent="closeTextComponent()"/>
       </div>
       <br/>
 
-      <button @click=onSubmitJournal class="add-journal-entry-close" >
+      <button @click="onSubmitJournal" class="add-journal-entry-close" >
         Submit
       </button>
     </div>
@@ -60,18 +60,31 @@ import ImageUploader from "@/components/ImageUploader.vue";
 import JournalTextEntry from "@/components/JournalTextEntry.vue"
 
 export default defineComponent({
-  emits: ["addToTimeline"],
+
   components: {ImageUploader, AudioRecorder, JournalTextEntry},
   setup() {
-
-
     const showAudio = ref(false)
     const showImage = ref(false)
     const showDocument = ref(false)
     const isShow = ref(false)
 
-    const textEntryTrigger = ref("")
+    const textEntry = ref<any>({
+      createdAt: "",
+      text: "",
+      type: "text"
+    })
 
+    const imageEntry = ref<any>({
+      createdAt: "",
+      image: "",
+      type: "image"
+    })
+
+    const audioEntry = ref<any>({
+      createdAt: "",
+      audio: "",
+      type: "audio"
+    })
 
     const showDocumentComponent = async () => {
       showDocument.value = true
@@ -105,13 +118,25 @@ export default defineComponent({
       showImage.value = false
     }
 
+    const onSubmitJournal = () => {
+      if (showDocument.value) textEntry.value.addToTimeline()
+
+      if(showImage.value) imageEntry.value.postImageJournal()
+
+      if(showAudio.value){
+        audioEntry.value.postAudioJournal()
+      }
+      closeModal();
+    }
 
     return {
       showAudio,
       isShow,
       showImage,
       showDocument,
-      textEntryTrigger,
+      textEntry,
+      imageEntry,
+      audioEntry,
       showModal,
       closeModal,
       showAudioComponent,
@@ -119,7 +144,8 @@ export default defineComponent({
       closeImageComponent,
       closeAudioComponent,
       showDocumentComponent,
-      showImageComponent
+      showImageComponent,
+      onSubmitJournal,
     }
   }
 })

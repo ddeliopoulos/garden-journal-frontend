@@ -1,6 +1,26 @@
 {
   "journal-entries": [
-
+    {
+      "id": 1,
+      "plantId": 1,
+      "createdAt": 1629742287345,
+      "type": "text",
+      "data": "HALLLLLLLLLLLLLLLLLO"
+    },
+    {
+      "id": 2,
+      "plantId": 1,
+      "createdAt": 1629742287346,
+      "type": "image/jpeg",
+      "data": "I'm a picture!"
+    },
+    {
+      "id": 3,
+      "plantId": 1,
+      "createdAt": 1629742287346,
+      "type": "audio/mpeg",
+      "data": "I'm an audio file!"
+    }
   ],
   "plants": [
     {

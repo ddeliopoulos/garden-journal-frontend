@@ -1,21 +1,4 @@
-<template>
-  <div class="text-component-container">
-    <div class="close-image" @click=emitClose>
-      <button @click="emitShowTextIcon" class="icon-close-btn">
-        <i class="far fa-window-close"></i>
-      </button>
-    </div>
-    <h3>Write Entry</h3>
-    <div class="form-group shadow-textarea">
-      <p id="three">
-      <textarea @addToTimeline="addToTimeline" v-model='textEntry.text' name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
-      </p>
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
-
 import {ref} from "vue";
 import {useRoute} from "vue-router";
 
@@ -35,12 +18,12 @@ interface PlantType {
 
 export default {
   name: "JournalTextEntry",
-  emits: ["closeTextComponent", "emitShowTextIcon"],
-  props: ['textEntry'],
+  emits: ["closeTextComponent", "showTextComponent"],
 
   setup(props: any, context: any) {
     const route = useRoute()
     const id = parseInt(route.params.id as string);
+
     const textEntry = ref<textEntry>({
       createdAt: "",
       text: "",
@@ -55,23 +38,8 @@ export default {
       plantId: "",
     })
 
-    const getJournalId = async () => {
-      const response = await fetch(`/api/plants/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
-
-      journalId.value = await response.json()
-
-    }
-
-    const emitClose = async (e: any) => {
-      console.log(plantId.value)
+    const emitClose = async () => {
       context.emit("closeTextComponent")
-      console.log(plantId.value)
-
     }
 
     const emitShowTextIcon = async () => {
@@ -93,14 +61,37 @@ export default {
         }),
       })
       textEntry.value.text=""
-      console.log("i am in the child, omg this is so wrong")
+      console.log("Text Successfully Posted!")
     }
 
 
-    return {emitClose, textEntry, emitShowTextIcon, addToTimeline, getJournalId}
+    return {
+      plantId,
+      textEntry,
+      emitShowTextIcon,
+      addToTimeline,
+      emitClose,
+    }
   }
 }
 </script>
+
+    <template>
+      <div class="text-component-container">
+        <div class="close-image" @click=emitClose>
+          <button @click="emitShowTextIcon" class="icon-close-btn">
+            <i class="far fa-window-close"></i>
+          </button>
+        </div>
+        <h3>Write Entry</h3>
+        <div class="form-group shadow-textarea">
+          <p id="three">
+            <textarea v-model='textEntry.text' name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
+          </p>
+        </div>
+      </div>
+    </template>
+
 
 <style scoped >
 @import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap');
