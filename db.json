@@ -1,25 +1,27 @@
 {
   "journal-entries": [
     {
+      "id": 5,
+      "plantId": 1,
+      "createdAt": 1629815711929,
+      "type": "audio/mpeg",
+      "data": "I am audio",
+      "dataUrl": "https://cdn.discordapp.com/attachments/696438975153438723/879735062223020092/smallboink.mp3"
+    },
+    {
       "id": 1,
       "plantId": 1,
-      "createdAt": 1629742287345,
-      "type": "text",
-      "data": "HALLLLLLLLLLLLLLLLLO"
+      "createdAt": 1629822878013,
+      "type": "image/jpeg",
+      "data": "I'm a picture!",
+      "dataUrl": "https://cdn.dribbble.com/users/1810157/screenshots/14012338/image.png"
     },
     {
       "id": 2,
       "plantId": 1,
-      "createdAt": 1629742287346,
-      "type": "image/jpeg",
-      "data": "I'm a picture!"
-    },
-    {
-      "id": 3,
-      "plantId": 1,
-      "createdAt": 1629742287346,
-      "type": "audio/mpeg",
-      "data": "I'm an audio file!"
+      "createdAt": 1629823443460,
+      "type": "text",
+      "data": "Does this work ok?"
     }
   ],
   "plants": [

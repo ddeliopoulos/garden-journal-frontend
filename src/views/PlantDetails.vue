@@ -5,7 +5,8 @@ import {useRoute} from 'vue-router'
 import {ref, onMounted} from "vue";
 import ImageUploader from "@/components/ImageUploader.vue"
 import AudioRecorder from "@/components/AudioRecorder.vue"
-import AddJournalButton from "@/components/AddJournalButton.vue";
+import AddJournalButton from "@/components/AddJournalButton.vue"
+import JournalEntryRow from "@/components/JournalEntryRow.vue";
 
 
 interface JournalEntries {
@@ -14,6 +15,7 @@ interface JournalEntries {
   createdAt: string
   type: string
   data: string
+  dataUrl: string
 }
 
 interface PlantType {
@@ -26,7 +28,7 @@ interface PlantType {
 
 export default {
   name: 'PlantDetails',
-  components: {AddJournalButton, WaterDroplet, ImageUploader, AudioRecorder},
+  components: {JournalEntryRow, AddJournalButton, WaterDroplet, ImageUploader, AudioRecorder},
 
   setup() {
     const route = useRoute()
@@ -44,8 +46,21 @@ export default {
       plantId: "",
       createdAt: "",
       type: "",
-      data: ""
+      data: "",
+      dataUrl: ""
     })
+
+    const jEntries = ref<JournalEntries[]>([]);
+
+    const loadJournalEntries = async () => {
+      const response = await fetch(`/api/journal-entries?plantId=${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+      jEntries.value = await response.json();
+    }
 
     const updateAudioEntry = async (filePath: string) => {
       const xhr = new XMLHttpRequest();
@@ -65,8 +80,6 @@ export default {
       const response = await fetch(`file://${filePath}`, {
         method: 'GET'
       });
-
-      //journalEntry.value.data.audio = await response.text();
     }
 
     const getPlantInfo = async () => {
@@ -76,9 +89,7 @@ export default {
           'Content-type': 'application/json',
         },
       })
-
       plant.value = await response.json()
-
     }
 
     const deletePlant = async () => {
@@ -91,12 +102,16 @@ export default {
     }
 
     onMounted(getPlantInfo);
+    onMounted(loadJournalEntries);
 
     return {
+      jEntries,
       plant,
       deletePlant,
       journalEntry,
       updateAudioEntry,
+      loadJournalEntries,
+      getPlantInfo
     }
   }
 }
@@ -147,15 +162,21 @@ export default {
             </div>
           </div>
         </div>
+        <div class="w-full lg:w-9/12 px-4">
+          <AddJournalButton/>
+        </div>
         <div class="mt-10 py-10 border-t border-gray-300 text-center">
-          <div class="flex flex-wrap justify-center">
-            <div class="w-full lg:w-9/12 px-4">
-              <AddJournalButton/>
+          <div class="timeline">
+            <b>JOURNAL ENTRIES</b>
+            <br/>
+            <div class="single-plant-container" :key="journalEntry.id" v-for="journalEntry in jEntries">
+              <JournalEntryRow :journalEntry="journalEntry"/>
             </div>
           </div>
         </div>
       </div>
     </div>
+
   </section>
 </template>
 

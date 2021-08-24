@@ -6,6 +6,9 @@ import 'element-plus/lib/theme-chalk/index.css';
 import './assets/global.css'
 import 'vue-universal-modal/dist/index.css'
 import VueUniversalModal from 'vue-universal-modal'
+import Vue from 'vue'
+
+
 
 createApp(App).use(ElementPlus).use(router).use(VueUniversalModal, {
     teleportTarget: '#modals'

@@ -24,6 +24,7 @@ export default {
      const route = useRoute()
      const id = parseInt(route.params.id as string);
 
+
      const imageEntry = ref<ImageEntry>({
        createdAt: "",
        image: "",
@@ -63,7 +64,6 @@ export default {
      }
 
      const postImageJournal = async () => {
-
        await fetch('/api/journal-entries', {
          method: 'POST',
          headers: {
