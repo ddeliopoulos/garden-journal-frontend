@@ -53,7 +53,7 @@ export default {
     const jEntries = ref<JournalEntries[]>([]);
 
     const loadJournalEntries = async () => {
-      const response = await fetch(`/api/journal-entries?plantId=${id}`, {
+      const response = await fetch(`/api/journal-entries?plantId=${id}&_sort=createdAt&_order=desc`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
@@ -226,7 +226,6 @@ h2 {
   height: 150px;
   position: relative;
   overflow: hidden;
-  border-radius: 50%;
   margin: auto;
 }
 

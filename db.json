@@ -22,6 +22,27 @@
       "createdAt": 1629823443460,
       "type": "text",
       "data": "Does this work ok?"
+    },
+    {
+      "id": 6,
+      "plantId": 1,
+      "createdAt": 1629833239415,
+      "type": "text",
+      "data": "What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book it has?\n"
+    },
+    {
+      "id": 7,
+      "plantId": 1,
+      "createdAt": 1629833425275,
+      "type": "text",
+      "data": "text-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entry"
+    },
+    {
+      "id": 8,
+      "plantId": 1,
+      "createdAt": 1629836023278,
+      "type": "text",
+      "data": "lkdfhsdlfsdol;hvjsadkohjdso;ghjso;'ghjosighjsoghj[sghj[sghjo[s"
     }
   ],
   "plants": [
