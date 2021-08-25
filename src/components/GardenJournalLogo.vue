@@ -14,7 +14,9 @@ export default {
 
 .logo-container {
   float: left;
-  margin-top: 29px;
+  position: relative;
+  top: 7px;
+  right: 140px;
 }
 
 .logo-container h3 {

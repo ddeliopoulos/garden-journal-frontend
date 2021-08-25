@@ -67,7 +67,6 @@ p {
 
 .default-plant {
   display: inline-block;
-  margin: auto;
   height: 100%;
   width: auto;
 }
@@ -78,7 +77,6 @@ p {
 
 .plant-card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
-  margin: auto;
   width: 190px;
 }
 

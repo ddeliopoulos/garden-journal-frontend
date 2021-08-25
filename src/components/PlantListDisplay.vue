@@ -40,7 +40,7 @@ export default {
   <div class="relative py-16 bg-gray-300">
     <div class="container mx-auto px-4">
       <div class="move-down">
-      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+      <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
         <div class="text-center mt-12">
           <div id="add-plant-button">
             <AddPlantButton></AddPlantButton>
@@ -378,11 +378,13 @@ img {
 }
 
 .-mt-64 {
-  margin-top: -16rem
+  margin-top: -10rem;
+  position: relative;
+  bottom: 50px;
 }
 
 .min-w-0 {
-  min-width: 0
+  min-width: 0;
 }
 
 .px-4 {

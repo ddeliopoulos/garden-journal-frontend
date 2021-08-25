@@ -24,7 +24,9 @@ export default {
                   placeholder="Search your garden..."
               />
             </div>
-            <button class="submit-search"><h3>Search</h3></button>
+            <button class="submit-search"><h3></h3>
+              <i class="fa fa-search"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -34,36 +36,35 @@ export default {
 
 <style scoped>
 
-.submit-search, .navbarSearch{
-  display: inline-block !important;
-  padding: 5px;
-  margin-left: 15px;
-}
-
-.search-holder {
-  margin-top: 10px;
-  margin-right: 300px;
-}
-
-.form-control {
-  width: 100%;
-  height: 30px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: #555;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid #ccc;
+.submit-search{
+  position: relative;
+  bottom: 45px;
+  left: 215px;
+  appearance: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  padding: 6px 12px;
+  background-image: linear-gradient(to right, #bdc3c7, #2c3e50);
+  border-radius: 8px;
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 700;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
 }
 
 .navbar-search-input {
-  z-index: 1 !important;
-  height: 45px;
+  height: 35px;
+  width: 350px;
   font-size: 18px;
   padding: 6px 18px 7px 45px;
   background-color: #ffffff !important;
   box-shadow: 0 2px 14px rgba(0, 0, 0, 0.11);
   border-color: #eeeeee;
+  position: relative;
+  bottom: 10px;
+  right: 140px;
 }
 
 </style>

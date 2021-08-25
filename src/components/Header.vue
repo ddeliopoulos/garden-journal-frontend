@@ -1,6 +1,5 @@
 <!--Cannot switch to TypeScript language because are using burger that is not compatible-->
 <script lang="ts">
-import SliderWrapped from './wrapped/SliderWrapped.vue';
 import GardenJournalLogo from "@/components/GardenJournalLogo.vue";
 import SearchBar from "@/components/SearchBar.vue"
 
@@ -9,7 +8,6 @@ export default {
 
   components: {
     GardenJournalLogo,
-    SliderWrapped,
     SearchBar
   },
 }
@@ -18,13 +16,6 @@ export default {
 <template>
   <div class="header">
     <div class="inner-header">
-      <div class="slide-dashboard">
-        <SliderWrapped>
-          <router-link to="/"><span>My Garden</span></router-link>
-          <router-link to="/privacy"><span>Privacy</span></router-link>
-          <router-link to="/about"><span>About</span></router-link>
-        </SliderWrapped>
-      </div>
       <div class="garden-journal-logo">
         <GardenJournalLogo></GardenJournalLogo>
       </div><br/>
@@ -44,9 +35,12 @@ body{
 
 .header{
   width: 100%;
-  height: 100px;
+  height: 50px;
   display: block;
   background-color: black;
+  top:0;
+  z-index: 1;
+  position: fixed;
 }
 
 .inner-header{

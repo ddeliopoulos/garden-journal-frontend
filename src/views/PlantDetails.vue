@@ -120,7 +120,7 @@ export default {
 <template>
   <section class="relative py-16 bg-gray-300">
     <div class="container mx-auto px-4">
-      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+      <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
         <div class="px-6">
           <div class="flex flex-wrap justify-center">
             <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
@@ -583,9 +583,9 @@ img {
 }
 
 .-mt-64 {
-  margin-top: -16rem
+  position: relative;
+  bottom: 30px;
 }
-
 .min-w-0 {
   min-width: 0
 }

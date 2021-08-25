@@ -17,34 +17,12 @@
       "dataUrl": "https://cdn.dribbble.com/users/1810157/screenshots/14012338/image.png"
     },
     {
-      "id": 2,
-      "plantId": 1,
-      "createdAt": 1629823443460,
-      "type": "text",
-      "data": "Does this work ok?"
-    },
-    {
       "id": 6,
       "plantId": 1,
-      "createdAt": 1629833239415,
+      "createdAt": 1629896692894,
       "type": "text",
-      "data": "What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book it has?\n"
-    },
-    {
-      "id": 7,
-      "plantId": 1,
-      "createdAt": 1629833425275,
-      "type": "text",
-      "data": "text-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entrytext-entry"
-    },
-    {
-      "id": 8,
-      "plantId": 1,
-      "createdAt": 1629836023278,
-      "type": "text",
-      "data": "lkdfhsdlfsdol;hvjsadkohjdso;ghjso;'ghjosighjsoghj[sghj[sghjo[s"
-    },
-
+      "data": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et nulla dolor. Mauris vitae diam et est semper efficitur vulputate sed purus. Cras non dignissim leo, vel maximus nunc. Praesent ut purus at magna fringilla blandit nec bibendum ligula. Sed volutpat dolor dolor, luctus pretium mauris fermentum vitae. In lacinia neque lacus, id dapibus velit tincidunt at. Nulla pretium sed eros in rutrum. Sed viverra volutpat auctor. Ut mollis enim sed leo euismod blandit."
+    }
   ],
   "plants": [
     {

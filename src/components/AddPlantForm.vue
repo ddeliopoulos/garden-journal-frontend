@@ -86,17 +86,16 @@ button {
   outline: none;
   border: none;
   cursor: pointer;
-
   display: inline-block;
-  padding: 15px 25px;
-  background-image: linear-gradient(to right, #CC2E5D, #FF5858);
+  padding: 6px 12px;
+  background-image: linear-gradient(to right, #141e30, #243b55);
   border-radius: 8px;
-
   color: #FFF;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
-
   box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  position: relative;
+  top: 18px;
 }
 
 h1 {
