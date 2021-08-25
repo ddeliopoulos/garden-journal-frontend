@@ -151,7 +151,7 @@ export default {
               </div>
               <div class="fas fa-map-marker-alt mb-2 text-gray-700 mt-10">
                 <i class=" mr-2 text-lg text-gray-500"></i>
-                United States, PA
+                PA, United States
               </div>
               <div class="move-date">
                 <div class="mb-2 text-gray-700">
@@ -213,7 +213,6 @@ html {
 
 h2 {
   position: center;
-
 }
 
 .fas {

@@ -103,7 +103,6 @@ audio {
   line-height: 1.5em;
   position: relative;
   top: -17px;
-  /*padding: 7px;*/
 }
 
 .timestamp{
@@ -131,8 +130,10 @@ img {
   display: inline-block;
   margin: 10px;
   height: 160px;
-  width: 50%;
+  width: 55%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+  position: relative;
+  left: 20px;
 }
 
 </style>
