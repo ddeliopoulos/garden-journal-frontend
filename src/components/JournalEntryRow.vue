@@ -55,7 +55,7 @@ export default {
       <label class="modal__label" for="modal__checkbox">
 
         <div class="image-cropper">
-          <img alt="test" src="https://cdn.dribbble.com/users/1810157/screenshots/14012338/image.png"/>
+          <img alt="test" :src="journalEntry.dataUrl"/>
         </div>
 
       </label>
@@ -68,7 +68,7 @@ export default {
           </svg>
           </label>
           <input class="modal__checkbox" id="modal__checkbox" type="checkbox">
-          <img src="https://cdn.dribbble.com/users/1810157/screenshots/14012338/image.png" />
+          <img :src="journalEntry.dataUrl"/>
         </div>
       </div>
     </div>
@@ -102,6 +102,7 @@ export default {
 
 .modal {
   position: relative;
+  left: 270px;
   width: 150px;
   height: 150px;
   background: white;
@@ -193,7 +194,7 @@ audio {
   float: left;
   text-align: left;
   display: inline-block;
-  padding: .5em;
+  margin: 10px 25px 25px;
   line-height: 1em;
   position: relative;
   top: -5px;
