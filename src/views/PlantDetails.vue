@@ -141,19 +141,16 @@ export default {
           </div>
         </div>
         <div class="w-full lg:w-9/12 px-4">
-          <AddJournalButton/>
+          <AddJournalButton/> <br/><br/>
         </div>
-        <div class="mt-10 py-10 border-t border-gray-300 text-center">
+        <div class="mt-10  border-gray-300 text-center">
           <div class="timeline">
-
-            Filter by:
+            <button @click="loadJournalEntries" class="filter-img-btn"> All</button>
             <button @click="filterTextEntries" class="filter-txt-btn"> Text</button>
             <button @click="filterAudioEntries" class="filter-audio-btn"> Audio</button>
             <button @click="filterImageEntries" class="filter-img-btn"> Image</button>
-            <button @click="loadJournalEntries" class="filter-img-btn"> All</button>
             <br/><br/>
-
-            <h3>JOURNAL ENTRIES</h3>
+            <h2 class="text-3xl font-semisolid" >JOURNAL ENTRIES</h2>
             <br/>
             <div class="single-plant-container" :key="journalEntry.id" v-for="journalEntry in journalEntries">
               <JournalEntryRow :journalEntry="journalEntry"/>

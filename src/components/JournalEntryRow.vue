@@ -1,6 +1,7 @@
 <script lang="ts">
 import {onMounted, ref} from "vue";
 
+
 interface JournalEntry {
   id: string
   plantId: string
@@ -81,13 +82,11 @@ export default {
     </div>
   </div>
 
-  <div v-else-if="journalEntry.type.startsWith('audio')">
-    <div class="audio-container">
+  <div class="audio-container" v-else-if="journalEntry.type.startsWith('audio')">
       <h3 class="audio-title">Audio Journal Update: {{journalEntry.id}}</h3>
         <audio controls>
           <source :src="journalEntry.dataUrl" type="audio/mpeg">
         </audio>
-    </div>
   </div>
 
   <div v-else-if="journalEntry.type.startsWith('text')">
@@ -105,7 +104,7 @@ export default {
 
 
 <style scoped lang="scss">
-
+@import url('https://fonts.googleapis.com/css2?family=Merienda&display=swap');
 
 .modal {
   position: relative;
@@ -183,27 +182,23 @@ h1 {
 h3.audio-title{
   position: relative;
   left: 80px;
+  display: inline-block;
+  margin: 5px;
 }
 
-audio {
-  display:block;
-  margin: auto;
-}
 
 .audio-container{
   position: relative;
   top: 35px;
+  display: inline;
 }
 
 .text-entry{
-  float: left;
-  text-align: left;
-  display: inline-block;
-  margin: 10px 25px 25px;
-  line-height: 1em;
-  position: relative;
-  top: -5px;
-  color: black;
+  margin: 20px;
+  color:black;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 450;
+  font-size: 16px;
 }
 
 .timestamp{

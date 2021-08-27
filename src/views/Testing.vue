@@ -1,4 +1,5 @@
 <template>
+  <h1>adlkashlkahdf;afh;als</h1>
   <AudioRecording></AudioRecording>
 </template>
 
@@ -14,18 +15,10 @@ export default {
 
 <style scoped>
 
-* {
+h1{
   position: relative;
-  top: 3em;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 10px;
-  background-color: #E2E8F0
+  top: 50px;
+  font-size: 55px;
 }
-
-.filter-txt{
-  margin: 40px;
-}
-
 
 </style>

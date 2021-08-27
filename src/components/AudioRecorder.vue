@@ -43,7 +43,7 @@ export default {
 
     const emitClose = async () => {
       context.emit("closeAudioComponent")
-    }gi
+    }
 
     const emitShowAudioIcon = async () => {
       context.emit("showAudioComponent")
@@ -107,10 +107,18 @@ export default {
     </div>
     <h3>Upload Audio</h3> <br/>
     <input ref="myFileInput" id="inputA" accept="audio/*" type="file" @change="updateAudioFile"><br/><br/>
+    <div class="media-recorder">
+      <AudioRecording/>
+    </div>
   </div>
 </template>
 
 <style scoped>
+
+.media-recorder{
+  position: relative;
+  bottom: 6em;
+}
 
 .audio-recorder {
   width: 100%;

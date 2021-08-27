@@ -26,7 +26,7 @@ export default {
       mediaRecorder = new MediaRecorder(stream);
       recordingData = null;
 
-      mediaRecorder.ondataavailable =async (e: any) => {
+      mediaRecorder.ondataavailable = async (e: any) => {
         recordingData = await e.data.text();
         console.log("recording stopped", recordingData.length)
       }
@@ -35,19 +35,17 @@ export default {
         console.log("recording stopped")
         stream.getTracks() // get all tracks from the MediaStream
             .forEach( (track:any) => track.stop() );
+
       }
-
-
       mediaRecorder.start();
-
     }
+
     const stopRecording = async () => {
       console.log("stopped recording")
       mediaRecorder.stop();
     }
-    console.log('booooor');
-    return {startRecording, stopRecording}
 
+    return {startRecording, stopRecording}
 
   }
 }
@@ -55,12 +53,9 @@ export default {
 
 <style scoped>
 
-.btn {
-  z-index: 9999999;
+.btn{
   position: relative;
-  margin: 15px;
-  top: 100px;
-  left: 50;
+  top: 500px;
 }
 
 </style>
