@@ -12,25 +12,15 @@ export default {
 </script>
 
 <template>
-  <div class="search-holder">
-    <div class="search-holder__banner">
-      <div class="col-xs-12 text-center hero-header-container">
-        <div class="search-bar">
-          <div class="form-holder">
-            <div class="navbarSearch">
-              <input
-                  class="form-control navbar-search-input js-navbar-search-input nav-input js-filter-topics"
-                  type="text"
-                  placeholder="Search your garden..."
-              />
-            </div>
-            <button class="submit-search"><h3></h3>
-              <i class="fa fa-search"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="navbarSearch">
+    <input class="form-control navbar-search-input js-navbar-search-input nav-input js-filter-topics"
+           type="text"
+           placeholder="Search your garden..."/>
+  </div>
+  <div class="submit-btn">
+    <button class="submit-search"><h3></h3>
+      <i class="fa fa-search"></i>
+    </button>
   </div>
 </template>
 

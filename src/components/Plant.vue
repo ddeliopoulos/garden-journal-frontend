@@ -91,7 +91,6 @@ p {
   height: 140px;
   position: relative;
   overflow: hidden;
-  border-radius: 50%;
   margin: auto;
 }
 

@@ -6,16 +6,8 @@ import {ref, onMounted} from "vue";
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
 
-
-interface JournalEntries {
-  id: string
-  plantId: string
-  createdAt: string
-  type: string
-  data: string
-  dataUrl: string
-}
 interface JournalEntry {
+  type: string
   dataUrl: string
 }
 
@@ -46,7 +38,37 @@ export default {
 
     const journalEntry = ref<JournalEntry[]>([])
 
-    const jEntries = ref<JournalEntries[]>([]);
+    const jEntries = ref<JournalEntry[]>([]);
+
+    const filterAudioEntries = async () => {
+      const response = await fetch(`/api/journal-entries?plantId=${id}&type=audio&_sort=createdAt&_order=desc`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+      jEntries.value = await response.json();
+    }
+
+    const filterImageEntries = async () => {
+      const response = await fetch(`/api/journal-entries?plantId=${id}&type=image&_sort=createdAt&_order=desc`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+      jEntries.value = await response.json();
+    }
+
+    const filterTextEntries = async () => {
+      const response = await fetch(`/api/journal-entries?plantId=${id}&type=text&_sort=createdAt&_order=desc`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+      jEntries.value = await response.json();
+    }
 
     const loadJournalEntries = async () => {
       const response = await fetch(`/api/journal-entries?plantId=${id}&_sort=createdAt&_order=desc`, {
@@ -56,7 +78,6 @@ export default {
         },
       })
       jEntries.value = await response.json();
-
     }
 
     const getLatestImage = async () => {
@@ -69,27 +90,6 @@ export default {
       journalEntry.value = await response.json();
 
       latestImg.value = journalEntry.value[0].dataUrl
-    }
-
-
-    const updateAudioEntry = async (filePath: string) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open("GET", filePath);
-      xhr.responseType = "blob";
-      const fileContentsPromise = new Promise(resolve => {
-        xhr.onreadystatechange = () => {
-          if (xhr.readyState == 4) {
-            resolve(xhr.responseText)
-          }
-        }
-      })
-      xhr.send();
-
-      const fileContents = await fileContentsPromise
-
-      const response = await fetch(`file://${filePath}`, {
-        method: 'GET'
-      });
     }
 
     const getPlantInfo = async () => {
@@ -111,20 +111,18 @@ export default {
       }
     }
 
-    onMounted(getPlantInfo);
-    onMounted(loadJournalEntries);
-    onMounted(getLatestImage)
+    [getPlantInfo, loadJournalEntries, getLatestImage].forEach((fn: any) => onMounted(fn));
 
     return {
       jEntries,
       plant,
       latestImg,
-      deletePlant,
       journalEntry,
-      updateAudioEntry,
+      deletePlant,
+      filterTextEntries,
       loadJournalEntries,
-      getPlantInfo,
-      getLatestImage
+      filterAudioEntries,
+      filterImageEntries
     }
   }
 }
@@ -159,20 +157,20 @@ export default {
                 {{ plant.name }}
               </h3>
               <div class="plant-info">
-              <div class="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
-                <i class="fa fa-leaf mr-2 text-lg text-gray-500"></i>
-                {{ plant.type }}
-              </div>
-              <div class="fas fa-map-marker-alt mb-2 text-gray-700 mt-10">
-                <i class=" mr-2 text-lg text-gray-500"></i>
-                PA, United States
-              </div>
-              <div class="move-date">
-                <div class="mb-2 text-gray-700">
-                  <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
-                  {{ plant.date }}
+                <div class="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
+                  <i class="fa fa-leaf mr-2 text-lg text-gray-500"></i>
+                  {{ plant.type }}
                 </div>
-              </div>
+                <div class="fas fa-map-marker-alt mb-2 text-gray-700 mt-10">
+                  <i class=" mr-2 text-lg text-gray-500"></i>
+                  PA, United States
+                </div>
+                <div class="move-date">
+                  <div class="mb-2 text-gray-700">
+                    <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
+                    {{ plant.date }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -182,7 +180,15 @@ export default {
         </div>
         <div class="mt-10 py-10 border-t border-gray-300 text-center">
           <div class="timeline">
-            <b>JOURNAL ENTRIES</b>
+
+            Filter by:
+            <button @click="filterTextEntries" class="filter-txt-btn"> Text</button>
+            <button @click="filterAudioEntries" class="filter-audio-btn"> Audio</button>
+            <button @click="filterImageEntries" class="filter-img-btn"> Image</button>
+            <button @click="loadJournalEntries" class="filter-img-btn"> All</button>
+            <br/><br/>
+
+            <h3>JOURNAL ENTRIES</h3>
             <br/>
             <div class="single-plant-container" :key="journalEntry.id" v-for="journalEntry in jEntries">
               <JournalEntryRow :journalEntry="journalEntry"/>
@@ -191,7 +197,6 @@ export default {
         </div>
       </div>
     </div>
-
   </section>
 </template>
 
@@ -200,7 +205,7 @@ html {
   background-color: #E2E8F0;
 }
 
-.plant-info{
+.plant-info {
   position: relative;
   bottom: 20px;
 }
@@ -208,6 +213,23 @@ html {
 .container {
   position: relative;
   top: -31px;
+}
+
+.filter-txt-btn, .filter-audio-btn, .filter-img-btn {
+  appearance: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  padding: 6px 22px;
+  background-color: #000000;
+  background-image: linear-gradient(315deg, #000000 0%, #414141 74%);
+  border-radius: 8px;
+  color: #FFF;
+  font-size: 14px;
+  font-weight: 700;
+  position: relative;
+  margin: 5px;
 }
 
 .move-left {
@@ -232,9 +254,6 @@ html {
   cursor: pointer;
 }
 
-h2 {
-  position: center;
-}
 
 .fas {
   position: relative;
@@ -258,224 +277,10 @@ body {
   margin: 0
 }
 
-main {
-  display: block
-}
-
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0
-}
-
-hr {
-  box-sizing: content-box;
-  height: 0;
-  overflow: visible
-}
-
-a {
-  background-color: transparent
-}
-
-b,
-strong {
-  font-weight: bolder
-}
-
-code {
-  font-family: monospace, monospace;
-  font-size: 1em
-}
-
-small {
-  font-size: 80%
-}
-
 img {
   border-style: none;
 }
 
-button,
-input,
-button,
-input {
-  overflow: visible
-}
-
-button {
-  text-transform: none
-}
-
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-  -webkit-appearance: button
-}
-
-button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner {
-  border-style: none;
-  padding: 0
-}
-
-button:-moz-focusring,
-[type="button"]:-moz-focusring,
-[type="reset"]:-moz-focusring,
-[type="submit"]:-moz-focusring {
-  outline: 1px dotted ButtonText
-}
-
-legend {
-  box-sizing: border-box;
-  color: inherit;
-  display: table;
-  max-width: 100%;
-  padding: 0;
-  white-space: normal
-}
-
-progress {
-  vertical-align: baseline
-}
-
-[type="checkbox"],
-[type="radio"] {
-  box-sizing: border-box;
-  padding: 0
-}
-
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
-  height: auto
-}
-
-[type="search"] {
-  -webkit-appearance: textfield;
-  outline-offset: -2px
-}
-
-[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none
-}
-
-::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  font: inherit
-}
-
-details {
-  display: block
-}
-
-template {
-  display: none
-}
-
-[hidden] {
-  display: none
-}
-
-html {
-  box-sizing: border-box;
-  font-family: sans-serif
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit
-}
-
-blockquote,
-dl,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-hr,
-p {
-  margin: 0;
-  position: relative;
-  bottom: 8px;
-}
-
-button {
-  background: transparent;
-  padding: 0
-}
-
-button:focus {
-  outline: 5px auto -webkit-focus-ring-color
-
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0
-}
-
-html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  line-height: 1.5
-}
-
-*,
-*::before,
-*::after {
-  border-width: 0;
-  border-style: solid;
-  border-color: #e2e8f0
-}
-
-hr {
-  border-top-width: 1px
-}
-
-img {
-  border-style: solid
-}
-
-button,
-[role="button"] {
-  cursor: pointer
-}
-
-table {
-  border-collapse: collapse
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: inherit;
-  font-weight: inherit;
-
-}
-
-a {
-  color: inherit;
-  text-decoration: inherit
-}
-
-code {
-  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
-}
-
-img,
-svg,
-canvas,
-iframe {
-  display: block;
-}
 
 img {
   max-width: 100%;
@@ -510,16 +315,6 @@ img {
   }
 }
 
-@media not print {
-  .form-checkbox::-ms-check {
-    border-width: 1px;
-    color: transparent;
-    background: inherit;
-    border-color: inherit;
-    border-radius: inherit
-  }
-}
-
 .bg-white {
   background-color: #fff
 }
@@ -545,10 +340,6 @@ img {
   display: flex
 }
 
-.group:hover .group-hover\:block {
-  display: block
-}
-
 .flex-col {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -562,10 +353,6 @@ img {
 .justify-center {
   -webkit-box-pack: center;
   justify-content: center
-}
-
-.font-semibold {
-  font-weight: 600
 }
 
 .font-bold {
@@ -593,10 +380,6 @@ img {
   margin-bottom: 0.5rem
 }
 
-.mb-6 {
-  margin-bottom: 1.5rem
-}
-
 .mt-10 {
   margin-top: 2.5rem
 }
@@ -609,18 +392,11 @@ img {
   position: relative;
   bottom: 30px;
 }
-.min-w-0 {
-  min-width: 0
-}
+
 
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem
-}
-
-.px-6 {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem
 }
 
 .py-10 {
@@ -634,7 +410,8 @@ img {
 }
 
 .relative {
-  position: relative
+  position: relative;
+  top: 10px;
 }
 
 .shadow-xl {
@@ -673,10 +450,6 @@ img {
 
 .uppercase {
   text-transform: uppercase
-}
-
-.break-words {
-  overflow-wrap: break-word
 }
 
 .w-full {

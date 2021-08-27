@@ -1,8 +1,7 @@
 <script lang="ts">
 import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
-import {ref, onMounted, onBeforeMount, onBeforeUpdate} from 'vue'
-import {useRoute} from "vue-router";
+import {ref, onMounted} from 'vue'
 
 interface PlantType {
   name: string
@@ -36,8 +35,10 @@ export default {
       plantId.value = plants.value[0].id.toString()
 
     }
+    const bla = () => console.log('bla');
 
-    onMounted(loadPlants);
+
+    onMounted(loadPlants)
 
     return {
       plants

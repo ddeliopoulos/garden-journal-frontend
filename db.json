@@ -49,6 +49,20 @@
       "plantId": 2,
       "createdAt": 1640072999268,
       "type": "watering"
+    },
+    {
+      "id": 11,
+      "plantId": 1,
+      "createdAt": 1630080060987,
+      "type": "text",
+      "data": "sfgdfg"
+    },
+    {
+      "id": 12,
+      "plantId": 1,
+      "createdAt": 1630080529693,
+      "type": "audio/mpeg",
+      "data": "I'm an audio file!"
     }
   ],
   "plants": [
