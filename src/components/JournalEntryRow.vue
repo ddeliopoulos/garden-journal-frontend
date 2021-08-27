@@ -1,5 +1,5 @@
 <script lang="ts">
-import {ref} from "vue";
+import {onUnmounted, ref} from "vue";
 
 interface JournalEntry {
   id: string
@@ -29,12 +29,14 @@ export default {
       enlargeImg.value = !enlargeImg.value
     }
 
+
+
     const setTimeStamp = async ()  => {
       const date = new Date()
       date.setTime(Date.now())
       humanDate.value.date = date.toLocaleString();
     }
-    setTimeStamp()
+
 
     return {setTimeStamp, humanDate, enlargeImage, enlargeImg }
   }
@@ -187,8 +189,6 @@ audio {
   position: relative;
   top: 35px;
 }
-
-
 
 .text-entry{
   float: left;

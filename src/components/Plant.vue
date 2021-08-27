@@ -1,11 +1,13 @@
 <script lang="ts">
 
+import {onBeforeUpdate, onMounted, onUpdated, ref} from "vue";
+
 interface Plant {
-  name: string
-  type: string
-  date: string
-  thirstLevel: string
   id: number
+}
+
+interface JournalEntry {
+  dataUrl: string
 }
 
 export default {
@@ -15,6 +17,31 @@ export default {
       required: true
     }
   },
+ setup(props : any){
+
+   let plantId = props.plant.id
+   const latestImg = ref("")
+   const journalEntry = ref<JournalEntry[]>([])
+
+   const getLatestImage = async () => {
+     //console.log(plantId.value + " getting latest image")
+     const response = await fetch(`/api/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image/jpeg`, {
+       method: 'GET',
+       headers: {
+         'Content-type': 'application/json',
+       },
+     })
+     journalEntry.value = await response.json();
+
+     latestImg.value = journalEntry.value[0].dataUrl
+
+   }
+
+
+   onMounted(getLatestImage)
+    return{getLatestImage,plantId,latestImg,journalEntry }
+ }
+
 }
 
 </script>
@@ -25,7 +52,7 @@ export default {
       <router-link style="text-decoration: none; color: inherit;" :to="{name: 'PlantDetails', params: {id: plant.id}}">
         <h2><b></b> {{ plant.name }}</h2>
         <div class="image-cropper">
-          <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
+          <img :src=latestImg alt="default-plant-image" class="default-plant">
         </div>
         <br/>
         <b>
@@ -58,7 +85,7 @@ p {
 
 .image-cropper {
   width: 150px;
-  height: 150px;
+  height: 140px;
   position: relative;
   overflow: hidden;
   border-radius: 50%;
@@ -69,6 +96,8 @@ p {
   display: inline-block;
   height: 100%;
   width: auto;
+  position: relative;
+  right: 18px;
 }
 
 .plant-card:hover {

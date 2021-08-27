@@ -3,8 +3,6 @@ import WaterDroplet from "@/components/WaterDroplet.vue";
 import router from "@/router";
 import {useRoute} from 'vue-router'
 import {ref, onMounted} from "vue";
-import ImageUploader from "@/components/ImageUploader.vue"
-import AudioRecorder from "@/components/AudioRecorder.vue"
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
 
@@ -15,6 +13,9 @@ interface JournalEntries {
   createdAt: string
   type: string
   data: string
+  dataUrl: string
+}
+interface JournalEntry {
   dataUrl: string
 }
 
@@ -28,11 +29,13 @@ interface PlantType {
 
 export default {
   name: 'PlantDetails',
-  components: {JournalEntryRow, AddJournalButton, WaterDroplet, ImageUploader, AudioRecorder},
+  components: {JournalEntryRow, AddJournalButton, WaterDroplet},
 
   setup() {
     const route = useRoute()
     const id = route.params.id
+
+    const latestImg = ref("")
 
     const plant = ref<PlantType>({
       name: "",
@@ -41,14 +44,7 @@ export default {
       id: ""
     })
 
-    const journalEntry = ref<JournalEntries>({
-      id: "",
-      plantId: "",
-      createdAt: "",
-      type: "",
-      data: "",
-      dataUrl: ""
-    })
+    const journalEntry = ref<JournalEntry[]>([])
 
     const jEntries = ref<JournalEntries[]>([]);
 
@@ -60,6 +56,23 @@ export default {
         },
       })
       jEntries.value = await response.json();
+
+    }
+
+    const getLatestImage = async () => {
+      const response = await fetch(`/api/journal-entries?plantId=${id}&_sort=createdAt&_order=desc&type=image/jpeg`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+      journalEntry.value = await response.json();
+
+      console.log(journalEntry.value[0].dataUrl)
+
+      latestImg.value = journalEntry.value[0].dataUrl
+      // latestImg.value = journalEntry.value.dataUrl
+      console.log(latestImg.value)
     }
 
     const updateAudioEntry = async (filePath: string) => {
@@ -103,15 +116,18 @@ export default {
 
     onMounted(getPlantInfo);
     onMounted(loadJournalEntries);
+    onMounted(getLatestImage)
 
     return {
       jEntries,
       plant,
+      latestImg,
       deletePlant,
       journalEntry,
       updateAudioEntry,
       loadJournalEntries,
-      getPlantInfo
+      getPlantInfo,
+      getLatestImage
     }
   }
 }
@@ -140,11 +156,12 @@ export default {
           <div class="text-center mt-12">
             <div class="move-left">
               <div class="image-cropper">
-                <img src="../assets/default-plant.jpg" alt="default-plant-image" class="default-plant">
+                <img :src=latestImg alt="default-plant-image" class="default-plant">
               </div>
               <h3 class="text-4xl font-semisolid leading-normal mb-2 text-gray-800 mb-2">
                 {{ plant.name }}
               </h3>
+              <div class="plant-info">
               <div class="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
                 <i class="fa fa-leaf mr-2 text-lg text-gray-500"></i>
                 {{ plant.type }}
@@ -158,6 +175,7 @@ export default {
                   <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
                   {{ plant.date }}
                 </div>
+              </div>
               </div>
             </div>
           </div>
@@ -185,6 +203,11 @@ html {
   background-color: #E2E8F0;
 }
 
+.plant-info{
+  position: relative;
+  bottom: 20px;
+}
+
 .container {
   position: relative;
   top: -31px;
@@ -201,6 +224,7 @@ html {
   position: relative;
   top: -35px;
 }
+
 
 .fa-window-close {
   color: #CC2E5D;
@@ -221,8 +245,8 @@ h2 {
 }
 
 .image-cropper {
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 200x;
   position: relative;
   overflow: hidden;
   margin: auto;
@@ -378,7 +402,9 @@ h5,
 h6,
 hr,
 p {
-  margin: 0
+  margin: 0;
+  position: relative;
+  bottom: 8px;
 }
 
 button {

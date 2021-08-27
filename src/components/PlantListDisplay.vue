@@ -1,7 +1,8 @@
 <script lang="ts">
 import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
-import { ref , onMounted} from 'vue'
+import {ref, onMounted, onBeforeMount, onBeforeUpdate} from 'vue'
+import {useRoute} from "vue-router";
 
 interface PlantType {
   name: string
@@ -10,6 +11,9 @@ interface PlantType {
   thirstLevel: string
   id: number
 }
+interface JournalEntry {
+  dataUrl: string
+}
 
 export default {
   name: "PlantListDisplay",
@@ -17,6 +21,12 @@ export default {
 
   setup() {
     const plants = ref<PlantType[]>([]);
+    const latestImg = ref("")
+    const journalEntry = ref<JournalEntry[]>([])
+    let plantId = ref("")
+
+
+    onMounted(()=> loadPlants())
 
     const loadPlants = async () => {
       const response = await fetch('/api/plants', {
@@ -27,11 +37,35 @@ export default {
       })
       plants.value = await response.json();
 
+      plantId.value = plants.value[0].id.toString()
+      //console.log(plants.value[0].id + " loading plants")
+
     }
 
-    onMounted(loadPlants)
+    const getLatestImage = async () => {
+      //console.log(plantId.value + " getting latest image")
+      const response = await fetch(`/api/journal-entries?plantId=${plantId.value}&_sort=createdAt&_order=desc&type=image/jpeg`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+      journalEntry.value = await response.json();
 
-    return {plants}
+      latestImg.value = journalEntry.value[0].dataUrl
+      //console.log(latestImg.value)
+    }
+
+    onBeforeUpdate(getLatestImage)
+
+    return {
+      plants,
+      plantId,
+      journalEntry,
+      latestImg,
+      loadPlants,
+      getLatestImage,
+    }
   }
 }
 </script>

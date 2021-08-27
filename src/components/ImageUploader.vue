@@ -80,6 +80,8 @@ export default {
        console.log("Image Successfully Posted")
 
        imageEntry.value.image = ""
+
+       context.emit( 'setTimeStampOnJournal' ,imageEntry.value.createdAt)
      }
 
      return {
