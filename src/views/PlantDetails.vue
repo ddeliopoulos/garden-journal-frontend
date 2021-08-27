@@ -36,60 +36,26 @@ export default {
       id: ""
     })
 
-    const journalEntry = ref<JournalEntry[]>([])
+    const journalEntries = ref<JournalEntry[]>([]);
 
-    const jEntries = ref<JournalEntry[]>([]);
-
-    const filterAudioEntries = async () => {
-      const response = await fetch(`/api/journal-entries?plantId=${id}&type=audio&_sort=createdAt&_order=desc`, {
+    const filterEntriesByType = async (type: string | null) => {
+      const response = await fetch(`/api/journal-entries?plantId=${id}&_sort=createdAt&_order=desc${type ? `&type=${type}` : ''}`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
         },
       })
-      jEntries.value = await response.json();
+      return await response.json();
     }
+    const reloadEntriesByType = async (type: string | null) => journalEntries.value = await filterEntriesByType(type);
 
-    const filterImageEntries = async () => {
-      const response = await fetch(`/api/journal-entries?plantId=${id}&type=image&_sort=createdAt&_order=desc`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
-      jEntries.value = await response.json();
-    }
-
-    const filterTextEntries = async () => {
-      const response = await fetch(`/api/journal-entries?plantId=${id}&type=text&_sort=createdAt&_order=desc`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
-      jEntries.value = await response.json();
-    }
-
-    const loadJournalEntries = async () => {
-      const response = await fetch(`/api/journal-entries?plantId=${id}&_sort=createdAt&_order=desc`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
-      jEntries.value = await response.json();
-    }
+    const filterAudioEntries = async () => await reloadEntriesByType('audio');
+    const filterImageEntries = async () => await reloadEntriesByType('image');
+    const filterTextEntries = async () => await reloadEntriesByType('text');
+    const loadJournalEntries = async () => await reloadEntriesByType(null);
 
     const getLatestImage = async () => {
-      const response = await fetch(`/api/journal-entries?plantId=${id}&_sort=createdAt&_order=desc&type=image`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
-      journalEntry.value = await response.json();
-
-      latestImg.value = journalEntry.value[0].dataUrl
+      latestImg.value = (await filterEntriesByType('image'))[0].dataUrl
     }
 
     const getPlantInfo = async () => {
@@ -114,10 +80,9 @@ export default {
     [getPlantInfo, loadJournalEntries, getLatestImage].forEach((fn: any) => onMounted(fn));
 
     return {
-      jEntries,
+      journalEntries,
       plant,
       latestImg,
-      journalEntry,
       deletePlant,
       filterTextEntries,
       loadJournalEntries,
@@ -190,7 +155,7 @@ export default {
 
             <h3>JOURNAL ENTRIES</h3>
             <br/>
-            <div class="single-plant-container" :key="journalEntry.id" v-for="journalEntry in jEntries">
+            <div class="single-plant-container" :key="journalEntry.id" v-for="journalEntry in journalEntries">
               <JournalEntryRow :journalEntry="journalEntry"/>
             </div>
           </div>

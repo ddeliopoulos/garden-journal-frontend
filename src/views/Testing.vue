@@ -1,11 +1,13 @@
 <template>
-
+  <AudioRecording></AudioRecording>
 </template>
 
 <script>
+import AudioRecording from "@/components/AudioRecording.vue"
 
 export default {
-  name: "Testing"
+  name: "Testing",
+  components: {AudioRecording}
 
 }
 </script>
