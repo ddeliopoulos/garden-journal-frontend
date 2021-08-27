@@ -76,6 +76,7 @@ export default {
            // type: imageEntry.value.type, // TODO: enable after backend is implemented
            type: 'image',
            data: imageEntry.value.image,
+           dataUrl: 'https://cdn.dribbble.com/users/1810157/screenshots/14012338/image.png' // TODO: remove
          }),
        })
        console.log("Image Successfully Posted")

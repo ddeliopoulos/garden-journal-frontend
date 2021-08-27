@@ -37,7 +37,13 @@ export default {
    }
 
    onMounted(getLatestImage)
-    return{getLatestImage,plantId,latestImg,journalEntry }
+
+    return{
+     getLatestImage,
+      plantId,
+      latestImg,
+      journalEntry
+    }
  }
 }
 

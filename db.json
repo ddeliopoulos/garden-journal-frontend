@@ -12,7 +12,7 @@
       "id": 1,
       "plantId": 1,
       "createdAt": 1629822878013,
-      "type": "image/jpeg",
+      "type": "image",
       "data": "I'm a picture!",
       "dataUrl": "https://cdn.dribbble.com/users/1810157/screenshots/14012338/image.png"
     },

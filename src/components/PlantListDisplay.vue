@@ -24,8 +24,6 @@ export default {
     const journalEntry = ref<JournalEntry[]>([])
     let plantId = ref("")
 
-    onMounted(()=> loadPlants())
-
     const loadPlants = async () => {
       const response = await fetch('/api/plants', {
         method: 'GET',
@@ -39,12 +37,10 @@ export default {
 
     }
 
+    onMounted(loadPlants);
 
     return {
-      plants,
-      journalEntry,
-      plantId,
-      loadPlants,
+      plants
     }
   }
 }
