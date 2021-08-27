@@ -24,7 +24,6 @@ export default {
    const journalEntry = ref<JournalEntry[]>([])
 
    const getLatestImage = async () => {
-     //console.log(plantId.value + " getting latest image")
      const response = await fetch(`/api/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image/jpeg`, {
        method: 'GET',
        headers: {
@@ -37,11 +36,9 @@ export default {
 
    }
 
-
    onMounted(getLatestImage)
     return{getLatestImage,plantId,latestImg,journalEntry }
  }
-
 }
 
 </script>

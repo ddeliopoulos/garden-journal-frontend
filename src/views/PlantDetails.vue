@@ -68,11 +68,7 @@ export default {
       })
       journalEntry.value = await response.json();
 
-      console.log(journalEntry.value[0].dataUrl)
-
       latestImg.value = journalEntry.value[0].dataUrl
-      // latestImg.value = journalEntry.value.dataUrl
-      console.log(latestImg.value)
     }
 
     const updateAudioEntry = async (filePath: string) => {
