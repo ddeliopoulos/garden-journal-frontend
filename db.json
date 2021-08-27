@@ -29,6 +29,26 @@
       "createdAt": 1629993380840,
       "type": "text",
       "data": "ghjkgjh"
+    },
+    {
+      "id": 8,
+      "plantId": 2,
+      "createdAt": 1630072997268,
+      "type": "image",
+      "dataUrl": "https://cdn.dribbble.com/users/1810157/screenshots/14012338/image.png"
+    },
+    {
+      "id": 9,
+      "plantId": 2,
+      "createdAt": 1630072999268,
+      "type": "image",
+      "dataUrl": "https://i.ndtvimg.com/mt/cooks/2014-11/carrots.jpg"
+    },
+    {
+      "id": 10,
+      "plantId": 2,
+      "createdAt": 1640072999268,
+      "type": "watering"
     }
   ],
   "plants": [
@@ -37,6 +57,12 @@
       "type": "Cucumber",
       "date": "2021-08-14",
       "id": 1
+    },
+    {
+      "name": "Pawel",
+      "type": "Carrot",
+      "date": "2021-08-27",
+      "id": 2
     }
   ]
 }

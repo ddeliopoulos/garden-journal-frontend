@@ -1,6 +1,6 @@
 <script lang="ts">
 
-import {onBeforeUpdate, onMounted, onUpdated, ref} from "vue";
+import {onMounted, ref} from "vue";
 
 interface Plant {
   id: number
@@ -24,7 +24,7 @@ export default {
    const journalEntry = ref<JournalEntry[]>([])
 
    const getLatestImage = async () => {
-     const response = await fetch(`/api/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image/jpeg`, {
+     const response = await fetch(`/api/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image`, {
        method: 'GET',
        headers: {
          'Content-type': 'application/json',

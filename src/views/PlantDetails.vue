@@ -60,7 +60,7 @@ export default {
     }
 
     const getLatestImage = async () => {
-      const response = await fetch(`/api/journal-entries?plantId=${id}&_sort=createdAt&_order=desc&type=image/jpeg`, {
+      const response = await fetch(`/api/journal-entries?plantId=${id}&_sort=createdAt&_order=desc&type=image`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
@@ -70,6 +70,7 @@ export default {
 
       latestImg.value = journalEntry.value[0].dataUrl
     }
+
 
     const updateAudioEntry = async (filePath: string) => {
       const xhr = new XMLHttpRequest();

@@ -1,5 +1,5 @@
 <script lang="ts">
-import {onUnmounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 
 interface JournalEntry {
   id: string
@@ -18,7 +18,7 @@ export default {
     }
   },
 
-  setup() {
+  setup(props : any) {
     const humanDate = ref<any>({
       date: ""
     })
@@ -29,16 +29,21 @@ export default {
       enlargeImg.value = !enlargeImg.value
     }
 
-
-
     const setTimeStamp = async ()  => {
       const date = new Date()
-      date.setTime(Date.now())
+      date.setTime(props.journalEntry.createdAt)
       humanDate.value.date = date.toLocaleString();
+      console.log(humanDate.value.date)
     }
 
+    onMounted(setTimeStamp)
 
-    return {setTimeStamp, humanDate, enlargeImage, enlargeImg }
+    return {
+      setTimeStamp,
+      humanDate,
+      enlargeImage,
+      enlargeImg
+    }
   }
 }
 </script>

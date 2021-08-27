@@ -73,7 +73,8 @@ export default {
            id: journalId.value.id,
            plantId: id,
            createdAt: Date.now(),
-           type: imageEntry.value.type,
+           // type: imageEntry.value.type, // TODO: enable after backend is implemented
+           type: 'image',
            data: imageEntry.value.image,
          }),
        })
