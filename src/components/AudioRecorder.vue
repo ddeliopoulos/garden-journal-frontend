@@ -1,6 +1,7 @@
 <script lang="ts">
 import {ref} from "vue";
 import {useRoute} from "vue-router";
+import AudioRecording from "@/components/AudioRecording.vue";
 
 interface AudioEntry {
   createdAt: string
@@ -19,6 +20,7 @@ interface PlantType {
 export default {
   name: "AudioRecorder",
   emits: [ "closeAudioComponent", "showAudioComponent"],
+  components: {AudioRecording},
 
 
   setup(props: any, context: any) {
@@ -41,7 +43,7 @@ export default {
 
     const emitClose = async () => {
       context.emit("closeAudioComponent")
-    }
+    }gi
 
     const emitShowAudioIcon = async () => {
       context.emit("showAudioComponent")
