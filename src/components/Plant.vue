@@ -17,6 +17,7 @@ export default {
       required: true
     }
   },
+
  setup(props : any){
 
    let plantId = props.plant.id

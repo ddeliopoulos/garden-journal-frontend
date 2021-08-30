@@ -9,7 +9,7 @@ interface AudioEntry {
   type: string
 }
 
-interface JournalEntries {
+interface JournalEntry {
   id: string
 }
 
@@ -22,10 +22,12 @@ export default {
   emits: [ "closeAudioComponent", "showAudioComponent"],
   components: {AudioRecording},
 
-
   setup(props: any, context: any) {
     const route = useRoute()
     const id = parseInt(route.params.id as string);
+
+    const titleOfAudio = ref("")
+
 
     const audioEntry = ref<AudioEntry>({
       createdAt: "",
@@ -33,7 +35,7 @@ export default {
       type: "audio"
     })
 
-    const journalId = ref<JournalEntries>({
+    const journalId = ref<JournalEntry>({
       id: "",
     })
 
@@ -43,15 +45,20 @@ export default {
 
     const emitClose = async () => {
       context.emit("closeAudioComponent")
-    }gi
+    }
 
     const emitShowAudioIcon = async () => {
       context.emit("showAudioComponent")
     }
 
+    const updateCustomAudio = async (event: any) => {
+      console.log(event)
+      audioEntry.value.audioData = event
+    }
+
     const updateAudioFile = async (event: any) => {
       if (event.target.files.length === 0) {
-        return;
+         return;
       }
       const audioFile = event.target.files[0]
       audioEntry.value = audioFile
@@ -63,7 +70,6 @@ export default {
       }
       reader.readAsText(audioFile, "UTF-8");
     }
-
 
 
     const postAudioJournal = async () => {
@@ -85,13 +91,20 @@ export default {
 
     }
 
+    function updateTitle (value : any)  {
+      titleOfAudio.value = value;
+    }
+
     return {
       audioEntry,
       plantId,
+      titleOfAudio,
+      updateCustomAudio,
       updateAudioFile,
       postAudioJournal,
       emitClose,
       emitShowAudioIcon,
+      updateTitle
     }
   }
 }
@@ -106,7 +119,9 @@ export default {
       </button>
     </div>
     <h3>Upload Audio</h3> <br/>
-    <input ref="myFileInput" id="inputA" accept="audio/*" type="file" @change="updateAudioFile"><br/><br/>
+    <input id="inputA" accept="audio/*" type="file" @change="updateAudioFile"><br/><br/>
+    <AudioRecording @updateTitle="updateTitle" @updateCustomAudio="updateCustomAudio" />
+
   </div>
 </template>
 

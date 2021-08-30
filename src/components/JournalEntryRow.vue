@@ -33,7 +33,6 @@ export default {
       const date = new Date()
       date.setTime(props.journalEntry.createdAt)
       humanDate.value.date = date.toLocaleString();
-      console.log(humanDate.value.date)
     }
 
     onMounted(setTimeStamp)
