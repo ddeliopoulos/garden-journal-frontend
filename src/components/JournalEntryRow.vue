@@ -23,18 +23,10 @@ export default {
       date: ""
     })
 
-
     const enlargeImg = ref(false)
 
     const enlargeImage = async () => {
       enlargeImg.value = !enlargeImg.value
-    }
-
-    const playAudio = async () => {
-      let audioFile = new Audio(props.journalEntry.data)
-      console.log(props.journalEntry.data)
-      await audioFile.play()
-
     }
 
     const setTimeStamp = async ()  => {
@@ -50,7 +42,6 @@ export default {
       humanDate,
       enlargeImage,
       enlargeImg,
-      playAudio
     }
   }
 }
@@ -92,11 +83,11 @@ export default {
   <div v-else-if="journalEntry.type.startsWith('audio')">
     <div class="audio-container">
       <h3 class="audio-title">Audio Journal Update: {{journalEntry.id}}</h3>
-        <audio preload=”metadata” @click="playAudio()" id="audio" controls>
-          <input type="button" value="PLAY"  @click="playAudio()">
+        <audio id="audio" controls>
+          <input type="button" value="PLAY">
           <source
               :src="journalEntry.dataUrl"
-              type="audio/mpeg">
+              type="audio/ogg">
         </audio>
     </div>
   </div>

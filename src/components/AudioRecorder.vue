@@ -7,6 +7,7 @@ interface AudioEntry {
   createdAt: string
   audioData: string
   type: string
+  audioURL: string
 }
 
 interface JournalEntry {
@@ -32,7 +33,8 @@ export default {
     const audioEntry = ref<AudioEntry>({
       createdAt: "",
       audioData: "",
-      type: "audio"
+      type: "audio",
+      audioURL: ""
     })
 
     const journalId = ref<JournalEntry>({
@@ -52,7 +54,16 @@ export default {
     }
 
     const updateCustomAudio = async (event: any) => {
+      console.log(typeof event)
       audioEntry.value.audioData = event
+      console.log(typeof audioEntry.value.audioData)
+
+      let blob = new Blob([event]);
+      const audioUrl = webkitURL.createObjectURL(blob)
+      console.log(audioUrl)
+      audioEntry.value.audioURL = audioUrl.substr(5, audioUrl.length )
+      console.log(audioEntry.value.audioURL)
+
     }
 
     const updateAudioFile = async (event: any) => {
@@ -83,6 +94,7 @@ export default {
           createdAt: Date.now(),
           type: audioEntry.value.type,
           data: audioEntry.value.audioData,
+          dataUrl: audioEntry.value.audioURL
         }),
       })
       audioEntry.value.audioData = ""
