@@ -23,10 +23,18 @@ export default {
       date: ""
     })
 
+
     const enlargeImg = ref(false)
 
     const enlargeImage = async () => {
       enlargeImg.value = !enlargeImg.value
+    }
+
+    const playAudio = async () => {
+      let audioFile = new Audio(props.journalEntry.data)
+      console.log(props.journalEntry.data)
+      await audioFile.play()
+
     }
 
     const setTimeStamp = async ()  => {
@@ -41,7 +49,8 @@ export default {
       setTimeStamp,
       humanDate,
       enlargeImage,
-      enlargeImg
+      enlargeImg,
+      playAudio
     }
   }
 }
@@ -83,8 +92,11 @@ export default {
   <div v-else-if="journalEntry.type.startsWith('audio')">
     <div class="audio-container">
       <h3 class="audio-title">Audio Journal Update: {{journalEntry.id}}</h3>
-        <audio controls>
-          <source :src="journalEntry.dataUrl" type="audio/mpeg">
+        <audio preload=”metadata” @click="playAudio()" id="audio" controls>
+          <input type="button" value="PLAY"  @click="playAudio()">
+          <source
+              :src="journalEntry.dataUrl"
+              type="audio/mpeg">
         </audio>
     </div>
   </div>
@@ -105,6 +117,21 @@ export default {
 
 <style scoped lang="scss">
 
+audio {
+  background:linear-gradient(to top left, cyan, hotpink, gold);
+  margin-top:20px;
+  margin-left:20px;
+}
+
+audio:hover {
+  -webkit-box-shadow: 0 0 9px 5px rgba(5,4,5,1);
+  -moz-box-shadow: 0 0 9px 5px rgba(5,4,5,1);
+  box-shadow: 0 0 4px 1px rgba(5,4,5,1);
+}
+
+.styleit audio{
+  background:linear-gradient(to top left, cyan, hotpink, gold);
+}
 
 .modal {
   position: relative;
@@ -114,8 +141,6 @@ export default {
   background: white;
   border-radius: 1rem;
   transition: 1s;
-  background-color: green;
-
 &__checkbox {
    display: none;
 

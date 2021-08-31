@@ -52,7 +52,6 @@ export default {
     }
 
     const updateCustomAudio = async (event: any) => {
-      console.log(event)
       audioEntry.value.audioData = event
     }
 
