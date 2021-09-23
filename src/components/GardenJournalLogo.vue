@@ -16,7 +16,7 @@ export default {
   float: left;
   position: relative;
   top: 7px;
-  right: 140px;
+  left: 0;
 }
 
 .logo-container h3 {

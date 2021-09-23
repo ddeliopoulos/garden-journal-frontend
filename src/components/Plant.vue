@@ -1,6 +1,7 @@
 <script lang="ts">
 
 import {onMounted, ref} from "vue";
+import gapi from '@/components/shared/gapi.ts';
 
 interface Plant {
   id: number
@@ -29,6 +30,7 @@ export default {
        method: 'GET',
        headers: {
          'Content-type': 'application/json',
+         'X-Auth-Token': gapi.getAuthToken()
        },
      })
      journalEntry.value = await response.json();

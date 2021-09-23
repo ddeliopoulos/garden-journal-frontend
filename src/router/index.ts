@@ -5,6 +5,7 @@ import PlantDetails from "@/views/PlantDetails.vue";
 import Testing from "@/views/Testing.vue";
 import Privacy from "@/views/Privacy.vue";
 import About from "@/views/About.vue";
+import Login from "@/views/Login.vue"
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -41,6 +42,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Testing',
     component: Testing,
   },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+  }
 
 ]
 

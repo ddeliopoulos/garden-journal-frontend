@@ -32,12 +32,13 @@ body{
 }
 
 .header{
-  width: 100%;
-  height: 50px;
+  background-position: center top;
+  height: 15%;
   display: block;
+  width: 100%;
+  background-repeat: no-repeat;
   background-color: black;
   top:0;
-  z-index: 1;
   position: fixed;
 }
 
