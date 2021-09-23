@@ -23,7 +23,14 @@ export default {
   name: 'PlantDetails',
   components: {JournalEntryRow, AddJournalButton, WaterDroplet},
 
-  setup() {
+  props: {
+    journalEntry: {
+      type: Object as () => JournalEntry,
+      required: true
+    }
+  },
+
+  setup(props : any) {
     const route = useRoute()
     const id = route.params.id
 
@@ -58,6 +65,10 @@ export default {
       latestImg.value = (await filterEntriesByType('image'))[0].dataUrl
     }
 
+    const updateCustomAudio = async (event: any) => {
+      props.journalEntry.dataUrl = event;
+    }
+
     const getPlantInfo = async () => {
       const response = await fetch(`/api/plants/${id}`, {
         method: 'GET',
@@ -77,7 +88,7 @@ export default {
       }
     }
 
-    [getPlantInfo, loadJournalEntries, getLatestImage].forEach((fn: any) => onMounted(fn));
+    [getPlantInfo, loadJournalEntries, getLatestImage, updateCustomAudio].forEach((fn: any) => onMounted(fn));
 
     return {
       journalEntries,
@@ -141,7 +152,7 @@ export default {
           </div>
         </div>
         <div class="w-full lg:w-9/12 px-4">
-          <AddJournalButton/>
+          <AddJournalButton @updateCustomAudio="updateCustomAudio" />
         </div>
         <div class="mt-10 py-10 border-t border-gray-300 text-center">
           <div class="timeline">
@@ -227,7 +238,7 @@ html {
 
 .image-cropper {
   width: 250px;
-  height: 200x;
+  height: 200px;
   position: relative;
   overflow: hidden;
   margin: auto;

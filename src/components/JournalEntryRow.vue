@@ -35,7 +35,26 @@ export default {
       humanDate.value.date = date.toLocaleString();
     }
 
+    const updateCustomAudio = async (event : any) => {
+     console.log(props.journalEntry.dataUrl)
+
+      let link = document.createElement('audio');
+      const blobbo = new Blob([props.journalEntry.dataUrl], {type:'audio/mpeg'});
+      link.src = URL.createObjectURL(blobbo);
+      document.getElementById('audio-controls')!!.onclick = () => link.play();
+
+
+
+      // let blob = new Blob([event]);
+      // const audioUrl = webkitURL.createObjectURL(blob)
+      // console.log(audioUrl)
+      // audioEntry.value.audioURL = audioUrl.substr(5, audioUrl.length )
+      // console.log(audioEntry.value.audioURL)
+
+    }
+
     onMounted(setTimeStamp)
+    onMounted(updateCustomAudio as any)
 
     return {
       setTimeStamp,
@@ -83,11 +102,11 @@ export default {
   <div v-else-if="journalEntry.type.startsWith('audio')">
     <div class="audio-container">
       <h3 class="audio-title">Audio Journal Update: {{journalEntry.id}}</h3>
-        <audio id="audio" controls>
+        <audio id="audio-controls" controls>
           <input type="button" value="PLAY">
           <source
               :src="journalEntry.dataUrl"
-              type="audio/ogg">
+              type="audio/mpeg">
         </audio>
     </div>
   </div>

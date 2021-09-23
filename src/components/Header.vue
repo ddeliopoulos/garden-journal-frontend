@@ -19,9 +19,7 @@ export default {
       <div class="garden-journal-logo">
         <GardenJournalLogo></GardenJournalLogo>
       </div><br/>
-      <div class="search-bar">
         <SearchBar></SearchBar>
-      </div>
     </div>
   </div>
 </template>

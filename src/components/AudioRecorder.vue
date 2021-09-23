@@ -20,7 +20,7 @@ interface PlantType {
 
 export default {
   name: "AudioRecorder",
-  emits: [ "closeAudioComponent", "showAudioComponent"],
+  emits: [ "closeAudioComponent", "showAudioComponent", "updateCustomAudio"],
   components: {AudioRecording},
 
   setup(props: any, context: any) {
@@ -54,16 +54,7 @@ export default {
     }
 
     const updateCustomAudio = async (event: any) => {
-      console.log(typeof event)
-      audioEntry.value.audioData = event
-      console.log(typeof audioEntry.value.audioData)
-
-      let blob = new Blob([event]);
-      const audioUrl = webkitURL.createObjectURL(blob)
-      console.log(audioUrl)
-      audioEntry.value.audioURL = audioUrl.substr(5, audioUrl.length )
-      console.log(audioEntry.value.audioURL)
-
+      context.emit("updateCustomAudio", event)
     }
 
     const updateAudioFile = async (event: any) => {

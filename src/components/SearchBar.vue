@@ -17,14 +17,16 @@ export default {
            type="text"
            placeholder="Search your garden..."/>
   </div>
-  <div class="submit-btn">
     <button class="submit-search"><h3></h3>
       <i class="fa fa-search"></i>
     </button>
-  </div>
 </template>
 
 <style scoped>
+
+.navbarSearch{
+  margin: auto;
+}
 
 .submit-search{
   position: relative;

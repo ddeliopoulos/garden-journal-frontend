@@ -3,7 +3,7 @@
     <button :disabled="disableBtn" class="btn-start" @click="startRecording">Start</button>
     <button class="btn-stop" @click="stopRecording">Stop</button>
     <div v-if="audioTitle.length !== 0" class="title">
-      Audio: {{audioTitle}} {{audio}}
+      Audio: {{audioTitle}}
     </div>
     <div id="myModal" ref="myModal" class="modal">
 

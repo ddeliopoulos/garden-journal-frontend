@@ -33,7 +33,7 @@
       </button>
 
       <div v-show="showAudio">
-        <AudioRecorder ref="audioEntry" @closeAudioComponent="closeAudioComponent()"/>
+        <AudioRecorder ref="audioEntry" @closeAudioComponent="closeAudioComponent()" @updateCustomAudio="updateCustomAudio"/>
       </div>
 
       <div v-show="showImage">
@@ -62,7 +62,8 @@ import JournalTextEntry from "@/components/JournalTextEntry.vue"
 export default defineComponent({
 
   components: {ImageUploader, AudioRecorder, JournalTextEntry},
-  setup() {
+
+  setup(props: any, context: any) {
     const showAudio = ref(false)
     const showImage = ref(false)
     const showDocument = ref(false)
@@ -118,6 +119,11 @@ export default defineComponent({
       showImage.value = false
     }
 
+    const updateCustomAudio = async (event: any) => {
+      context.emit("updateCustomAudio", event)
+    }
+
+
     const onSubmitJournal = () => {
       if (showDocument.value) textEntry.value.addToTimeline()
 
@@ -137,6 +143,7 @@ export default defineComponent({
       textEntry,
       imageEntry,
       audioEntry,
+      updateCustomAudio,
       showModal,
       closeModal,
       showAudioComponent,
