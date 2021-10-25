@@ -1,5 +1,6 @@
 <script lang="ts">
 import {ref} from "vue";
+import {getBackendUrl} from '@/components/shared/backendUrl.ts';
 
 interface Plant {
   name: string
@@ -17,7 +18,7 @@ export default {
     })
 
     const onFormSubmit = async () => {
-      await fetch('/api/plants', {
+      await fetch(`${getBackendUrl()}/plants`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -25,7 +26,7 @@ export default {
         body: JSON.stringify({
           name: plant.value.name,
           type: plant.value.type,
-          date: plant.value.date,
+          createdAt: (new Date(plant.value.date)).getTime(),
         }),
       })
 
