@@ -1,6 +1,7 @@
 <script lang="ts">
 import {ref} from "vue";
 import {useRoute} from "vue-router";
+import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface textEntry {
   createdAt: string
@@ -47,7 +48,7 @@ export default {
     }
 
     const addToTimeline = async () => {
-      await fetch('/api/journal-entries', {
+      await fetch(`${getBackendUrl()}/journal-entries`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',

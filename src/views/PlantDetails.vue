@@ -5,6 +5,7 @@ import {useRoute} from 'vue-router'
 import {ref, onMounted} from "vue";
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
+import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface JournalEntry {
   type: string
@@ -46,7 +47,7 @@ export default {
     const journalEntries = ref<JournalEntry[]>([]);
 
     const filterEntriesByType = async (type: string | null) => {
-      const response = await fetch(`/api/journal-entries?plantId=${id}&_sort=createdAt&_order=desc${type ? `&type=${type}` : ''}`, {
+      const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${id}&_sort=createdAt&_order=desc${type ? `&type=${type}` : ''}`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
@@ -70,7 +71,7 @@ export default {
     }
 
     const getPlantInfo = async () => {
-      const response = await fetch(`/api/plants/${id}`, {
+      const response = await fetch(`${getBackendUrl()}/plants/${id}`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
@@ -81,7 +82,7 @@ export default {
 
     const deletePlant = async () => {
       if (confirm('Are you sure, bitch?')) {
-        await fetch(`/api/plants/${id}`, {
+        await fetch(`${getBackendUrl()}/plants/${id}`, {
           method: 'DELETE'
         })
         await router.push('/');

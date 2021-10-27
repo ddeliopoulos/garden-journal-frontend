@@ -2,6 +2,7 @@
 
 import {onMounted, ref} from "vue";
 import gapi from '@/components/shared/gapi.ts';
+import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface Plant {
   id: number
@@ -26,7 +27,7 @@ export default {
    const journalEntry = ref<JournalEntry[]>([])
 
    const getLatestImage = async () => {
-     const response = await fetch(`/api/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image`, {
+     const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image`, {
        method: 'GET',
        headers: {
          'Content-type': 'application/json',

@@ -2,6 +2,7 @@
 import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
 import {ref, onMounted} from 'vue'
+import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface PlantType {
   name: string
@@ -24,7 +25,7 @@ export default {
     let plantId = ref("")
 
     const loadPlants = async () => {
-      const response = await fetch('/api/plants', {
+      const response = await fetch(`${getBackendUrl()}/plants`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',

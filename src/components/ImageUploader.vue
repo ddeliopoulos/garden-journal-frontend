@@ -1,10 +1,11 @@
 <script lang="ts">
 import { ref} from 'vue';
 import {useRoute} from "vue-router";
+import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface ImageEntry {
   createdAt: string
-  image: string
+  data: string
   type: string
 }
 
@@ -18,7 +19,7 @@ interface PlantType {
 
 export default {
   name: "ImageUploader",
-  emits: ["closeImageComponent", "showImageComponent"],
+  emits: ["closeImageComponent", "showImageComponent", "setTimeStampOnJournal"],
 
    setup(props : any, context : any) {
      const route = useRoute()
@@ -27,7 +28,7 @@ export default {
 
      const imageEntry = ref<ImageEntry>({
        createdAt: "",
-       image: "",
+       data: "",
        type: "image"
      })
 
@@ -58,13 +59,14 @@ export default {
            let reader = new FileReader();
            reader.onload = evt => {
              // this is what you want to upload to server
-             imageEntry.value.image = <string>evt.target?.result
+             imageEntry.value.data = <string>evt.target?.result
            }
            reader.readAsText(imageFile, "UTF-8");
      }
 
      const postImageJournal = async () => {
-       await fetch('/api/journal-entries', {
+       console.log("hello",journalId.value.id.toString)
+       await fetch(`${getBackendUrl()}/journal-entries`, {
          method: 'POST',
          headers: {
            'Content-type': 'application/json',
@@ -73,17 +75,15 @@ export default {
            id: journalId.value.id,
            plantId: id,
            createdAt: Date.now(),
-           // type: imageEntry.value.type, // TODO: enable after backend is implemented
-           type: 'image',
-           data: imageEntry.value.image,
-           dataUrl: 'https://cdn.dribbble.com/users/1810157/screenshots/14012338/image.png' // TODO: remove
+           type: imageEntry.value.type,
+           data: imageEntry.value.data,
          }),
        })
        console.log("Image Successfully Posted")
 
-       imageEntry.value.image = ""
+       imageEntry.value.data = ""
 
-       context.emit( 'setTimeStampOnJournal' ,imageEntry.value.createdAt)
+       context.emit( 'setTimeStampOnJournal', imageEntry.value.createdAt)
      }
 
      return {
