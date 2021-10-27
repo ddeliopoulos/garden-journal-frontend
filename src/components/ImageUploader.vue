@@ -5,7 +5,7 @@ import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface ImageEntry {
   createdAt: string
-  data: string
+  data: File | null
   type: string
 }
 
@@ -28,7 +28,7 @@ export default {
 
      const imageEntry = ref<ImageEntry>({
        createdAt: "",
-       data: "",
+       data: null,
        type: "image"
      })
 
@@ -53,20 +53,31 @@ export default {
              return;
            }
            // this is what you want to emit and hold
-           const imageFile = event.target.files[0]; // this holds the File object, which is just a reference to the file
-           imageEntry.value = imageFile;
+           imageEntry.value.data = event.target.files[0];
+       // const imageFile = event.target.files[0]; // this holds the File object, which is just a reference to the file
 
-           let reader = new FileReader();
-           reader.onload = evt => {
-             // this is what you want to upload to server
-             imageEntry.value.data = <string>evt.target?.result
-           }
-           reader.readAsText(imageFile, "UTF-8");
+
+           // imageEntry.value = imageFile;
+           //
+           // let reader = new FileReader();
+           // reader.onload = evt => {
+           //   // this is what you want to upload to server
+           //   console.log("mamma mia!")
+           //   imageEntry.value.data =  evt.target?.result as string
+           // }
+           // reader.readAsDataURL(imageFile);
      }
 
      const postImageJournal = async () => {
        console.log("hello",journalId.value.id.toString)
-       await fetch(`${getBackendUrl()}/journal-entries`, {
+
+       const dataUploadResponse = await fetch(`${getBackendUrl()}/media?contentType=${imageEntry.value.data?.type}`, {
+         method: 'POST',
+         body: imageEntry.value.data,
+       });
+       const mediaId = parseInt(await (dataUploadResponse.text()));
+
+       await fetch(`${getBackendUrl()}/plants/${id}/journal-entries`, {
          method: 'POST',
          headers: {
            'Content-type': 'application/json',
@@ -76,12 +87,12 @@ export default {
            plantId: id,
            createdAt: Date.now(),
            type: imageEntry.value.type,
-           data: imageEntry.value.data,
+           mediaId: mediaId
          }),
        })
        console.log("Image Successfully Posted")
 
-       imageEntry.value.data = ""
+       //imageEntry.value.data = ""
 
        context.emit( 'setTimeStampOnJournal', imageEntry.value.createdAt)
      }

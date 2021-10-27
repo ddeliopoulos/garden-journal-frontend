@@ -75,7 +75,7 @@ export default {
 
 
     const postAudioJournal = async () => {
-      await fetch(`${getBackendUrl()}/journal-entries`, {
+      await fetch(`${getBackendUrl()}/plants/${id}/journal-entries`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
