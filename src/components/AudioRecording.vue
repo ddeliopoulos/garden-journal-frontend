@@ -31,6 +31,8 @@ export default {
   emits:['updateTitle','updateCustomAudio'],
 
   setup(props: any, context : any) {
+    console.log("STARTING AudioRecorder.VUE")
+
     let mediaRecorder: any;
     let recordingData: any;
     const modal = ref(false)

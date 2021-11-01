@@ -125,13 +125,12 @@ export default defineComponent({
 
 
     const onSubmitJournal = () => {
-      if (showDocument.value) textEntry.value.addToTimeline()
+      if (showDocument.value) textEntry.value.postTextJournal()
 
       if(showImage.value) imageEntry.value.postImageJournal()
 
-      if(showAudio.value){
-        audioEntry.value.postAudioJournal()
-      }
+      if(showAudio.value) audioEntry.value.postAudioJournal()
+
       closeModal();
     }
 

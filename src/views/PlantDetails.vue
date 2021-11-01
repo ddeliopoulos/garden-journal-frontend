@@ -1,17 +1,18 @@
 <script lang="ts">
 import WaterDroplet from "@/components/WaterDroplet.vue";
 import router from "@/router";
-import {useRoute} from 'vue-router'
-import {ref, onMounted} from "vue";
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
 import {getBackendUrl} from "@/components/shared/backendUrl";
+import {useRoute} from 'vue-router'
+import {onMounted, ref} from "vue";
+
 
 interface JournalEntry {
   type: string
-  dataUrl: string
+  data: string
+  mediaId: string
 }
-
 interface PlantType {
   name: string
   type: string
@@ -46,12 +47,15 @@ export default {
 
     const journalEntries = ref<JournalEntry[]>([]);
 
+    const journalEntry = ref<JournalEntry>({
+      mediaId: "",
+      data: "",
+      type: ""
+    })
+
     const filterEntriesByType = async (type: string | null) => {
-      const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${id}&_sort=createdAt&_order=desc${type ? `&type=${type}` : ''}`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
+      const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${id}&plsSortMeStuff=createdAt&_order=desc${type ? `&type=${type}` : ''}`, {
+        method: 'GET'
       })
       return await response.json();
     }
@@ -63,11 +67,20 @@ export default {
     const loadJournalEntries = async () => await reloadEntriesByType(null);
 
     const getLatestImage = async () => {
-      latestImg.value = (await filterEntriesByType('image'))[0].dataUrl
+      console.log("getting latest image")
+      latestImg.value = (await filterEntriesByType('image'))
+
+      let img = JSON.parse(JSON.stringify(latestImg.value[0]))
+
+      journalEntry.value.mediaId = img.mediaId
+      return img.mediaId;
+
+      //console.log(journalEntry.value.mediaId)
     }
 
     const updateCustomAudio = async (event: any) => {
-      props.journalEntry.dataUrl = event;
+      props.journalEntry.data = event;
+      console.log(props.journalEntry.data)
     }
 
     const getPlantInfo = async () => {
@@ -92,14 +105,17 @@ export default {
     [getPlantInfo, loadJournalEntries, getLatestImage, updateCustomAudio].forEach((fn: any) => onMounted(fn));
 
     return {
+      getLatestImage,
       journalEntries,
+      journalEntry,
       plant,
       latestImg,
       deletePlant,
       filterTextEntries,
       loadJournalEntries,
       filterAudioEntries,
-      filterImageEntries
+      filterImageEntries,
+      getBackendUrl
     }
   }
 }
@@ -128,7 +144,7 @@ export default {
           <div class="text-center mt-12">
             <div class="move-left">
               <div class="image-cropper">
-                <img :src=latestImg alt="default-plant-image" class="default-plant">
+                <img :src="getBackendUrl() + '/media/' + journalEntry.mediaId" alt="Latest Img Displayed" >
               </div>
               <h3 class="text-4xl font-semisolid leading-normal mb-2 text-gray-800 mb-2">
                 {{ plant.name }}

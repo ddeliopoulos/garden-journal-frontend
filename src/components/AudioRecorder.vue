@@ -6,15 +6,13 @@ import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface AudioEntry {
   createdAt: string
-  audioData: string
+  data: File | null
   type: string
-  audioURL: string
+  mediaId: string
 }
-
 interface JournalEntry {
   id: string
 }
-
 interface PlantType {
   plantId: string
 }
@@ -25,6 +23,7 @@ export default {
   components: {AudioRecording},
 
   setup(props: any, context: any) {
+    console.log("STARTING AudioRecorder.VUE")
     const route = useRoute()
     const id = parseInt(route.params.id as string);
 
@@ -33,9 +32,9 @@ export default {
 
     const audioEntry = ref<AudioEntry>({
       createdAt: "",
-      audioData: "",
+      data: null,
       type: "audio",
-      audioURL: ""
+      mediaId: ""
     })
 
     const journalId = ref<JournalEntry>({
@@ -62,19 +61,28 @@ export default {
       if (event.target.files.length === 0) {
          return;
       }
-      const audioFile = event.target.files[0]
-      audioEntry.value = audioFile
-
-      let reader = new FileReader();
-      reader.onload = evt => {
-        // this is what you want to upload to server
-        audioEntry.value.audioData = <string>evt.target?.result
-      }
-      reader.readAsText(audioFile, "UTF-8");
+      // const audioFile = event.target.files[0]
+      // audioEntry.value = audioFile
+      audioEntry.value.data = event.target.files[0]
+      // let reader = new FileReader();
+      // reader.onload = evt => {
+      //   // this is what you want to upload to server
+      //   audioEntry.value.data = <string>evt.target?.result
+      // }
+      // reader.readAsText(audioFile, "UTF-8");
     }
 
 
     const postAudioJournal = async () => {
+      console.log("Attempting to postAJ")
+
+      const dataUploadResponse = await fetch(`${getBackendUrl()}/media?contentType=${audioEntry.value.data?.type}`, {
+        method: 'POST',
+        body: audioEntry.value.data,
+      });
+
+      audioEntry.value.mediaId = await (dataUploadResponse.text());
+
       await fetch(`${getBackendUrl()}/plants/${id}/journal-entries`, {
         method: 'POST',
         headers: {
@@ -85,11 +93,10 @@ export default {
           plantId: id,
           createdAt: Date.now(),
           type: audioEntry.value.type,
-          data: audioEntry.value.audioData,
-          dataUrl: audioEntry.value.audioURL
+          mediaId: audioEntry.value.mediaId
         }),
       })
-      audioEntry.value.audioData = ""
+
       console.log("Audio Successfully Posted")
 
     }

@@ -5,14 +5,13 @@ import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface textEntry {
   createdAt: string
-  text: string
+  data: string
   type: string
+  mediaId: string;
 }
-
 interface JournalEntries {
   id: string
 }
-
 interface PlantType {
   plantId: string
 }
@@ -27,8 +26,9 @@ export default {
 
     const textEntry = ref<textEntry>({
       createdAt: "",
-      text: "",
-      type: "text"
+      data: "",
+      type: "text/plain",
+      mediaId: ""
     })
 
     const journalId = ref<JournalEntries>({
@@ -47,7 +47,17 @@ export default {
       context.emit("showTextComponent")
     }
 
-    const addToTimeline = async () => {
+    const postTextJournal = async () => {
+      console.log("Attempting to postTJ")
+
+      const dataUploadResponse = await fetch(`${getBackendUrl()}/media?contentType=${textEntry.value.type}`, {
+        method: 'POST',
+        body: textEntry.value.data,
+      });
+      console.log(textEntry.value.data)
+      textEntry.value.mediaId = await (dataUploadResponse.text());
+      console.log(textEntry.value.mediaId)
+
       await fetch(`${getBackendUrl()}/plants/${id}/journal-entries`, {
         method: 'POST',
         headers: {
@@ -58,11 +68,12 @@ export default {
           plantId: id,
           createdAt: Date.now(),
           type: textEntry.value.type,
-          data: textEntry.value.text,
+          mediaId: textEntry.value.mediaId
         }),
       })
-      textEntry.value.text=""
+
       console.log("Text Successfully Posted!")
+
     }
 
 
@@ -70,7 +81,7 @@ export default {
       plantId,
       textEntry,
       emitShowTextIcon,
-      addToTimeline,
+      postTextJournal,
       emitClose,
     }
   }
@@ -87,7 +98,7 @@ export default {
         <h3>Write Entry</h3>
         <div class="form-group shadow-textarea">
           <p id="three">
-            <textarea v-model='textEntry.text' name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
+            <textarea v-model='textEntry.data' name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
           </p>
         </div>
       </div>

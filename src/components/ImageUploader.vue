@@ -7,12 +7,12 @@ interface ImageEntry {
   createdAt: string
   data: File | null
   type: string
+  mediaId: string
 }
 
 interface JournalEntries {
   id: string
 }
-
 interface PlantType {
   plantId: string
 }
@@ -29,7 +29,8 @@ export default {
      const imageEntry = ref<ImageEntry>({
        createdAt: "",
        data: null,
-       type: "image"
+       type: "image",
+       mediaId: ""
      })
 
      const journalId = ref<JournalEntries>({
@@ -49,16 +50,14 @@ export default {
      }
 
      const updateImageFile = async (event: any) => {
+       //console.log("Image File",event.target.files[0])
            if (event.target.files.length === 0) {
              return;
            }
            // this is what you want to emit and hold
            imageEntry.value.data = event.target.files[0];
        // const imageFile = event.target.files[0]; // this holds the File object, which is just a reference to the file
-
-
            // imageEntry.value = imageFile;
-           //
            // let reader = new FileReader();
            // reader.onload = evt => {
            //   // this is what you want to upload to server
@@ -69,13 +68,17 @@ export default {
      }
 
      const postImageJournal = async () => {
-       console.log("hello",journalId.value.id.toString)
+       console.log("Attempting to postIJ")
+       console.log("data type: ", imageEntry.value.data?.type)
 
        const dataUploadResponse = await fetch(`${getBackendUrl()}/media?contentType=${imageEntry.value.data?.type}`, {
          method: 'POST',
          body: imageEntry.value.data,
        });
-       const mediaId = parseInt(await (dataUploadResponse.text()));
+
+       imageEntry.value.mediaId = await (dataUploadResponse.text());
+
+       context.emit('getLatestImage', imageEntry.value.mediaId)
 
        await fetch(`${getBackendUrl()}/plants/${id}/journal-entries`, {
          method: 'POST',
@@ -87,12 +90,11 @@ export default {
            plantId: id,
            createdAt: Date.now(),
            type: imageEntry.value.type,
-           mediaId: mediaId
+           mediaId: imageEntry.value.mediaId
          }),
        })
        console.log("Image Successfully Posted")
 
-       //imageEntry.value.data = ""
 
        context.emit( 'setTimeStampOnJournal', imageEntry.value.createdAt)
      }

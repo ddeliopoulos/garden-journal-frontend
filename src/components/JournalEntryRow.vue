@@ -1,13 +1,14 @@
 <script lang="ts">
 import {onMounted, ref} from "vue";
+import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface JournalEntry {
   id: string
   plantId: string
   createdAt: string
   type: string
-  data: string,
-  dataUrl: string
+  mediaId: string
+  data: string
 }
 
 export default {
@@ -18,10 +19,27 @@ export default {
     }
   },
 
-  setup(props : any) {
+   setup(props: any) {
+    console.log("im starting")
+
+     const journalEntry = ref<JournalEntry>({
+       createdAt: "",
+       data: "",
+       type: "text/plain",
+       mediaId: "",
+       id: "",
+       plantId: ""
+     })
+
     const humanDate = ref<any>({
       date: ""
     })
+    const mediaId = ref<any>(props.journalEntry.mediaId)
+    const type = ref<any>(props.journalEntry.type)
+
+    const plantId = ref<any>(props.journalEntry.plantId)
+    //console.log(props.journalEntry, props.journalEntry.mediaId)
+    // const journalEntries = ref<JournalEntry[]>([]);
 
     const enlargeImg = ref(false)
 
@@ -29,38 +47,49 @@ export default {
       enlargeImg.value = !enlargeImg.value
     }
 
-    const setTimeStamp = async ()  => {
+    const setTimeStamp = async () => {
       const date = new Date()
       date.setTime(props.journalEntry.createdAt)
       humanDate.value.date = date.toLocaleString();
     }
 
-    const updateCustomAudio = async (event : any) => {
-     console.log(props.journalEntry.dataUrl)
+     const loadTextMedia = ref<any>("")
+     const bla = async () => {
+      console.log("am i in?", mediaId.value)
+      const response = await fetch(`${getBackendUrl()}/media/${mediaId.value}`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+       loadTextMedia.value = await response.text();
+       console.log('bitch loaded', loadTextMedia.value)
+    };
+    if (props.journalEntry.type === 'text/plain') bla();
 
+    const updateCustomAudio = async (event: any) => {
       let link = document.createElement('audio');
-      const blobbo = new Blob([props.journalEntry.dataUrl], {type:'audio/mpeg'});
-      link.src = URL.createObjectURL(blobbo);
-      document.getElementById('audio-controls')!!.onclick = () => link.play();
-
-
-
+      const blob = new Blob([props.journalEntry.data], {type: 'audio/mpeg'});
+      link.src = URL.createObjectURL(blob);
+      // document.getElementById('audio-controls')!!.onclick = () => link.play();
       // let blob = new Blob([event]);
       // const audioUrl = webkitURL.createObjectURL(blob)
       // console.log(audioUrl)
       // audioEntry.value.audioURL = audioUrl.substr(5, audioUrl.length )
       // console.log(audioEntry.value.audioURL)
-
     }
 
     onMounted(setTimeStamp)
+    //onMounted(loadTextMedia as any)
     onMounted(updateCustomAudio as any)
 
     return {
+      loadTextMedia,
       setTimeStamp,
       humanDate,
       enlargeImage,
       enlargeImg,
+      getBackendUrl
     }
   }
 }
@@ -80,7 +109,7 @@ export default {
       <label class="modal__label" for="modal__checkbox">
 
         <div class="image-cropper">
-          <img alt="test" :src="journalEntry.dataUrl"/>
+          <img alt="test" :src="getBackendUrl() + '/media/' + journalEntry.mediaId"/>
         </div>
 
       </label>
@@ -92,8 +121,9 @@ export default {
             <path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path>
           </svg>
           </label>
+          {{journalEntry.mediaId}}
           <input class="modal__checkbox" id="modal_checkbox" type="checkbox">
-          <img :src="journalEntry.dataUrl"/>
+          <img :src="getBackendUrl() + '/media/' + journalEntry.mediaId"  alt=""/>
         </div>
       </div>
     </div>
@@ -105,7 +135,7 @@ export default {
         <audio id="audio-controls" controls>
           <input type="button" value="PLAY">
           <source
-              :src="journalEntry.dataUrl"
+              :src="getBackendUrl() + '/media/' + journalEntry.mediaId"
               type="audio/mpeg">
         </audio>
     </div>
@@ -114,7 +144,7 @@ export default {
   <div v-else-if="journalEntry.type.startsWith('text')">
     <div class="text-container">
       <div class="text-entry"> <br/>
-        {{journalEntry.data}}
+        {{loadTextMedia}}
       </div>
     </div>
   </div>
