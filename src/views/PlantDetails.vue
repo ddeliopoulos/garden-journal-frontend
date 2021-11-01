@@ -54,7 +54,7 @@ export default {
     })
 
     const filterEntriesByType = async (type: string | null) => {
-      const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${id}&plsSortMeStuff=createdAt&_order=desc${type ? `&type=${type}` : ''}`, {
+      const response = await fetch(`${getBackendUrl()}/plants/${id}/journal-entries${type ? `?type=${type}` : ''}`, {
         method: 'GET'
       })
       return await response.json();

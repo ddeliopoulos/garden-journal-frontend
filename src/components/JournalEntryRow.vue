@@ -31,10 +31,9 @@ export default {
        plantId: ""
      })
 
-    const humanDate = ref<any>({
-      date: ""
-    })
-    const mediaId = ref<any>(props.journalEntry.mediaId)
+     const humanDate = ref(new Date(props.journalEntry.createdAt).toLocaleString())
+
+     const mediaId = ref<any>(props.journalEntry.mediaId)
     const type = ref<any>(props.journalEntry.type)
 
     const plantId = ref<any>(props.journalEntry.plantId)
@@ -45,12 +44,6 @@ export default {
 
     const enlargeImage = async () => {
       enlargeImg.value = !enlargeImg.value
-    }
-
-    const setTimeStamp = async () => {
-      const date = new Date()
-      date.setTime(props.journalEntry.createdAt)
-      humanDate.value.date = date.toLocaleString();
     }
 
      const loadTextMedia = ref<any>("")
@@ -79,13 +72,11 @@ export default {
       // console.log(audioEntry.value.audioURL)
     }
 
-    onMounted(setTimeStamp)
     //onMounted(loadTextMedia as any)
     onMounted(updateCustomAudio as any)
 
     return {
       loadTextMedia,
-      setTimeStamp,
       humanDate,
       enlargeImage,
       enlargeImg,
@@ -101,7 +92,7 @@ export default {
 
 <div class="garden-journals-container">
   <div class="timestamp">
-    <b>{{humanDate.date}}</b> <br/>
+    <b>{{humanDate}}</b> <br/>
   </div>
 
   <div v-if="journalEntry.type.startsWith('image')">

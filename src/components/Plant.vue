@@ -6,10 +6,12 @@ import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface Plant {
   id: number
+  createdAt: string
 }
 
 interface JournalEntry {
-  dataUrl: string
+  journalId: string
+  mediaId: string
 }
 
 export default {
@@ -23,27 +25,52 @@ export default {
  setup(props : any){
 
    let plantId = props.plant.id
+   const humanDate = ref(new Date(props.plant.createdAt).toLocaleDateString())
    const latestImg = ref("")
-   const journalEntry = ref<JournalEntry[]>([])
+
+   const journalEntry = ref<JournalEntry>({
+     journalId: "",
+     mediaId: ""
+   })
+   const filterEntriesByType = async (type: string | null) => {
+     const response = await fetch(`${getBackendUrl()}/plants/${plantId}/journal-entries${type ? `?type=${type}` : ''}`, {
+       method: 'GET'
+     })
+     return await response.json();
+   }
 
    const getLatestImage = async () => {
-     const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image`, {
-       method: 'GET',
-       headers: {
-         'Content-type': 'application/json',
-         'X-Auth-Token': gapi.getAuthToken()
-       },
-     })
-     journalEntry.value = await response.json();
+     console.log("getting latest image")
+     latestImg.value = (await filterEntriesByType('image'))
 
-     latestImg.value = journalEntry.value[0].dataUrl
+     let img = JSON.parse(JSON.stringify(latestImg.value[0]))
 
+     journalEntry.value.mediaId = img.mediaId
+     return img.mediaId;
+
+     //console.log(journalEntry.value.mediaId)
    }
+   //
+   // const getLatestImage = async () => {
+   //   const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image`, {
+   //     method: 'GET',
+   //     headers: {
+   //       'Content-type': 'application/json',
+   //       'X-Auth-Token': gapi.getAuthToken()
+   //     },
+   //   })
+   //   journalEntry.value = await response.json();
+   //
+   //   latestImg.value = journalEntry.value[0].dataUrl
+   //
+   // }
 
    onMounted(getLatestImage)
 
     return{
      getLatestImage,
+      getBackendUrl,
+      humanDate,
       plantId,
       latestImg,
       journalEntry
@@ -59,7 +86,7 @@ export default {
       <router-link style="text-decoration: none; color: inherit;" :to="{name: 'PlantDetails', params: {id: plant.id}}">
         <h2><b></b> {{ plant.name }}</h2>
         <div class="image-cropper">
-          <img :src=latestImg alt="default-plant-image" class="default-plant">
+          <img :src="getBackendUrl() + '/media/' + journalEntry.mediaId" alt="default-plant-image" class="default-plant">
         </div>
         <br/>
         <b>
@@ -67,7 +94,7 @@ export default {
           <p>{{ plant.type }}</p>
           <br/>
           <h4>Date: </h4>
-          <p>{{ plant.date }}</p>
+          <p>{{ humanDate }}</p>
           <br/>
         </b>
       </router-link>
