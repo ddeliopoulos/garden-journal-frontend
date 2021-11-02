@@ -32,20 +32,14 @@ body{
 }
 
 .header{
-  background-position: center top;
-  height: 15%;
-  display: block;
   width: 100%;
   background-repeat: no-repeat;
   background-color: black;
-  top:0;
-  position: fixed;
 }
 
 .inner-header{
   width: 1602px;
   height: 100%;
-  display: block;
   margin: 0 auto;
 
 }

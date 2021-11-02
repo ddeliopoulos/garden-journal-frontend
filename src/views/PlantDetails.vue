@@ -9,14 +9,18 @@ import {onMounted, ref} from "vue";
 
 
 interface JournalEntry {
+  id: string
+  plantId: string
+  createdAt: string
   type: string
-  data: string
   mediaId: string
+  data: string
 }
+
 interface PlantType {
   name: string
   type: string
-  date: string
+  createdAt: string
   id: string
 }
 
@@ -36,22 +40,30 @@ export default {
     const route = useRoute()
     const id = route.params.id
 
-    const latestImg = ref("")
+
+    const plantImageUrl = ref("");
+    let src = ""
 
     const plant = ref<PlantType>({
       name: "",
       type: "",
-      date: "",
+      createdAt: "",
       id: ""
     })
+    console.log("CREATED AT", plant.value.createdAt)
+    const humanDate = ref();
 
     const journalEntries = ref<JournalEntry[]>([]);
 
     const journalEntry = ref<JournalEntry>({
+      id: "",
+      plantId: "",
+      createdAt: "",
+      type: "",
       mediaId: "",
-      data: "",
-      type: ""
+      data: ""
     })
+
 
     const filterEntriesByType = async (type: string | null) => {
       const response = await fetch(`${getBackendUrl()}/plants/${id}/journal-entries${type ? `?type=${type}` : ''}`, {
@@ -68,20 +80,26 @@ export default {
 
     const getLatestImage = async () => {
       console.log("getting latest image")
-      latestImg.value = (await filterEntriesByType('image'))
+      let img;
 
-      let img = JSON.parse(JSON.stringify(latestImg.value[0]))
+        const images = (await filterEntriesByType('image'));
 
-      journalEntry.value.mediaId = img.mediaId
-      return img.mediaId;
+      console.log("latest image value: ",images)
+        if(images.length === 0){
+          src = "/default-plant-img.jpg"
+          console.log(src)
+        } else {
 
-      //console.log(journalEntry.value.mediaId)
+          journalEntry.value.mediaId = images[0].mediaId
+          src = getBackendUrl() + '/media/' + journalEntry.value.mediaId
+        }
+      plantImageUrl.value = src;
     }
 
-    const updateCustomAudio = async (event: any) => {
-      props.journalEntry.data = event;
-      console.log(props.journalEntry.data)
-    }
+    // const updateCustomAudio = async (event: any) => {
+    //   props.journalEntry.data = event;
+    //   console.log(props.journalEntry.data)
+    // }
 
     const getPlantInfo = async () => {
       const response = await fetch(`${getBackendUrl()}/plants/${id}`, {
@@ -91,6 +109,7 @@ export default {
         },
       })
       plant.value = await response.json()
+      humanDate.value = new Date(plant.value.createdAt).toLocaleDateString()
     }
 
     const deletePlant = async () => {
@@ -102,14 +121,15 @@ export default {
       }
     }
 
-    [getPlantInfo, loadJournalEntries, getLatestImage, updateCustomAudio].forEach((fn: any) => onMounted(fn));
+    [getPlantInfo, loadJournalEntries, getLatestImage].forEach((fn: any) => onMounted(fn));
 
     return {
-      getLatestImage,
+      humanDate,
+      src,
+      plantImageUrl,
       journalEntries,
       journalEntry,
       plant,
-      latestImg,
       deletePlant,
       filterTextEntries,
       loadJournalEntries,
@@ -143,9 +163,9 @@ export default {
           </div>
           <div class="text-center mt-12">
             <div class="move-left">
-              <div class="image-cropper">
-                <img :src="getBackendUrl() + '/media/' + journalEntry.mediaId" alt="Latest Img Displayed" >
-              </div>
+                  <div class="image-cropper">
+                  <img :src="plantImageUrl" alt="latest-img" class="img">
+                </div>
               <h3 class="text-4xl font-semisolid leading-normal mb-2 text-gray-800 mb-2">
                 {{ plant.name }}
               </h3>
@@ -161,7 +181,7 @@ export default {
                 <div class="move-date">
                   <div class="mb-2 text-gray-700">
                     <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
-                    {{ plant.date }}
+                    <b>{{ humanDate }}</b>
                   </div>
                 </div>
               </div>
@@ -227,16 +247,15 @@ html {
 
 .move-left {
   width: 725px;
-  height: 315px;
+  height: 350px;
   margin: auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
 }
 
 .move-date {
   position: relative;
-  top: -35px;
+  top: -26px;
 }
-
 
 .fa-window-close {
   color: #CC2E5D;
@@ -247,14 +266,13 @@ html {
   cursor: pointer;
 }
 
-
 .fas {
   position: relative;
   top: -35px;
 }
 
 .image-cropper {
-  width: 250px;
+  width: 220px;
   height: 200px;
   position: relative;
   overflow: hidden;
@@ -273,7 +291,6 @@ body {
 img {
   border-style: none;
 }
-
 
 img {
   max-width: 100%;
@@ -430,7 +447,10 @@ img {
 }
 
 .text-sm {
-  font-size: 0.875rem
+  font-size: 0.875rem;
+  position: relative;
+  top: 7px;
+  right: 5px;
 }
 
 .text-lg {

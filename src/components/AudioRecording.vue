@@ -77,8 +77,7 @@ export default {
       }
       mediaRecorder.start()
     }
-
-
+    
     const stopRecording = async () => {
       console.log("stopping recording...")
       mediaRecorder.stop();

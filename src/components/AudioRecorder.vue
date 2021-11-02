@@ -96,6 +96,7 @@ export default {
           mediaId: audioEntry.value.mediaId
         }),
       })
+      window.location.reload()
 
       console.log("Audio Successfully Posted")
 

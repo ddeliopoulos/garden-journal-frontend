@@ -95,6 +95,7 @@ export default {
        })
        console.log("Image Successfully Posted")
 
+       window.location.reload()
 
        context.emit( 'setTimeStampOnJournal', imageEntry.value.createdAt)
      }

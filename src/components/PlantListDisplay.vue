@@ -7,8 +7,7 @@ import {getBackendUrl} from "@/components/shared/backendUrl";
 interface PlantType {
   name: string
   type: string
-  date: string
-  thirstLevel: string
+  createdAt: string
   id: number
 }
 interface JournalEntry {
@@ -34,7 +33,6 @@ export default {
       plants.value = await response.json();
 
       plantId.value = plants.value[0].id.toString()
-
     }
     const bla = () => console.log('bla');
 
@@ -82,7 +80,7 @@ export default {
 
 .move-down{
   position: relative;
-  top: 65px;
+  top: 180px;
 }
 
 h1{

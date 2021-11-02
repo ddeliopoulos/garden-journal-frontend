@@ -1,7 +1,6 @@
 <script lang="ts">
 
 import {onMounted, ref} from "vue";
-import gapi from '@/components/shared/gapi.ts';
 import {getBackendUrl} from "@/components/shared/backendUrl";
 
 interface Plant {
@@ -27,6 +26,7 @@ export default {
    let plantId = props.plant.id
    const humanDate = ref(new Date(props.plant.createdAt).toLocaleDateString())
    const latestImg = ref("")
+   const plantImageUrl = ref("");
 
    const journalEntry = ref<JournalEntry>({
      journalId: "",
@@ -39,16 +39,18 @@ export default {
      return await response.json();
    }
 
-   const getLatestImage = async () => {
-     console.log("getting latest image")
-     latestImg.value = (await filterEntriesByType('image'))
+   const getLatestImageOrDefault = async () => {
+     console.log("getting latest image or default")
+     let img, src;
+     const images = (await filterEntriesByType('image'));
 
-     let img = JSON.parse(JSON.stringify(latestImg.value[0]))
-
-     journalEntry.value.mediaId = img.mediaId
-     return img.mediaId;
-
-     //console.log(journalEntry.value.mediaId)
+     if(images.length === 0){
+       src = "/default-plant-img.jpg"
+     } else {
+       journalEntry.value.mediaId = images[0].mediaId
+       src = getBackendUrl() + '/media/' + journalEntry.value.mediaId
+     }
+     plantImageUrl.value = src;
    }
    //
    // const getLatestImage = async () => {
@@ -65,10 +67,11 @@ export default {
    //
    // }
 
-   onMounted(getLatestImage)
+   onMounted(getLatestImageOrDefault)
 
     return{
-     getLatestImage,
+      plantImageUrl,
+      getLatestImageOrDefault,
       getBackendUrl,
       humanDate,
       plantId,
@@ -86,7 +89,7 @@ export default {
       <router-link style="text-decoration: none; color: inherit;" :to="{name: 'PlantDetails', params: {id: plant.id}}">
         <h2><b></b> {{ plant.name }}</h2>
         <div class="image-cropper">
-          <img :src="getBackendUrl() + '/media/' + journalEntry.mediaId" alt="default-plant-image" class="default-plant">
+            <img :src="plantImageUrl" alt="default-plant-image" class="default-plant">
         </div>
         <br/>
         <b>
@@ -130,7 +133,6 @@ p {
   height: 100%;
   width: auto;
   position: relative;
-  right: 18px;
 }
 
 .plant-card:hover {

@@ -12,51 +12,74 @@ export default {
 </script>
 
 <template>
-  <div class="navbarSearch">
-    <input class="form-control navbar-search-input js-navbar-search-input nav-input js-filter-topics"
-           type="text"
-           placeholder="Search your garden..."/>
-  </div>
-    <button class="submit-search"><h3></h3>
-      <i class="fa fa-search"></i>
-    </button>
+  <form class="search" action="">
+    <input type="search" placeholder="Search here..." required>
+    <button type="submit">Search</button>
+  </form>
+  <!--  <div class="navbarSearch">-->
+<!--    <input class="form-control navbar-search-input js-navbar-search-input nav-input js-filter-topics"-->
+<!--           type="text"-->
+<!--           placeholder="Search your garden..."/>-->
+<!--  </div>-->
+<!--    <button class="submit-search"><h3></h3>-->
+<!--      <i class="fa fa-search"></i>-->
+<!--    </button>-->
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 
-.navbarSearch{
-  margin: auto;
+body {
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/41294/hero.jpg) no-repeat center center fixed;
+  background-size: cover;
 }
 
-.submit-search{
+// SEARCH BEGINS
+   .search {
+     width: 500px;
+     height: 40px;
+     margin: 150px auto;
+     background: #444;
+     background: rgba(0,0,0,.2);
+     border-radius:  3px;
+     border: 1px solid #fff;
+
+input {
+  width: 370px;
+  padding: 10px 5px;
+  float: left;
+  color: #ccc;
+  border: 0;
+  background: transparent;
+  border-radius: 3px 0 0 3px;
+&:focus {
+   outline: 0;
+   background:transparent;
+ }
+}
+
+button {
   position: relative;
-  bottom: 45px;
-  left: 215px;
-  appearance: none;
-  outline: none;
-  border: none;
+  float: right;
+  border: 0;
+  padding: 0;
   cursor: pointer;
-  display: inline-block;
-  padding: 6px 12px;
-  background-image: linear-gradient(to right, #bdc3c7, #2c3e50);
-  border-radius: 8px;
-  color: #FFF;
-  font-size: 20px;
-  font-weight: 700;
-  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  height: 40px;
+  width: 120px;
+  color: #fff;
+  background: transparent;
+  border-left: 1px solid #fff;
+  border-radius: 0 3px 3px 0;
+&:hover {
+   background: #fff;
+   color:#444;
+ }
+&:active {
+   box-shadow: 0px 0px 12px 0px rgba(225, 225, 225, 1);
+ }
+&:focus {
+   outline: 0;
+ }
 }
-
-.navbar-search-input {
-  height: 35px;
-  width: 350px;
-  font-size: 18px;
-  padding: 6px 18px 7px 45px;
-  background-color: #ffffff !important;
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.11);
-  border-color: #eeeeee;
-  position: relative;
-  bottom: 10px;
-  right: 140px;
 }
 
 </style>

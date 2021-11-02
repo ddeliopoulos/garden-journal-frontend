@@ -71,6 +71,7 @@ export default {
           mediaId: textEntry.value.mediaId
         }),
       })
+      window.location.reload()
 
       console.log("Text Successfully Posted!")
 

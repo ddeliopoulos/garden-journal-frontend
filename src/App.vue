@@ -55,6 +55,8 @@ html{
   font-family: 'Montserrat', sans-serif;
   font-size: 32px;
   font-weight: 200;
+  position: relative;
+  top: 15px;
 }
 
 .logo-container h1 span {
@@ -90,7 +92,7 @@ body {
   width: 36px;
   height: 30px;
   left: 20px;
-  top: 65px;
+  top: 30px;
   cursor: pointer;
 }
 .bm-burger-bars {
@@ -120,7 +122,7 @@ body {
   height: 100%; /* 100% Full-height */
   width: 0; /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
-  top: 50px;
+  top: 91px;
   left: 0;
   background-color: rgb(63, 63, 65); /* Black*/
   overflow-x: hidden; /* Disable horizontal scroll */
