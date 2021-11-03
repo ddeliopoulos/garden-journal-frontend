@@ -93,14 +93,14 @@ export default {
   color: #FFF;
   font-size: 22px;
   font-weight: 600;
-  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
   position: relative;
-  top: 18px;
+  bottom: 3.5em;
   margin: 25px;
 }
 
 .add-plant-button:hover {
-  box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.6);
 }
 
 .plant-form-overlay {

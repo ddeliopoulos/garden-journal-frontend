@@ -19,7 +19,6 @@ export default {
       <div class="garden-journal-logo">
         <GardenJournalLogo></GardenJournalLogo>
       </div><br/>
-        <SearchBar></SearchBar>
     </div>
   </div>
 </template>
@@ -33,6 +32,8 @@ body{
 
 .header{
   width: 100%;
+  height: 80px;
+  position: relative;
   background-repeat: no-repeat;
   background-color: black;
 }

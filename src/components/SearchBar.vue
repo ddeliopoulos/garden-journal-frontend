@@ -12,10 +12,12 @@ export default {
 </script>
 
 <template>
+  <div class="search-bar">
   <form class="search" action="">
     <input type="search" placeholder="Search here..." required>
-    <button type="submit">Search</button>
+    <button type="submit" id="search">Search</button>
   </form>
+  </div>
   <!--  <div class="navbarSearch">-->
 <!--    <input class="form-control navbar-search-input js-navbar-search-input nav-input js-filter-topics"-->
 <!--           type="text"-->
@@ -33,13 +35,25 @@ body {
   background-size: cover;
 }
 
+.search-bar{
+  display: inline-block;
+  margin: 10px;
+  height: 60px;
+  width: 520px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+  position: relative;
+  bottom: 50px;
+
+}
+#search{
+  color: black;
+}
 // SEARCH BEGINS
    .search {
      width: 500px;
      height: 40px;
-     margin: 150px auto;
      background: #444;
-     background: rgba(0,0,0,.2);
+     background: rgba(0,0,0,.1);
      border-radius:  3px;
      border: 1px solid #fff;
 
@@ -47,7 +61,7 @@ input {
   width: 370px;
   padding: 10px 5px;
   float: left;
-  color: #ccc;
+  color: black;
   border: 0;
   background: transparent;
   border-radius: 3px 0 0 3px;

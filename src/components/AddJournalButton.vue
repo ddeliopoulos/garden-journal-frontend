@@ -209,6 +209,7 @@ button.icon-close-btn {
   font-weight: 700;
   box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
   position: relative;
+  left: 500px;
   top: 18px;
 }
 

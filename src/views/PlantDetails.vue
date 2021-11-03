@@ -191,7 +191,9 @@ export default {
         <div class="w-full lg:w-9/12 px-4">
           <AddJournalButton @updateCustomAudio="updateCustomAudio" />
         </div>
+
         <div class="mt-10 py-10 border-t border-gray-300 text-center">
+          <h3>JOURNAL ENTRIES</h3>
           <div class="timeline">
 
             Filter by:
@@ -201,12 +203,12 @@ export default {
             <button @click="loadJournalEntries" class="filter-img-btn"> All</button>
             <br/><br/>
 
-            <h3>JOURNAL ENTRIES</h3>
             <br/>
             <div class="single-plant-container" :key="journalEntry.id" v-for="journalEntry in journalEntries">
               <JournalEntryRow :journalEntry="journalEntry"/>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -421,7 +423,6 @@ img {
 
 .relative {
   position: relative;
-  top: 10px;
 }
 
 .shadow-xl {

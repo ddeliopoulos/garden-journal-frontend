@@ -3,6 +3,7 @@ import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
 import {ref, onMounted} from 'vue'
 import {getBackendUrl} from "@/components/shared/backendUrl";
+import SearchBar from "@/components/SearchBar.vue"
 
 interface PlantType {
   name: string
@@ -16,7 +17,7 @@ interface JournalEntry {
 
 export default {
   name: "PlantListDisplay",
-  components: {Plant, AddPlantButton},
+  components: {Plant, AddPlantButton, SearchBar},
 
   setup() {
     const plants = ref<PlantType[]>([]);
@@ -52,11 +53,12 @@ export default {
       <div class="move-down">
       <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
         <div class="text-center mt-12">
+          <SearchBar></SearchBar>
+
           <div id="add-plant-button">
             <AddPlantButton></AddPlantButton>
           </div>
-          <div class="plant-list">
-            <div class="plant-garden">
+
               <div class="single-plant-container" :key="plant.id" v-for="plant in plants">
                 <Plant :plant="plant"/>
               </div>
@@ -65,8 +67,8 @@ export default {
         </div>
       </div>
     </div>
-    </div>
-  </div>
+
+
 </template>
 
 <style scoped>
@@ -80,7 +82,7 @@ export default {
 
 .move-down{
   position: relative;
-  top: 180px;
+  top: 94px;
 }
 
 h1{
@@ -345,7 +347,6 @@ img {
   background-color: #e2e8f0
 }
 
-
 .rounded-lg {
   border-radius: 0.5rem
 }
@@ -355,7 +356,7 @@ img {
   display: flex
 }
 
-.group:hover .group-hover\:block {
+.group:hover {
   display: block
 }
 
@@ -370,18 +371,6 @@ img {
   margin-right: auto
 }
 
-
-.mb-2 {
-  margin-bottom: 0.5rem
-}
-
-.mb-6 {
-  margin-bottom: 1.5rem
-}
-
-.mt-10 {
-  margin-top: 2.5rem
-}
 
 .mt-12 {
   margin-top: 3rem
@@ -408,7 +397,7 @@ img {
 }
 
 .relative {
-  position: relative
+  position: relative;
 }
 
 .shadow-xl {
@@ -419,26 +408,14 @@ img {
   text-align: center
 }
 
-.text-gray-700 {
-  color: #4a5568
-}
-
-.break-words {
-  overflow-wrap: break-word
-}
-
 .w-full {
   width: 100%
 }
+
 .single-plant-container{
   margin: auto;
   display: inline-block;
   padding: 5px;
-}
-
-.plant-list{
-  display: inline-block;
-  width: 100%;
 }
 
 #plants-title h1{
@@ -448,4 +425,5 @@ img {
   font-family: Catamaran, serif;
   text-decoration: underline;
 }
+
 </style>

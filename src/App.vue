@@ -30,23 +30,10 @@ export default defineComponent({
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 3px;
-}
-
-.slide-nav{
- position: relative;
-  bottom: 500px;
-}
-
-html{
+#app{
   background-color: #E2E8F0;
 }
+
 .logo-container h1 {
   color: white;
   height: 100%;
@@ -61,21 +48,6 @@ html{
 
 .logo-container h1 span {
   font-weight: 800;
-}
-
-body {
-  margin: 0;
-}
-
-.navigation a {
-  height: 100%;
-  display: table;
-  float: left;
-  padding: 0 20px;
-}
-
-.navigation a:last-child {
-  padding-right: 0;
 }
 
 .navigation a li {
@@ -122,16 +94,12 @@ body {
   height: 100%; /* 100% Full-height */
   width: 0; /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
-  top: 91px;
+  top: 80px;
   left: 0;
   background-color: rgb(63, 63, 65); /* Black*/
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 20px; /* Place content 60px from the top */
   transition: 0.5s; /*0.5 second transition effect to slide in the sidenav*/
-}
-
-.bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
 }
 
 .bm-item-list {

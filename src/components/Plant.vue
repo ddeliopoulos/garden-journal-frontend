@@ -139,7 +139,9 @@ p {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
-.plant-card {
+.garden {
+  position: relative;
+  bottom: 6em;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   width: 190px;
 }
