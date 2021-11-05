@@ -15,6 +15,7 @@ export default defineComponent({
 
 <template>
   <div id="app">
+
     <Header></Header>
     <router-view/>
   </div>
@@ -35,7 +36,7 @@ export default defineComponent({
 }
 
 .logo-container h1 {
-  color: white;
+  color: black;
   height: 100%;
   display: table-cell;
   vertical-align: middle;
@@ -44,6 +45,7 @@ export default defineComponent({
   font-weight: 200;
   position: relative;
   top: 15px;
+  right: 10px;
 }
 
 .logo-container h1 span {
@@ -66,6 +68,8 @@ export default defineComponent({
   left: 20px;
   top: 30px;
   cursor: pointer;
+  z-index: 99;
+
 }
 .bm-burger-bars {
   background-color: #373a47;

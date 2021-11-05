@@ -9,7 +9,7 @@
   -->
   <Modal v-model="isShow" :close="closeModal">
     <div class="modal">
-      <div class="close-image" >
+      <div class="close-image">
         <button @click="closeModal" class="icon-close-btn">
           <i class="far fa-window-close"></i>
         </button>
@@ -45,7 +45,7 @@
       </div>
       <br/>
 
-      <button @click="onSubmitJournal" class="add-journal-entry-close" >
+      <button @click="onSubmitJournal" class="add-journal-entry-close">
         Submit
       </button>
     </div>
@@ -127,9 +127,9 @@ export default defineComponent({
     const onSubmitJournal = () => {
       if (showDocument.value) textEntry.value.postTextJournal()
 
-      if(showImage.value) imageEntry.value.postImageJournal()
+      if (showImage.value) imageEntry.value.postImageJournal()
 
-      if(showAudio.value) audioEntry.value.postAudioJournal()
+      if (showAudio.value) audioEntry.value.postAudioJournal()
 
       closeModal();
     }
@@ -177,7 +177,6 @@ button.icon-close-btn {
   right: 1.2rem;
 }
 
-
 .logo-container h3 {
   color: black;
   height: 100%;
@@ -194,7 +193,6 @@ button.icon-close-btn {
   font-weight: 800;
 }
 
-
 .add-journal-entry {
   appearance: none;
   outline: none;
@@ -209,11 +207,11 @@ button.icon-close-btn {
   font-weight: 700;
   box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
   position: relative;
-  left: 500px;
+  left: 510px;
   top: 18px;
 }
 
-.add-journal-entry-close{
+.add-journal-entry-close {
   appearance: none;
   outline: none;
   border: none;

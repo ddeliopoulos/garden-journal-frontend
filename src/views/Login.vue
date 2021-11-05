@@ -2,12 +2,15 @@
 import GoogleLoginButton from "@/components/wrapped/GoogleLoginButton.vue";
 import GardenJournalLogo from "@/components/GardenJournalLogo.vue";
 
+
 export default {
   name: "Login",
   components: {GardenJournalLogo, GoogleLoginButton},
   setup() {
 
   }
+
+
 }
 </script>
 

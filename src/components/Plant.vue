@@ -91,15 +91,15 @@ export default {
         <div class="image-cropper">
             <img :src="plantImageUrl" alt="default-plant-image" class="default-plant">
         </div>
-        <br/>
-        <b>
-          <h4>Type: </h4>
-          <p>{{ plant.type }}</p>
+        <div class="type-date-display">
+          <p class="type-date">
+            <b>
+            {{ plant.type }}
           <br/>
-          <h4>Date: </h4>
-          <p>{{ humanDate }}</p>
-          <br/>
-        </b>
+            {{ humanDate }}
+            </b>
+          </p>
+        </div>
       </router-link>
     </div>
   </div>
@@ -107,6 +107,11 @@ export default {
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+
+.type-date-display{
+  padding: 10px 0 10px 0;
+}
 
 * {
   box-sizing: border-box;
@@ -114,10 +119,24 @@ export default {
   padding: 0;
 }
 
-p {
+h2{
+  padding: 10px 0 10px 0;
+  position: relative;
+  top: 1px;
+}
+p{
+  position: relative;
+  top:5px;
+}
+p, h2 {
   letter-spacing: 1px;
   color: #06466e;
   display: inline;
+  font-family: 'Josefin Sans', sans-serif;
+  overflow: hidden;
+  white-space:nowrap;
+  font-weight: bolder;
+  position: relative;
 }
 
 .image-cropper {
@@ -136,7 +155,7 @@ p {
 }
 
 .plant-card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .garden {
@@ -144,19 +163,6 @@ p {
   bottom: 6em;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   width: 190px;
-}
-
-h2 {
-  display: inline-block;
-  color: #06466e;
-  font-size: 23px;
-  font-weight: bold;
-  width: 70%;
-  height: 30px;
-  line-height: 25px;
-  margin: auto;
-  text-align: center;
-
 }
 
 h4 {

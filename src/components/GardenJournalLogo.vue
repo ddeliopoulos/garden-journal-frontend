@@ -7,6 +7,9 @@ export default {
 <template>
   <div class="logo-container">
     <h1>GARDEN<span>JOURNAL</span></h1>
+    <div class="image-cropper">
+      <img src="/img-logo.png" alt="logo-img" height="70" width="50"/>
+    </div>
   </div>
 </template>
 
@@ -15,12 +18,22 @@ export default {
 .logo-container {
   float: left;
   position: relative;
-  top: 7px;
-  left: 0;
+  top: 10px;
+  right: 50px;
+}
+
+.image-cropper {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  margin: auto;
+  left: 155px;
+  bottom: 48px;
+
 }
 
 .logo-container h3 {
-  color: white;
+  color: black;
   height: 100%;
   display: table-cell;
   vertical-align: middle;

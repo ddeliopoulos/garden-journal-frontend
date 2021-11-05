@@ -36,7 +36,7 @@ export default {
     }
   },
 
-  setup(props : any) {
+  setup() {
     const route = useRoute()
     const id = route.params.id
 
@@ -193,16 +193,13 @@ export default {
         </div>
 
         <div class="mt-10 py-10 border-t border-gray-300 text-center">
-          <h3>JOURNAL ENTRIES</h3>
+          <h2>JOURNAL ENTRIES</h2>
           <div class="timeline">
-
-            Filter by:
+            <button @click="loadJournalEntries" class="filter-img-btn"> All</button>
             <button @click="filterTextEntries" class="filter-txt-btn"> Text</button>
             <button @click="filterAudioEntries" class="filter-audio-btn"> Audio</button>
             <button @click="filterImageEntries" class="filter-img-btn"> Image</button>
-            <button @click="loadJournalEntries" class="filter-img-btn"> All</button>
             <br/><br/>
-
             <br/>
             <div class="single-plant-container" :key="journalEntry.id" v-for="journalEntry in journalEntries">
               <JournalEntryRow :journalEntry="journalEntry"/>
@@ -216,6 +213,8 @@ export default {
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+
 html {
   background-color: #E2E8F0;
 }
@@ -227,7 +226,7 @@ html {
 
 .container {
   position: relative;
-  top: -31px;
+  top: 20px;
 }
 
 .filter-txt-btn, .filter-audio-btn, .filter-img-btn {
@@ -237,17 +236,18 @@ html {
   cursor: pointer;
   display: inline-block;
   padding: 6px 22px;
-  background-color: #000000;
-  background-image: linear-gradient(315deg, #000000 0%, #414141 74%);
+  background-color: #181A18;
   border-radius: 8px;
   color: #FFF;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   position: relative;
   margin: 5px;
 }
 
 .move-left {
+  position: relative;
+  left: 20px;
   width: 725px;
   height: 350px;
   margin: auto;
@@ -261,7 +261,7 @@ html {
 
 .fa-window-close {
   color: #CC2E5D;
-  font-size: 27px;
+  font-size: 23px;
   position: relative;
   top: 10px;
   left: 600px;
@@ -279,6 +279,8 @@ html {
   position: relative;
   overflow: hidden;
   margin: auto;
+  top: 5px;
+  border-radius: 20px;
 }
 
 html {
@@ -400,10 +402,6 @@ img {
   margin-top: 3rem
 }
 
-.-mt-64 {
-  position: relative;
-  bottom: 30px;
-}
 
 
 .px-4 {
@@ -468,6 +466,12 @@ img {
 
 .w-full {
   width: 100%
+}
+h2{
+  font-family: 'Josefin Sans', sans-serif;
+  position: relative;
+  bottom: 10px;
+  color: #181A18;
 }
 
 </style>

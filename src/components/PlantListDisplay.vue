@@ -73,6 +73,7 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
 * {
   box-sizing: border-box;
@@ -80,10 +81,7 @@ export default {
   padding: 10px;
 }
 
-.move-down{
-  position: relative;
-  top: 94px;
-}
+
 
 h1{
 padding: 30px;
@@ -102,11 +100,6 @@ a {
 b,
 strong {
   font-weight: bolder
-}
-
-code {
-  font-family: monospace, monospace;
-  font-size: 1em
 }
 
 small {
@@ -200,11 +193,6 @@ template {
   display: none
 }
 
-html {
-  box-sizing: border-box;
-  font-family: sans-serif
-}
-
 *,
 *::before,
 *::after {
@@ -240,11 +228,6 @@ ul {
   padding: 0
 }
 
-html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  line-height: 1.5
-}
-
 *,
 *::before,
 *::after {
@@ -270,24 +253,6 @@ table {
   border-collapse: collapse
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: inherit;
-  font-weight: inherit
-}
-
-a {
-  color: inherit;
-  text-decoration: inherit
-}
-
-code {
-  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
-}
 
 img,
 svg,
@@ -351,53 +316,18 @@ img {
   border-radius: 0.5rem
 }
 
-.flex {
-  display: -webkit-box;
-  display: flex
-}
-
-.group:hover {
-  display: block
-}
-
-.flex-col {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  flex-direction: column
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto
 }
 
-
 .mt-12 {
   margin-top: 3rem
-}
-
-.-mt-64 {
-  margin-top: -10rem;
-  position: relative;
-  bottom: 50px;
-}
-
-.min-w-0 {
-  min-width: 0;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem
 }
 
 .py-16 {
   padding-top: 4rem;
   padding-bottom: 4rem
-}
-
-.relative {
-  position: relative;
 }
 
 .shadow-xl {
@@ -415,7 +345,7 @@ img {
 .single-plant-container{
   margin: auto;
   display: inline-block;
-  padding: 5px;
+  padding: 0 10px 10px 10px;
 }
 
 #plants-title h1{

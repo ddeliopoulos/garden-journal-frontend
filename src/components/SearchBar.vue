@@ -52,8 +52,8 @@ body {
    .search {
      width: 500px;
      height: 40px;
-     background: #444;
-     background: rgba(0,0,0,.1);
+     background: #E2E8F0;
+     background: rgba(0,0,0,.07);
      border-radius:  3px;
      border: 1px solid #fff;
 

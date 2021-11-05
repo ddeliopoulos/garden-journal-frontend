@@ -72,13 +72,11 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 99;
-
   width: 100%;
   max-width: 800px;
   max-height: 600px;
   background-color: #FFF;
   border-radius: 16px;
-
   padding: 25px;
 }
 
@@ -91,12 +89,13 @@ export default {
   padding: 6px 12px;
   background-image: linear-gradient(to right, #141e30, #243b55);
   color: #FFF;
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: bolder;
   box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
   position: relative;
-  bottom: 3.5em;
+  bottom: 4em;
   margin: 25px;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .add-plant-button:hover {

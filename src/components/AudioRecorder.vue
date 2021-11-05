@@ -3,6 +3,7 @@ import {ref} from "vue";
 import {useRoute} from "vue-router";
 import AudioRecording from "@/components/AudioRecording.vue";
 import {getBackendUrl} from "@/components/shared/backendUrl";
+import {getAuthToken} from "@/components/shared/gapi.ts";
 
 interface AudioEntry {
   createdAt: string
@@ -79,6 +80,9 @@ export default {
       const dataUploadResponse = await fetch(`${getBackendUrl()}/media?contentType=${audioEntry.value.data?.type}`, {
         method: 'POST',
         body: audioEntry.value.data,
+        headers: {
+          'X-Auth-Token': getAuthToken()
+        }
       });
 
       audioEntry.value.mediaId = await (dataUploadResponse.text());

@@ -160,7 +160,7 @@ audio:hover {
 
 .fa-window-close {
   color: #CC2E5D;
-  font-size: 27px;
+  font-size: 20px;
   cursor: pointer;
   position: relative;
   right: 235px;
@@ -203,15 +203,17 @@ audio {
   position: relative;
   left: -10px;
   top: 10px;
+  color: #181A18;
 }
 
 .image-cropper {
   width: 150px;
   height: 150px;
   position: relative;
-  bottom: 20px;
+  bottom: 17px;
   overflow: hidden;
   margin: auto;
+  border-radius: 20px;
 }
 
 img {
