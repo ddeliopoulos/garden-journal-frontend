@@ -3,9 +3,11 @@ import WaterDroplet from "@/components/WaterDroplet.vue";
 import router from "@/router";
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
-import {getBackendUrl} from "@/components/shared/backendUrl";
+import {deletePlantById, getBackendUrl} from "@/components/shared/BackendApi";
 import {useRoute} from 'vue-router'
 import {onMounted, ref} from "vue";
+import {getPlantById} from "@/components/shared/BackendApi";
+import Popup from "@/components/Popup.vue";
 
 
 interface JournalEntry {
@@ -27,7 +29,7 @@ interface PlantType {
 
 export default {
   name: 'PlantDetails',
-  components: {JournalEntryRow, AddJournalButton, WaterDroplet},
+  components: {Popup, JournalEntryRow, AddJournalButton, WaterDroplet},
 
   props: {
     journalEntry: {
@@ -40,8 +42,9 @@ export default {
     const route = useRoute()
     const id = route.params.id
 
+    const showDeleteAlert = ref(false)
 
-    const plantImageUrl = ref("");
+    const plantImageUrl = ref("")
     let src = ""
 
     const plant = ref<PlantType>({
@@ -53,7 +56,7 @@ export default {
     console.log("CREATED AT", plant.value.createdAt)
     const humanDate = ref();
 
-    const journalEntries = ref<JournalEntry[]>([]);
+    const journalEntries = ref<JournalEntry[]>([])
 
     const journalEntry = ref<JournalEntry>({
       id: "",
@@ -102,24 +105,15 @@ export default {
     // }
 
     const getPlantInfo = async () => {
-      const response = await fetch(`${getBackendUrl()}/plants/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
+      const response = await getPlantById(id);
       plant.value = await response.json()
       humanDate.value = new Date(plant.value.createdAt).toLocaleDateString()
     }
 
     const deletePlant = async () => {
-      if (confirm('Are you sure, bitch?')) {
-        await fetch(`${getBackendUrl()}/plants/${id}`, {
-          method: 'DELETE'
-        })
+      await deletePlantById(id)
         await router.push('/');
       }
-    }
 
     [getPlantInfo, loadJournalEntries, getLatestImage].forEach((fn: any) => onMounted(fn));
 
@@ -143,6 +137,9 @@ export default {
 
 <template>
   <section class="relative py-16 bg-gray-300">
+    <Popup>
+      <h2>My Popup</h2>
+    </Popup>
     <div class="container mx-auto px-4">
       <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
         <div class="px-6">

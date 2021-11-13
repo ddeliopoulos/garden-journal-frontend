@@ -25,32 +25,34 @@ export default {
             <p class="welcome">Welcome to your Garden Journal</p>
           </header>
           <br>
-          <div class="field-set">
-            <span class="input-item">
-           <i class="fa fa-user-circle"></i>
-         </span>
-            <input class="form-input" id="txt-input" type="text" placeholder="Email Address" required>
+          <!--          <div class="field-set">-->
+          <!--            <span class="input-item">-->
+          <!--           <i class="fa fa-user-circle"></i>-->
+          <!--         </span>-->
+          <!--            <input class="form-input" id="txt-input" type="text" placeholder="Email Address" required>-->
 
-            <br>
-            <span class="input-item">
-        <i class="fa fa-key"></i>
-       </span>
-            <input class="form-input" type="password" placeholder="Password" id="pwd" name="password" required>
-            <span>
-        <i class="fa fa-eye" aria-hidden="true" type="button" id="eye"></i>
+          <!--            <br>-->
+          <!--            <span class="input-item">-->
+          <!--        <i class="fa fa-key"></i>-->
+          <!--       </span>-->
+          <!--            <input class="form-input" type="password" placeholder="Password" id="pwd" name="password" required>-->
+          <!--            <span>-->
+          <!--        <i class="fa fa-eye" aria-hidden="true" type="button" id="eye"></i>-->
 
-     </span>
-            <br>
-            <button class="log-in"> Log In</button>
-          </div>
-          <div class="other">
-            <button class="btn submits frgt-pass">Forgot Password</button>
-            <button class="btn submits sign-up">Sign Up
-              <i class="fa fa-user-plus" aria-hidden="true"></i>
-            </button>
-          </div>
+          <!--     </span>-->
+          <!--            <br>-->
+          <!--            <button class="log-in"> Log In</button>-->
+          <!--          </div>-->
+          <!--          <div class="other">-->
+          <!--          <button class="btn submits frgt-pass">Forgot Password</button>-->
+          <!--          <button class="btn submits sign-up">Sign Up-->
+          <!--            <i class="fa fa-user-plus" aria-hidden="true"></i>-->
+          <!--          </button>-->
+          <!--          </div>-->
         </div>
-        <GoogleLoginButton/>
+        <div class="entire-google-button-move">
+          <GoogleLoginButton/>
+        </div>
       </form>
     </div>
   </div>
@@ -68,17 +70,23 @@ export default {
 
 /* End Global rules */
 
+.entire-google-button-move {
+  position: relative;
+  left: 72px;
+  top: 45px;
+}
+
 .background {
   top: 0;
   left: 0;
   position: fixed;
   z-index: 1000;
-  background: linear-gradient(to top, #a8edea 0%, #fed6e3 100%) no-repeat fixed;
+  background-image: linear-gradient(to right, #141e30, #243b55);
 }
 
 body {
   position: fixed;
-  background: linear-gradient(to top, #a8edea 0%, #fed6e3 100%) no-repeat fixed;
+  background-image: linear-gradient(to right, #141e30, #243b55);
   /*   the main font */
   font-family: 'Abel', sans-serif;
   opacity: .95;
@@ -87,13 +95,15 @@ body {
 
 .gj-logo {
   position: relative;
-  left: 0;
+  right: 12px;
   color: black;
+  top: 100px
 }
 
 .welcome {
   position: relative;
-  top: 1.5em;
+  right: 12px;
+  top: 100px
 }
 
 .overlay {
@@ -109,9 +119,9 @@ form {
   height: auto;
   border-radius: 5px;
   margin: 2% auto;
-  box-shadow: 0 9px 50px hsla(20, 67%, 75%, 0.31);
+  box-shadow: 0 9px 50px hsla(20, 50%, 50%, 0.31);
   padding: 2%;
-  background-image: linear-gradient(-225deg, #E3FDF5 50%, #FFE6FA 50%);
+  background-image: linear-gradient(-225deg, #f9ea8f 10%, #E2E8F0 80%);
 }
 
 form .con {

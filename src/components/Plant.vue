@@ -1,7 +1,7 @@
 <script lang="ts">
 
 import {onMounted, ref} from "vue";
-import {getBackendUrl} from "@/components/shared/backendUrl";
+import {getBackendUrl} from "@/components/shared/BackendApi";
 
 interface Plant {
   id: number
@@ -124,10 +124,12 @@ h2{
   position: relative;
   top: 1px;
 }
+
 p{
   position: relative;
   top:5px;
 }
+
 p, h2 {
   letter-spacing: 1px;
   color: #06466e;

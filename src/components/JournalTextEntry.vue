@@ -1,7 +1,7 @@
 <script lang="ts">
 import {ref} from "vue";
 import {useRoute} from "vue-router";
-import {getBackendUrl} from "@/components/shared/backendUrl";
+import {uploadJournalEntry, uploadMedia} from "@/components/shared/BackendApi";
 
 interface textEntry {
   createdAt: string
@@ -35,10 +35,6 @@ export default {
       id: "",
     })
 
-    const plantId = ref<PlantType>({
-      plantId: "",
-    })
-
     const emitClose = async () => {
       context.emit("closeTextComponent")
     }
@@ -48,38 +44,15 @@ export default {
     }
 
     const postTextJournal = async () => {
-      console.log("Attempting to postTJ")
-
-      const dataUploadResponse = await fetch(`${getBackendUrl()}/media?contentType=${textEntry.value.type}`, {
-        method: 'POST',
-        body: textEntry.value.data,
-      });
-      console.log(textEntry.value.data)
+      console.log("Attempting to post a Text Journal")
+      const dataUploadResponse = await uploadMedia(textEntry.value.type, textEntry.value.data)
       textEntry.value.mediaId = await (dataUploadResponse.text());
-      console.log(textEntry.value.mediaId)
-
-      await fetch(`${getBackendUrl()}/plants/${id}/journal-entries`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: journalId.value.id,
-          plantId: id,
-          createdAt: Date.now(),
-          type: textEntry.value.type,
-          mediaId: textEntry.value.mediaId
-        }),
-      })
+      await uploadJournalEntry(id, journalId.value.id, textEntry.value.type, textEntry.value.mediaId)
       window.location.reload()
-
       console.log("Text Successfully Posted!")
-
     }
 
-
     return {
-      plantId,
       textEntry,
       emitShowTextIcon,
       postTextJournal,

@@ -2,8 +2,8 @@
 import {ref} from "vue";
 import {useRoute} from "vue-router";
 import AudioRecording from "@/components/AudioRecording.vue";
-import {getBackendUrl} from "@/components/shared/backendUrl";
-import {getAuthToken} from "@/components/shared/gapi.ts";
+import {getAuthToken} from "@/components/shared/BackendApi";
+import {uploadJournalEntry, uploadMedia} from "@/components/shared/BackendApi.ts"
 
 interface AudioEntry {
   createdAt: string
@@ -11,16 +11,18 @@ interface AudioEntry {
   type: string
   mediaId: string
 }
+
 interface JournalEntry {
   id: string
 }
+
 interface PlantType {
   plantId: string
 }
 
 export default {
   name: "AudioRecorder",
-  emits: [ "closeAudioComponent", "showAudioComponent", "updateCustomAudio"],
+  emits: ["closeAudioComponent", "showAudioComponent", "updateCustomAudio"],
   components: {AudioRecording},
 
   setup(props: any, context: any) {
@@ -42,10 +44,6 @@ export default {
       id: "",
     })
 
-    const plantId = ref<PlantType>({
-      plantId: "",
-    })
-
     const emitClose = async () => {
       context.emit("closeAudioComponent")
     }
@@ -60,59 +58,27 @@ export default {
 
     const updateAudioFile = async (event: any) => {
       if (event.target.files.length === 0) {
-         return;
+        return;
       }
-      // const audioFile = event.target.files[0]
-      // audioEntry.value = audioFile
-      audioEntry.value.data = event.target.files[0]
-      // let reader = new FileReader();
-      // reader.onload = evt => {
-      //   // this is what you want to upload to server
-      //   audioEntry.value.data = <string>evt.target?.result
-      // }
-      // reader.readAsText(audioFile, "UTF-8");
-    }
 
+      audioEntry.value.data = event.target.files[0]
+    }
 
     const postAudioJournal = async () => {
-      console.log("Attempting to postAJ")
-
-      const dataUploadResponse = await fetch(`${getBackendUrl()}/media?contentType=${audioEntry.value.data?.type}`, {
-        method: 'POST',
-        body: audioEntry.value.data,
-        headers: {
-          'X-Auth-Token': getAuthToken()
-        }
-      });
-
+      console.log("Attempting to post an Audio Journal")
+      const dataUploadResponse = await uploadMedia(audioEntry.value.data?.type!!, audioEntry.value.data);
       audioEntry.value.mediaId = await (dataUploadResponse.text());
-
-      await fetch(`${getBackendUrl()}/plants/${id}/journal-entries`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: journalId.value.id,
-          plantId: id,
-          createdAt: Date.now(),
-          type: audioEntry.value.type,
-          mediaId: audioEntry.value.mediaId
-        }),
-      })
+      await uploadJournalEntry(id, journalId.value.id, audioEntry.value.type, audioEntry.value.mediaId)
       window.location.reload()
-
       console.log("Audio Successfully Posted")
-
     }
 
-    function updateTitle (value : any)  {
+    function updateTitle(value: any) {
       titleOfAudio.value = value;
     }
 
     return {
       audioEntry,
-      plantId,
       titleOfAudio,
       updateCustomAudio,
       updateAudioFile,
@@ -135,7 +101,7 @@ export default {
     </div>
     <h3>Upload Audio</h3> <br/>
     <input id="inputA" accept="audio/*" type="file" @change="updateAudioFile"><br/><br/>
-    <AudioRecording @updateTitle="updateTitle" @updateCustomAudio="updateCustomAudio" />
+    <AudioRecording @updateTitle="updateTitle" @updateCustomAudio="updateCustomAudio"/>
 
   </div>
 </template>
@@ -146,7 +112,7 @@ export default {
   width: 100%;
   margin-top: 5%;
   text-align: center;
-  background: hsla(213, 24%, 93%,1);
+  background: hsla(213, 24%, 93%, 1);
   border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   display: inline-block;
   padding: 1em;

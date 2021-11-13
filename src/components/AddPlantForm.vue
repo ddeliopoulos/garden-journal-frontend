@@ -1,11 +1,11 @@
 <script lang="ts">
 import {ref} from "vue";
-import {getBackendUrl} from '@/components/shared/backendUrl.ts';
+import {uploadNewPlant} from '@/components/shared/BackendApi';
 
 interface Plant {
   name: string
   type: string
-  date: string
+  createdAt: string
 }
 
 export default {
@@ -14,28 +14,17 @@ export default {
     const plant = ref<Plant>({
       name: "",
       type: "",
-      date: ""
+      createdAt: ""
     })
 
     const onFormSubmit = async () => {
-      await fetch(`${getBackendUrl()}/plants`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: plant.value.name,
-          type: plant.value.type,
-          createdAt: (new Date(plant.value.date)).getTime(),
-        }),
-      })
+      await uploadNewPlant(plant.value.name, plant.value.type, (new Date(plant.value.createdAt)).getTime())
 
       window.location.reload()
 
       plant.value.name = "";
       plant.value.type = "";
-      plant.value.date = "";
-
+      plant.value.createdAt = "";
     }
     return {onFormSubmit, plant}
   }
@@ -55,7 +44,7 @@ export default {
     <br/>
     <label>Date Planted: </label>
     <input type="date"
-           v-model="plant.date">
+           v-model="plant.createdAt">
     <br/>
     <button @click="onFormSubmit" class="button">Submit</button>
   </div>

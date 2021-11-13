@@ -2,7 +2,7 @@
 import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
 import {ref, onMounted} from 'vue'
-import {getBackendUrl} from "@/components/shared/backendUrl";
+import {loadAllPlants} from "@/components/shared/BackendApi";
 import SearchBar from "@/components/SearchBar.vue"
 
 interface PlantType {
@@ -25,18 +25,11 @@ export default {
     let plantId = ref("")
 
     const loadPlants = async () => {
-      const response = await fetch(`${getBackendUrl()}/plants`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
+      const response = await loadAllPlants()
       plants.value = await response.json();
 
       plantId.value = plants.value[0].id.toString()
     }
-    const bla = () => console.log('bla');
-
 
     onMounted(loadPlants)
 

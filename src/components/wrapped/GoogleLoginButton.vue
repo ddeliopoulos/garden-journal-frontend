@@ -1,13 +1,17 @@
-<script>
-const clientId = "826903811377-7vc3unief3g7bbn341cr06kbfvbb49no.apps.googleusercontent.com";
-const scopes = 'profile';
 
+<script>
+const {uploadLoginToken} = require("@/components/shared/BackendApi");
+const router = require("@/router");
+const {onUpdated} = require("vue");
 
 export default {
   name: "GoogleLoginButton",
   setup() {
-    (async () => {
-      await new Promise((resolve, reject) => {
+    const clientId = "826903811377-7vc3unief3g7bbn341cr06kbfvbb49no.apps.googleusercontent.com";
+    const scopes = 'profile';
+
+
+    const googleInitialized = new Promise((resolve, reject) => {
         gapi.load('client:auth2', () => {
           gapi.client.init({
             apiKey: "",
@@ -19,16 +23,19 @@ export default {
         });
       });
 
-      const amISignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-      console.log(amISignedIn ? 'i am signed in': "pls log me in");
-    })();
+    const loginWithGoogle = async () => {
+      await googleInitialized;
+      await gapi.auth2.getAuthInstance().signIn();
+      console.log(gapi.auth2.getAuthInstance().isSignedIn.get() ? 'i am signed in' : "pls log me in");
 
-    const loginWithGoogle = () => {
-      gapi.auth2.getAuthInstance().signIn();
       if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-        console.log(gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token);
+        const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+
+        console.log(token);
       }
+      console.log(gapi.auth2.getAuthInstance().isSignedIn.get() ? 'i am signed in' : "pls log me in");
     };
+
     return {loginWithGoogle};
   }
 }
@@ -36,8 +43,8 @@ export default {
 
 <template>
   <button id="google-login" @click="loginWithGoogle">
-        <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="img"/>
-      <p class="btn-text"><b>Sign in with google</b></p>
+    <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="img"/>
+    <p class="btn-text"><b>Sign in with google</b></p>
   </button>
 </template>
 
@@ -55,7 +62,7 @@ $button-active-blue: #1669F2;
   height: 42px;
   background-color: $google-blue;
   border-radius: 2px;
-  box-shadow: 0 3px 4px 0 rgba(0,0,0,.25);
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .25);
   cursor: pointer;
 
   .google-icon-wrapper {
@@ -67,23 +74,27 @@ $button-active-blue: #1669F2;
     border-radius: 2px;
     background-color: $white;
   }
+
   .google-icon {
     position: relative;
     margin-top: 11px;
     width: 18px;
     height: 18px;
   }
+
   .btn-text {
     float: right;
     margin: 11px 11px 0 0;
     color: $white;
     font-size: 14px;
     letter-spacing: 0.2px;
-    font-family: "Roboto",serif;
+    font-family: "Roboto", serif;
   }
+
   &:hover {
     box-shadow: 0 0 6px $google-blue;
   }
+
   &:active {
     background: $button-active-blue;
   }

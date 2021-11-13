@@ -1,7 +1,8 @@
 <script lang="ts">
 import {onMounted, ref} from "vue";
-import {getBackendUrl} from "@/components/shared/backendUrl";
+import {getBackendUrl, getMediaById} from "@/components/shared/BackendApi";
 import {useRoute} from "vue-router";
+import {deleteJournalEntry} from "@/components/shared/BackendApi";
 
 interface JournalEntry {
   id: string
@@ -45,24 +46,13 @@ export default {
     }
 
     const deleteJournal = async () => {
-      console.log("AM I USED?")
-      if (confirm('Are you sure, bitch?')) {
-        await fetch(`${getBackendUrl()}/journal-entries/${journalEntry.value.id}`, {
-          method: 'DELETE'
-        })
-        window.location.reload()
-      }
+      await deleteJournalEntry(journalEntry.value.id);
     }
 
     const loadTextMedia = ref<any>("")
 
     const getTextMedia = async () => {
-      const response = await fetch(`${getBackendUrl()}/media/${journalEntry.value.mediaId}`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
+      const response = await getMediaById(journalEntry.value.mediaId)
       loadTextMedia.value = await response.text();
     };
     if (props.journalEntry.type === 'text/plain') getTextMedia();
