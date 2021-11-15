@@ -1,16 +1,14 @@
 <script lang="ts">
 import {onMounted, ref} from "vue";
-import {getBackendUrl, getMediaById} from "@/components/shared/BackendApi";
-import {useRoute} from "vue-router";
-import {deleteJournalEntry} from "@/components/shared/BackendApi";
+
 
 interface JournalEntry {
   id: string
   plantId: string
   createdAt: string
   type: string
-  mediaId: string
-  data: string
+  data: string,
+  dataUrl: string
 }
 
 export default {
@@ -21,23 +19,10 @@ export default {
     }
   },
 
-  setup(props: any) {
-    const route = useRoute()
-    const id = route.params.id
-    const humanDate = ref(new Date(props.journalEntry.createdAt).toLocaleString())
-
-    const journalEntry = ref<JournalEntry>({
-      createdAt: props.journalEntry.createdAt,
-      data: "",
-      type: props.journalEntry.type,
-      mediaId: props.journalEntry.mediaId,
-      id: props.journalEntry.id,
-      plantId: ""
+  setup(props : any) {
+    const humanDate = ref<any>({
+      date: ""
     })
-
-
-    //console.log(props.journalEntry, props.journalEntry.mediaId)
-    // const journalEntries = ref<JournalEntry[]>([]);
 
     const enlargeImg = ref(false)
 
@@ -45,40 +30,20 @@ export default {
       enlargeImg.value = !enlargeImg.value
     }
 
-    const deleteJournal = async () => {
-      await deleteJournalEntry(journalEntry.value.id);
+    const setTimeStamp = async ()  => {
+      const date = new Date()
+      date.setTime(props.journalEntry.createdAt)
+      humanDate.value.date = date.toLocaleString();
+      console.log(humanDate.value.date)
     }
 
-    const loadTextMedia = ref<any>("")
-
-    const getTextMedia = async () => {
-      const response = await getMediaById(journalEntry.value.mediaId)
-      loadTextMedia.value = await response.text();
-    };
-    if (props.journalEntry.type === 'text/plain') getTextMedia();
-
-    const updateCustomAudio = async (event: any) => {
-      let link = document.createElement('audio');
-      const blob = new Blob([props.journalEntry.data], {type: 'audio/mpeg'});
-      link.src = URL.createObjectURL(blob);
-      // document.getElementById('audio-controls')!!.onclick = () => link.play();
-      // let blob = new Blob([event]);
-      // const audioUrl = webkitURL.createObjectURL(blob)
-      // console.log(audioUrl)
-      // audioEntry.value.audioURL = audioUrl.substr(5, audioUrl.length )
-      // console.log(audioEntry.value.audioURL)
-    }
-
-    //onMounted(loadTextMedia as any)
-    onMounted(updateCustomAudio as any)
+    onMounted(setTimeStamp)
 
     return {
-      deleteJournal,
-      loadTextMedia,
+      setTimeStamp,
       humanDate,
       enlargeImage,
-      enlargeImg,
-      getBackendUrl
+      enlargeImg
     }
   }
 }
@@ -87,75 +52,121 @@ export default {
 <template>
 
 
-  <div class="garden-journals-container">
-    <div class="timestamp">
-      <b>{{ humanDate }}</b> <br/>
-    </div>
 
-    <div v-if="journalEntry.type.startsWith('image')">
-      <div class="modal">
-        <div class="delete-plant-icon" @click=deleteJournal()>
-          <i class="far fa-window-close"></i>
-        </div>
-        <div class="image-cropper">
-          <img alt="journal-img" :src="getBackendUrl() + '/media/' + journalEntry.mediaId"/>
-        </div>
-      </div>
-    </div>
-
-    <div v-else-if="journalEntry.type.startsWith('audio')">
-      <div class="audio-container">
-        <div class="delete-plant-icon" @click=deleteJournal()>
-          <i class="far fa-window-close"></i>
-        </div>
-        <h3 class="audio-title">AUDIO#: {{ journalEntry.id }}</h3>
-        <audio id="audio-controls" controls>
-          <input type="button" value="PLAY">
-          <source
-              :src="getBackendUrl() + '/media/' + journalEntry.mediaId"
-              type="audio/mpeg">
-        </audio>
-      </div>
-    </div>
-
-    <div v-else-if="journalEntry.type.startsWith('text')">
-      <div class="text-container">
-        <div class="delete-plant-icon" @click=deleteJournal()>
-          <i class="far fa-window-close"></i>
-        </div>
-        <div class="text-entry"><br/>
-          {{ loadTextMedia }}
-        </div>
-      </div>
-    </div>
-    <div v-else>No supporto for this typo! {{ journalEntry.type }}</div>
+<div class="garden-journals-container">
+  <div class="timestamp">
+    <b>{{humanDate.date}}</b> <br/>
   </div>
+
+  <div v-if="journalEntry.type.startsWith('image')">
+    <div class="modal">
+      <label class="modal__label" for="modal__checkbox">
+
+        <div class="image-cropper">
+          <img alt="test" :src="journalEntry.dataUrl"/>
+        </div>
+
+      </label>
+      <input class="modal__checkbox" id="modal__checkbox" type="checkbox">
+      <div class="modal__window">
+        <div class="modal__content">
+          <label class="modal__close-icon" for="modal__checkbox">
+            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" class="svg-inline--fa fa-times fa-w-11" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
+            <path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path>
+          </svg>
+          </label>
+          <input class="modal__checkbox" id="modal__checkbox" type="checkbox">
+          <img :src="journalEntry.dataUrl"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="audio-container" v-else-if="journalEntry.type.startsWith('audio')">
+      <h3 class="audio-title">Audio Journal Update: {{journalEntry.id}}</h3>
+        <audio controls>
+          <source :src="journalEntry.dataUrl" type="audio/mpeg">
+        </audio>
+  </div>
+
+  <div v-else-if="journalEntry.type.startsWith('text')">
+    <div class="text-container">
+      <div class="text-entry"> <br/>
+        {{journalEntry.data}}
+      </div>
+    </div>
+  </div>
+  <div v-else>No supporto for this typo! {{journalEntry.type}}</div>
+</div>
 
 </template>
 
 
+
 <style scoped lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Merienda&display=swap');
 
-audio {
-  background: linear-gradient(to top left, green, #013220, green);
-  margin-top: 20px;
-  margin-left: 20px;
-}
-
-audio:hover {
-  -webkit-box-shadow: 0 0 9px 5px rgba(5, 4, 5, 1);
-  -moz-box-shadow: 0 0 9px 5px rgba(5, 4, 5, 1);
-  box-shadow: 0 0 4px 1px rgba(5, 4, 5, 1);
-}
-
-.fa-window-close {
-  color: #CC2E5D;
-  font-size: 20px;
-  cursor: pointer;
+.modal {
   position: relative;
-  right: 235px;
-  top: 10px;
+  left: 270px;
+  width: 150px;
+  height: 150px;
+  background: white;
+  border-radius: 1rem;
+  transition: 1s;
+  background-color: green;
+
+&__checkbox {
+   display: none;
+
+&:checked ~ div {
+   visibility: visible;
+   opacity: 1;
+ }
 }
+
+&__label {
+   text-decoration: underline;
+   cursor: pointer;
+ }
+
+&__window {
+   position: fixed;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: 0;
+   background: rgba(0, 0, 0, 0.5);
+   visibility: hidden;
+   opacity: 0;
+   transition: .2s;
+  z-index: 9998;
+ }
+
+&__content {
+   max-width: 576px;
+   background: white;
+   position: absolute;
+   transform: translate(-50%, -50%);
+   top: 50%;
+   left: 50%;
+   padding: 2rem;
+   border-radius: 1rem;
+  z-index: 9999;
+ }
+
+&__close-icon {
+   cursor: pointer;
+   width: 1.5rem;
+   margin: 0 0.5rem;
+   position: absolute;
+   right: 0;
+   top: 0;
+   color: #657ced;
+ }
+}
+
+/*abovie us asda*/
 
 body {
   background-color: #f9f9f9;
@@ -168,42 +179,41 @@ h1 {
   text-align: center;
 }
 
-h3.audio-title {
+h3.audio-title{
   position: relative;
-}
-
-audio {
-  display: block;
-  margin: auto;
-}
-
-.text-entry {
-  float: left;
-  text-align: left;
+  left: 80px;
   display: inline-block;
-  margin: 10px 25px 25px;
-  line-height: 1em;
-  position: relative;
-  top: -5px;
-  color: black;
+  margin: 5px;
 }
 
-.timestamp {
+
+.audio-container{
+  position: relative;
+  top: 35px;
+  display: inline;
+}
+
+.text-entry{
+  margin: 20px;
+  color:black;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 450;
+  font-size: 16px;
+}
+
+.timestamp{
   float: right;
   position: relative;
   left: -10px;
   top: 10px;
-  color: #181A18;
 }
 
 .image-cropper {
   width: 150px;
   height: 150px;
   position: relative;
-  bottom: 17px;
   overflow: hidden;
   margin: auto;
-  border-radius: 20px;
 }
 
 img {
@@ -212,7 +222,7 @@ img {
   object-fit: cover;
 }
 
-.garden-journals-container {
+.garden-journals-container{
   display: inline-block;
   margin: 10px;
   height: 160px;
@@ -220,7 +230,6 @@ img {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   position: relative;
   left: 20px;
-  bottom: 20px;
 }
 
 </style>
