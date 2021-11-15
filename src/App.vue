@@ -15,6 +15,7 @@ export default defineComponent({
 
 <template>
   <div id="app">
+
     <Header></Header>
     <router-view/>
   </div>
@@ -30,50 +31,25 @@ export default defineComponent({
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 3px;
-}
-
-.slide-nav{
- position: relative;
-  bottom: 500px;
-}
-
-html{
+#app{
   background-color: #E2E8F0;
 }
+
 .logo-container h1 {
-  color: white;
+  color: black;
   height: 100%;
   display: table-cell;
   vertical-align: middle;
   font-family: 'Montserrat', sans-serif;
   font-size: 32px;
   font-weight: 200;
+  position: relative;
+  top: 15px;
+  right: 10px;
 }
 
 .logo-container h1 span {
   font-weight: 800;
-}
-
-body {
-  margin: 0;
-}
-
-.navigation a {
-  height: 100%;
-  display: table;
-  float: left;
-  padding: 0 20px;
-}
-
-.navigation a:last-child {
-  padding-right: 0;
 }
 
 .navigation a li {
@@ -90,8 +66,10 @@ body {
   width: 36px;
   height: 30px;
   left: 20px;
-  top: 65px;
+  top: 30px;
   cursor: pointer;
+  z-index: 99;
+
 }
 .bm-burger-bars {
   background-color: #373a47;
@@ -120,16 +98,12 @@ body {
   height: 100%; /* 100% Full-height */
   width: 0; /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
-  top: 50px;
+  top: 80px;
   left: 0;
   background-color: rgb(63, 63, 65); /* Black*/
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 20px; /* Place content 60px from the top */
   transition: 0.5s; /*0.5 second transition effect to slide in the sidenav*/
-}
-
-.bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
 }
 
 .bm-item-list {

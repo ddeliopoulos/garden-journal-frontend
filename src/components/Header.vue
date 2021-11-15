@@ -18,9 +18,6 @@ export default {
     <div class="inner-header">
       <div class="garden-journal-logo">
         <GardenJournalLogo></GardenJournalLogo>
-      </div><br/>
-      <div class="search-bar">
-        <SearchBar></SearchBar>
       </div>
     </div>
   </div>
@@ -35,19 +32,20 @@ body{
 
 .header{
   width: 100%;
-  height: 50px;
-  display: block;
-  background-color: black;
-  top:0;
-  z-index: 1;
+  height: 80px;
+  background-repeat: no-repeat;
+  background-color: #E2E8F0;
+  border-bottom:2px solid #CCC;
+  padding-bottom:3px;
+  z-index: 99;
   position: fixed;
+
 }
 
 .inner-header{
   width: 1602px;
   height: 100%;
-  display: block;
   margin: 0 auto;
-
+  z-index: 99;
 }
 </style>

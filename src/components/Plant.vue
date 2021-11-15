@@ -1,13 +1,16 @@
 <script lang="ts">
 
 import {onMounted, ref} from "vue";
+import {getBackendUrl} from "@/components/shared/BackendApi";
 
 interface Plant {
   id: number
+  createdAt: string
 }
 
 interface JournalEntry {
-  dataUrl: string
+  journalId: string
+  mediaId: string
 }
 
 export default {
@@ -17,29 +20,60 @@ export default {
       required: true
     }
   },
+
  setup(props : any){
 
    let plantId = props.plant.id
+   const humanDate = ref(new Date(props.plant.createdAt).toLocaleDateString())
    const latestImg = ref("")
-   const journalEntry = ref<JournalEntry[]>([])
+   const plantImageUrl = ref("");
 
-   const getLatestImage = async () => {
-     const response = await fetch(`/api/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image`, {
-       method: 'GET',
-       headers: {
-         'Content-type': 'application/json',
-       },
+   const journalEntry = ref<JournalEntry>({
+     journalId: "",
+     mediaId: ""
+   })
+   const filterEntriesByType = async (type: string | null) => {
+     const response = await fetch(`${getBackendUrl()}/plants/${plantId}/journal-entries${type ? `?type=${type}` : ''}`, {
+       method: 'GET'
      })
-     journalEntry.value = await response.json();
-
-     latestImg.value = journalEntry.value[0].dataUrl
-
+     return await response.json();
    }
 
-   onMounted(getLatestImage)
+   const getLatestImageOrDefault = async () => {
+     console.log("getting latest image or default")
+     let img, src;
+     const images = (await filterEntriesByType('image'));
+
+     if(images.length === 0){
+       src = "/default-plant-img.jpg"
+     } else {
+       journalEntry.value.mediaId = images[0].mediaId
+       src = getBackendUrl() + '/media/' + journalEntry.value.mediaId
+     }
+     plantImageUrl.value = src;
+   }
+   //
+   // const getLatestImage = async () => {
+   //   const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image`, {
+   //     method: 'GET',
+   //     headers: {
+   //       'Content-type': 'application/json',
+   //       'X-Auth-Token': gapi.getAuthToken()
+   //     },
+   //   })
+   //   journalEntry.value = await response.json();
+   //
+   //   latestImg.value = journalEntry.value[0].dataUrl
+   //
+   // }
+
+   onMounted(getLatestImageOrDefault)
 
     return{
-     getLatestImage,
+      plantImageUrl,
+      getLatestImageOrDefault,
+      getBackendUrl,
+      humanDate,
       plantId,
       latestImg,
       journalEntry
@@ -55,17 +89,17 @@ export default {
       <router-link style="text-decoration: none; color: inherit;" :to="{name: 'PlantDetails', params: {id: plant.id}}">
         <h2><b></b> {{ plant.name }}</h2>
         <div class="image-cropper">
-          <img :src=latestImg alt="default-plant-image" class="default-plant">
+            <img :src="plantImageUrl" alt="default-plant-image" class="default-plant">
         </div>
-        <br/>
-        <b>
-          <h4>Type: </h4>
-          <p>{{ plant.type }}</p>
+        <div class="type-date-display">
+          <p class="type-date">
+            <b>
+            {{ plant.type }}
           <br/>
-          <h4>Date: </h4>
-          <p>{{ plant.date }}</p>
-          <br/>
-        </b>
+            {{ humanDate }}
+            </b>
+          </p>
+        </div>
       </router-link>
     </div>
   </div>
@@ -73,6 +107,11 @@ export default {
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+
+.type-date-display{
+  padding: 10px 0 10px 0;
+}
 
 * {
   box-sizing: border-box;
@@ -80,10 +119,26 @@ export default {
   padding: 0;
 }
 
-p {
+h2{
+  padding: 10px 0 10px 0;
+  position: relative;
+  top: 1px;
+}
+
+p{
+  position: relative;
+  top:5px;
+}
+
+p, h2 {
   letter-spacing: 1px;
   color: #06466e;
   display: inline;
+  font-family: 'Josefin Sans', sans-serif;
+  overflow: hidden;
+  white-space:nowrap;
+  font-weight: bolder;
+  position: relative;
 }
 
 .image-cropper {
@@ -99,29 +154,17 @@ p {
   height: 100%;
   width: auto;
   position: relative;
-  right: 18px;
 }
 
 .plant-card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
-.plant-card {
+.garden {
+  position: relative;
+  bottom: 6em;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   width: 190px;
-}
-
-h2 {
-  display: inline-block;
-  color: #06466e;
-  font-size: 23px;
-  font-weight: bold;
-  width: 70%;
-  height: 30px;
-  line-height: 25px;
-  margin: auto;
-  text-align: center;
-
 }
 
 h4 {

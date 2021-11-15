@@ -1,11 +1,13 @@
 <script lang="ts">
-import { ref} from 'vue';
+import {ref} from 'vue';
 import {useRoute} from "vue-router";
+import {uploadJournalEntry, uploadMedia} from "@/components/shared/BackendApi";
 
 interface ImageEntry {
   createdAt: string
-  image: string
+  data: File | null
   type: string
+  mediaId: string
 }
 
 interface JournalEntries {
@@ -18,94 +20,83 @@ interface PlantType {
 
 export default {
   name: "ImageUploader",
-  emits: ["closeImageComponent", "showImageComponent"],
+  emits: ["closeImageComponent", "showImageComponent", "setTimeStampOnJournal"],
 
-   setup(props : any, context : any) {
-     const route = useRoute()
-     const id = parseInt(route.params.id as string);
+  setup(props: any, context: any) {
+    const route = useRoute()
+    const id = parseInt(route.params.id as string);
 
 
-     const imageEntry = ref<ImageEntry>({
-       createdAt: "",
-       image: "",
-       type: "image"
-     })
+    const imageEntry = ref<ImageEntry>({
+      createdAt: "",
+      data: null,
+      type: "image",
+      mediaId: ""
+    })
 
-     const journalId = ref<JournalEntries>({
-       id: "",
-     })
+    const journalId = ref<JournalEntries>({
+      id: "",
+    })
 
-     const plantId = ref<PlantType>({
-       plantId: "",
-     })
+    const emitClose = async () => {
+      context.emit("closeImageComponent")
+    }
 
-       const emitClose = async () => {
-       context.emit("closeImageComponent")
-     }
+    const emitShowImageIcon = async () => {
+      context.emit("showImageComponent")
+    }
 
-     const emitShowImageIcon = async () => {
-       context.emit("showImageComponent")
-     }
+    const updateImageFile = async (event: any) => {
+      //console.log("Image File",event.target.files[0])
+      if (event.target.files.length === 0) {
+        return;
+      }
+      // this is what you want to emit and hold
+      imageEntry.value.data = event.target.files[0];
+      // const imageFile = event.target.files[0]; // this holds the File object, which is just a reference to the file
+      // imageEntry.value = imageFile;
+      // let reader = new FileReader();
+      // reader.onload = evt => {
+      //   // this is what you want to upload to server
+      //   console.log("mamma mia!")
+      //   imageEntry.value.data =  evt.target?.result as string
+      // }
+      // reader.readAsDataURL(imageFile);
+    }
 
-     const updateImageFile = async (event: any) => {
-           if (event.target.files.length === 0) {
-             return;
-           }
-           // this is what you want to emit and hold
-           const imageFile = event.target.files[0]; // this holds the File object, which is just a reference to the file
-           imageEntry.value = imageFile;
+    const postImageJournal = async () => {
+      console.log("Attempting to postIJ")
+      const dataUploadResponse = await uploadMedia(imageEntry.value.data?.type!!, imageEntry.value.data)
 
-           let reader = new FileReader();
-           reader.onload = evt => {
-             // this is what you want to upload to server
-             imageEntry.value.image = <string>evt.target?.result
-           }
-           reader.readAsText(imageFile, "UTF-8");
-     }
+      imageEntry.value.mediaId = await (dataUploadResponse.text());
+      await uploadJournalEntry(id, journalId.value.id, imageEntry.value.type, imageEntry.value.mediaId)
 
-     const postImageJournal = async () => {
-       await fetch('/api/journal-entries', {
-         method: 'POST',
-         headers: {
-           'Content-type': 'application/json',
-         },
-         body: JSON.stringify({
-           id: journalId.value.id,
-           plantId: id,
-           createdAt: Date.now(),
-           // type: imageEntry.value.type, // TODO: enable after backend is implemented
-           type: 'image',
-           data: imageEntry.value.image,
-           dataUrl: 'https://cdn.dribbble.com/users/1810157/screenshots/14012338/image.png' // TODO: remove
-         }),
-       })
-       console.log("Image Successfully Posted")
+      window.location.reload()
+      context.emit('getLatestImage', imageEntry.value.mediaId)
+      context.emit('getLatestImage', imageEntry.value.mediaId)
+      context.emit('setTimeStampOnJournal', imageEntry.value.createdAt)
+      console.log("Image Successfully Posted")
+    }
 
-       imageEntry.value.image = ""
-
-       context.emit( 'setTimeStampOnJournal' ,imageEntry.value.createdAt)
-     }
-
-     return {
-       plantId,
-       imageEntry,
-       updateImageFile,
-       postImageJournal,
-       emitClose,
-       emitShowImageIcon,
-     }
-   }
+    return {
+      imageEntry,
+      updateImageFile,
+      postImageJournal,
+      emitClose,
+      emitShowImageIcon,
+    }
+  }
 }
 
 </script>
 
 <template>
   <div class="upload-image">
-      <div class="close-image" @click=emitClose>
-        <button @click="emitShowImageIcon" class="icon-close-btn">
-          <i class="far fa-window-close"></i>
-        </button>
-      </div>
+    <div class="close-image" @click=emitClose>
+      <button @click="emitShowImageIcon" class="icon-close-btn">
+        <i class="far fa-window-close"></i>
+      </button>
+    </div>
     <h3>Upload Image</h3> <br/>
     <input type="file" id="img" name="img" @change="updateImageFile" accept="image/png, image/jpeg"> <br/><br/>
   </div>
@@ -132,7 +123,7 @@ export default {
   cursor: pointer;
 }
 
-button.icon-close-btn{
+button.icon-close-btn {
   border: none;
   background-size: auto;
   background-color: white;
@@ -143,7 +134,7 @@ button.icon-close-btn{
   left: 6px;
 }
 
-#img{
+#img {
   cursor: pointer;
   padding: 6px 12px;
   color: black;

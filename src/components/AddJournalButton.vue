@@ -9,7 +9,7 @@
   -->
   <Modal v-model="isShow" :close="closeModal">
     <div class="modal">
-      <div class="close-image" >
+      <div class="close-image">
         <button @click="closeModal" class="icon-close-btn">
           <i class="far fa-window-close"></i>
         </button>
@@ -33,7 +33,7 @@
       </button>
 
       <div v-show="showAudio">
-        <AudioRecorder ref="audioEntry" @closeAudioComponent="closeAudioComponent()"/>
+        <AudioRecorder ref="audioEntry" @closeAudioComponent="closeAudioComponent()" @updateCustomAudio="updateCustomAudio"/>
       </div>
 
       <div v-show="showImage">
@@ -45,7 +45,7 @@
       </div>
       <br/>
 
-      <button @click="onSubmitJournal" class="add-journal-entry-close" >
+      <button @click="onSubmitJournal" class="add-journal-entry-close">
         Submit
       </button>
     </div>
@@ -62,7 +62,8 @@ import JournalTextEntry from "@/components/JournalTextEntry.vue"
 export default defineComponent({
 
   components: {ImageUploader, AudioRecorder, JournalTextEntry},
-  setup() {
+
+  setup(props: any, context: any) {
     const showAudio = ref(false)
     const showImage = ref(false)
     const showDocument = ref(false)
@@ -118,14 +119,18 @@ export default defineComponent({
       showImage.value = false
     }
 
+    const updateCustomAudio = async (event: any) => {
+      context.emit("updateCustomAudio", event)
+    }
+
+
     const onSubmitJournal = () => {
-      if (showDocument.value) textEntry.value.addToTimeline()
+      if (showDocument.value) textEntry.value.postTextJournal()
 
-      if(showImage.value) imageEntry.value.postImageJournal()
+      if (showImage.value) imageEntry.value.postImageJournal()
 
-      if(showAudio.value){
-        audioEntry.value.postAudioJournal()
-      }
+      if (showAudio.value) audioEntry.value.postAudioJournal()
+
       closeModal();
     }
 
@@ -137,6 +142,7 @@ export default defineComponent({
       textEntry,
       imageEntry,
       audioEntry,
+      updateCustomAudio,
       showModal,
       closeModal,
       showAudioComponent,
@@ -171,7 +177,6 @@ button.icon-close-btn {
   right: 1.2rem;
 }
 
-
 .logo-container h3 {
   color: black;
   height: 100%;
@@ -188,7 +193,6 @@ button.icon-close-btn {
   font-weight: 800;
 }
 
-
 .add-journal-entry {
   appearance: none;
   outline: none;
@@ -203,10 +207,11 @@ button.icon-close-btn {
   font-weight: 700;
   box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
   position: relative;
+  left: 510px;
   top: 18px;
 }
 
-.add-journal-entry-close{
+.add-journal-entry-close {
   appearance: none;
   outline: none;
   border: none;

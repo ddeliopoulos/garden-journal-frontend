@@ -1,17 +1,17 @@
 <script lang="ts">
 import {ref} from "vue";
 import {useRoute} from "vue-router";
+import {uploadJournalEntry, uploadMedia} from "@/components/shared/BackendApi";
 
 interface textEntry {
   createdAt: string
-  text: string
+  data: string
   type: string
+  mediaId: string;
 }
-
 interface JournalEntries {
   id: string
 }
-
 interface PlantType {
   plantId: string
 }
@@ -26,16 +26,13 @@ export default {
 
     const textEntry = ref<textEntry>({
       createdAt: "",
-      text: "",
-      type: "text"
+      data: "",
+      type: "text/plain",
+      mediaId: ""
     })
 
     const journalId = ref<JournalEntries>({
       id: "",
-    })
-
-    const plantId = ref<PlantType>({
-      plantId: "",
     })
 
     const emitClose = async () => {
@@ -46,30 +43,19 @@ export default {
       context.emit("showTextComponent")
     }
 
-    const addToTimeline = async () => {
-      await fetch('/api/journal-entries', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: journalId.value.id,
-          plantId: id,
-          createdAt: Date.now(),
-          type: textEntry.value.type,
-          data: textEntry.value.text,
-        }),
-      })
-      textEntry.value.text=""
+    const postTextJournal = async () => {
+      console.log("Attempting to post a Text Journal")
+      const dataUploadResponse = await uploadMedia(textEntry.value.type, textEntry.value.data)
+      textEntry.value.mediaId = await (dataUploadResponse.text());
+      await uploadJournalEntry(id, journalId.value.id, textEntry.value.type, textEntry.value.mediaId)
+      window.location.reload()
       console.log("Text Successfully Posted!")
     }
 
-
     return {
-      plantId,
       textEntry,
       emitShowTextIcon,
-      addToTimeline,
+      postTextJournal,
       emitClose,
     }
   }
@@ -86,7 +72,7 @@ export default {
         <h3>Write Entry</h3>
         <div class="form-group shadow-textarea">
           <p id="three">
-            <textarea v-model='textEntry.text' name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
+            <textarea v-model='textEntry.data' name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
           </p>
         </div>
       </div>

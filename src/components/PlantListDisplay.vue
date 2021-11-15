@@ -2,12 +2,13 @@
 import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
 import {ref, onMounted} from 'vue'
+import {loadAllPlants} from "@/components/shared/BackendApi";
+import SearchBar from "@/components/SearchBar.vue"
 
 interface PlantType {
   name: string
   type: string
-  date: string
-  thirstLevel: string
+  createdAt: string
   id: number
 }
 interface JournalEntry {
@@ -16,27 +17,15 @@ interface JournalEntry {
 
 export default {
   name: "PlantListDisplay",
-  components: {Plant, AddPlantButton},
+  components: {Plant, AddPlantButton, SearchBar},
 
   setup() {
     const plants = ref<PlantType[]>([]);
-    const journalEntry = ref<JournalEntry[]>([])
-    let plantId = ref("")
 
     const loadPlants = async () => {
-      const response = await fetch('/api/plants', {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
+      const response = await loadAllPlants()
       plants.value = await response.json();
-
-      plantId.value = plants.value[0].id.toString()
-
     }
-    const bla = () => console.log('bla');
-
 
     onMounted(loadPlants)
 
@@ -53,11 +42,12 @@ export default {
       <div class="move-down">
       <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
         <div class="text-center mt-12">
+          <SearchBar></SearchBar>
+
           <div id="add-plant-button">
             <AddPlantButton></AddPlantButton>
           </div>
-          <div class="plant-list">
-            <div class="plant-garden">
+
               <div class="single-plant-container" :key="plant.id" v-for="plant in plants">
                 <Plant :plant="plant"/>
               </div>
@@ -66,12 +56,13 @@ export default {
         </div>
       </div>
     </div>
-    </div>
-  </div>
+
+
 </template>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
 * {
   box-sizing: border-box;
@@ -79,10 +70,7 @@ export default {
   padding: 10px;
 }
 
-.move-down{
-  position: relative;
-  top: 65px;
-}
+
 
 h1{
 padding: 30px;
@@ -101,11 +89,6 @@ a {
 b,
 strong {
   font-weight: bolder
-}
-
-code {
-  font-family: monospace, monospace;
-  font-size: 1em
 }
 
 small {
@@ -199,11 +182,6 @@ template {
   display: none
 }
 
-html {
-  box-sizing: border-box;
-  font-family: sans-serif
-}
-
 *,
 *::before,
 *::after {
@@ -239,11 +217,6 @@ ul {
   padding: 0
 }
 
-html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  line-height: 1.5
-}
-
 *,
 *::before,
 *::after {
@@ -269,24 +242,6 @@ table {
   border-collapse: collapse
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: inherit;
-  font-weight: inherit
-}
-
-a {
-  color: inherit;
-  text-decoration: inherit
-}
-
-code {
-  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
-}
 
 img,
 svg,
@@ -346,24 +301,8 @@ img {
   background-color: #e2e8f0
 }
 
-
 .rounded-lg {
   border-radius: 0.5rem
-}
-
-.flex {
-  display: -webkit-box;
-  display: flex
-}
-
-.group:hover .group-hover\:block {
-  display: block
-}
-
-.flex-col {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  flex-direction: column
 }
 
 .mx-auto {
@@ -371,45 +310,13 @@ img {
   margin-right: auto
 }
 
-
-.mb-2 {
-  margin-bottom: 0.5rem
-}
-
-.mb-6 {
-  margin-bottom: 1.5rem
-}
-
-.mt-10 {
-  margin-top: 2.5rem
-}
-
 .mt-12 {
   margin-top: 3rem
-}
-
-.-mt-64 {
-  margin-top: -10rem;
-  position: relative;
-  bottom: 50px;
-}
-
-.min-w-0 {
-  min-width: 0;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem
 }
 
 .py-16 {
   padding-top: 4rem;
   padding-bottom: 4rem
-}
-
-.relative {
-  position: relative
 }
 
 .shadow-xl {
@@ -420,26 +327,14 @@ img {
   text-align: center
 }
 
-.text-gray-700 {
-  color: #4a5568
-}
-
-.break-words {
-  overflow-wrap: break-word
-}
-
 .w-full {
   width: 100%
 }
+
 .single-plant-container{
   margin: auto;
   display: inline-block;
-  padding: 5px;
-}
-
-.plant-list{
-  display: inline-block;
-  width: 100%;
+  padding: 0 10px 10px 10px;
 }
 
 #plants-title h1{
@@ -449,4 +344,5 @@ img {
   font-family: Catamaran, serif;
   text-decoration: underline;
 }
+
 </style>

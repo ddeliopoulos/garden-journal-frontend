@@ -72,13 +72,11 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 99;
-
   width: 100%;
   max-width: 800px;
   max-height: 600px;
   background-color: #FFF;
   border-radius: 16px;
-
   padding: 25px;
 }
 
@@ -91,16 +89,17 @@ export default {
   padding: 6px 12px;
   background-image: linear-gradient(to right, #141e30, #243b55);
   color: #FFF;
-  font-size: 22px;
-  font-weight: 600;
-  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  font-size: 20px;
+  font-weight: bolder;
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
   position: relative;
-  top: 18px;
+  bottom: 4em;
   margin: 25px;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .add-plant-button:hover {
-  box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.6);
 }
 
 .plant-form-overlay {
