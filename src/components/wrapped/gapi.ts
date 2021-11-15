@@ -48,4 +48,6 @@ export async function login(): Promise<void> {
   await requireNotLoggedIn();
   // @ts-ignore
   await gapi.auth2.getAuthInstance().signIn();
+  console.log('logged in, redirecting to /');
+  window.location.replace('/');
 }
