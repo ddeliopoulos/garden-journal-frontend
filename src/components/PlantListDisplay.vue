@@ -21,14 +21,10 @@ export default {
 
   setup() {
     const plants = ref<PlantType[]>([]);
-    const journalEntry = ref<JournalEntry[]>([])
-    let plantId = ref("")
 
     const loadPlants = async () => {
       const response = await loadAllPlants()
       plants.value = await response.json();
-
-      plantId.value = plants.value[0].id.toString()
     }
 
     onMounted(loadPlants)
