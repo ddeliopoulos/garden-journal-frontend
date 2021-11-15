@@ -2,7 +2,6 @@
 import {ref} from "vue";
 import {useRoute} from "vue-router";
 import AudioRecording from "@/components/AudioRecording.vue";
-import {getAuthToken} from "@/components/shared/BackendApi";
 import {uploadJournalEntry, uploadMedia} from "@/components/shared/BackendApi.ts"
 
 interface AudioEntry {
