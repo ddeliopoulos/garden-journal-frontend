@@ -2,14 +2,16 @@
 import {ref} from "vue";
 import {useRoute} from "vue-router";
 import AudioRecording from "@/components/AudioRecording.vue";
+import {uploadJournalEntry, uploadMedia} from "@/components/shared/BackendApi.ts"
 
 interface AudioEntry {
   createdAt: string
-  audioData: string
+  data: File | null
   type: string
+  mediaId: string
 }
 
-interface JournalEntries {
+interface JournalEntry {
   id: string
 }
 
@@ -19,26 +21,26 @@ interface PlantType {
 
 export default {
   name: "AudioRecorder",
-  emits: [ "closeAudioComponent", "showAudioComponent"],
+  emits: ["closeAudioComponent", "showAudioComponent", "updateCustomAudio"],
   components: {AudioRecording},
 
-
   setup(props: any, context: any) {
+    console.log("STARTING AudioRecorder.VUE")
     const route = useRoute()
     const id = parseInt(route.params.id as string);
 
+    const titleOfAudio = ref("")
+
+
     const audioEntry = ref<AudioEntry>({
       createdAt: "",
-      audioData: "",
-      type: "audio"
+      data: null,
+      type: "audio",
+      mediaId: ""
     })
 
-    const journalId = ref<JournalEntries>({
+    const journalId = ref<JournalEntry>({
       id: "",
-    })
-
-    const plantId = ref<PlantType>({
-      plantId: "",
     })
 
     const emitClose = async () => {
@@ -49,49 +51,40 @@ export default {
       context.emit("showAudioComponent")
     }
 
+    const updateCustomAudio = async (event: any) => {
+      context.emit("updateCustomAudio", event)
+    }
+
     const updateAudioFile = async (event: any) => {
       if (event.target.files.length === 0) {
         return;
       }
-      const audioFile = event.target.files[0]
-      audioEntry.value = audioFile
 
-      let reader = new FileReader();
-      reader.onload = evt => {
-        // this is what you want to upload to server
-        audioEntry.value.audioData = <string>evt.target?.result
-      }
-      reader.readAsText(audioFile, "UTF-8");
+      audioEntry.value.data = event.target.files[0]
     }
 
-
-
     const postAudioJournal = async () => {
-      await fetch('/api/journal-entries', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: journalId.value.id,
-          plantId: id,
-          createdAt: Date.now(),
-          type: audioEntry.value.type,
-          data: audioEntry.value.audioData,
-        }),
-      })
-      audioEntry.value.audioData = ""
+      console.log("Attempting to post an Audio Journal")
+      const dataUploadResponse = await uploadMedia(audioEntry.value.data?.type!!, audioEntry.value.data);
+      audioEntry.value.mediaId = await (dataUploadResponse.text());
+      await uploadJournalEntry(id, journalId.value.id, audioEntry.value.type, audioEntry.value.mediaId)
+      window.location.reload()
       console.log("Audio Successfully Posted")
+    }
 
+    function updateTitle(value: any) {
+      titleOfAudio.value = value;
     }
 
     return {
       audioEntry,
-      plantId,
+      titleOfAudio,
+      updateCustomAudio,
       updateAudioFile,
       postAudioJournal,
       emitClose,
       emitShowAudioIcon,
+      updateTitle
     }
   }
 }
@@ -106,25 +99,19 @@ export default {
       </button>
     </div>
     <h3>Upload Audio</h3> <br/>
-    <input ref="myFileInput" id="inputA" accept="audio/*" type="file" @change="updateAudioFile"><br/><br/>
-    <div class="media-recorder">
-      <AudioRecording/>
-    </div>
+    <input id="inputA" accept="audio/*" type="file" @change="updateAudioFile"><br/><br/>
+    <AudioRecording @updateTitle="updateTitle" @updateCustomAudio="updateCustomAudio"/>
+
   </div>
 </template>
 
 <style scoped>
 
-.media-recorder{
-  position: relative;
-  bottom: 6em;
-}
-
 .audio-recorder {
   width: 100%;
   margin-top: 5%;
   text-align: center;
-  background: hsla(213, 24%, 93%,1);
+  background: hsla(213, 24%, 93%, 1);
   border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   display: inline-block;
   padding: 1em;

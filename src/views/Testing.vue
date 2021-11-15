@@ -1,24 +1,32 @@
 <template>
-  <h1>adlkashlkahdf;afh;als</h1>
-  <AudioRecording></AudioRecording>
+ TESTING PAGE
+  <div class="bla">
+
+
+  <SearchBar></SearchBar>
+  </div>
 </template>
 
-<script>
-import AudioRecording from "@/components/AudioRecording.vue"
+<script lang="ts">
+
+import SearchBar from '@/components/SearchBar.vue'
+
+
 
 export default {
   name: "Testing",
-  components: {AudioRecording}
-
+  components: {SearchBar},
+  setup() {
+    const bla = 'color: red';
+    return {bla};
+  }
 }
 </script>
 
 <style scoped>
 
-h1{
+.bla{
   position: relative;
-  top: 50px;
-  font-size: 55px;
+  bottom: 220px;
 }
-
 </style>

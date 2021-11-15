@@ -1,49 +1,76 @@
 <script lang="ts">
 import WaterDroplet from "@/components/WaterDroplet.vue";
 import router from "@/router";
-import {useRoute} from 'vue-router'
-import {ref, onMounted} from "vue";
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
+import {deletePlantById, getBackendUrl} from "@/components/shared/BackendApi";
+import {useRoute} from 'vue-router'
+import {onMounted, ref} from "vue";
+import {getPlantById} from "@/components/shared/BackendApi";
+import Popup from "@/components/Popup.vue";
+
 
 interface JournalEntry {
+  id: string
+  plantId: string
+  createdAt: string
   type: string
-  dataUrl: string
+  mediaId: string
+  data: string
 }
 
 interface PlantType {
   name: string
   type: string
-  date: string
+  createdAt: string
   id: string
 }
 
 
 export default {
   name: 'PlantDetails',
-  components: {JournalEntryRow, AddJournalButton, WaterDroplet},
+  components: {Popup, JournalEntryRow, AddJournalButton, WaterDroplet},
+
+  props: {
+    journalEntry: {
+      type: Object as () => JournalEntry,
+      required: true
+    }
+  },
 
   setup() {
     const route = useRoute()
     const id = route.params.id
 
-    const latestImg = ref("")
+    const showDeleteAlert = ref(false)
+
+    const plantImageUrl = ref("")
+    let src = ""
 
     const plant = ref<PlantType>({
       name: "",
       type: "",
-      date: "",
+      createdAt: "",
       id: ""
     })
+    console.log("CREATED AT", plant.value.createdAt)
+    const humanDate = ref();
 
-    const journalEntries = ref<JournalEntry[]>([]);
+    const journalEntries = ref<JournalEntry[]>([])
+
+    const journalEntry = ref<JournalEntry>({
+      id: "",
+      plantId: "",
+      createdAt: "",
+      type: "",
+      mediaId: "",
+      data: ""
+    })
+
 
     const filterEntriesByType = async (type: string | null) => {
-      const response = await fetch(`/api/journal-entries?plantId=${id}&_sort=createdAt&_order=desc${type ? `&type=${type}` : ''}`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
+      const response = await fetch(`${getBackendUrl()}/plants/${id}/journal-entries${type ? `?type=${type}` : ''}`, {
+        method: 'GET'
       })
       return await response.json();
     }
@@ -55,39 +82,54 @@ export default {
     const loadJournalEntries = async () => await reloadEntriesByType(null);
 
     const getLatestImage = async () => {
-      latestImg.value = (await filterEntriesByType('image'))[0].dataUrl
+      console.log("getting latest image")
+      let img;
+
+        const images = (await filterEntriesByType('image'));
+
+      console.log("latest image value: ",images)
+        if(images.length === 0){
+          src = "/default-plant-img.jpg"
+          console.log(src)
+        } else {
+
+          journalEntry.value.mediaId = images[0].mediaId
+          src = getBackendUrl() + '/media/' + journalEntry.value.mediaId
+        }
+      plantImageUrl.value = src;
     }
 
+    // const updateCustomAudio = async (event: any) => {
+    //   props.journalEntry.data = event;
+    //   console.log(props.journalEntry.data)
+    // }
+
     const getPlantInfo = async () => {
-      const response = await fetch(`/api/plants/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
+      const response = await getPlantById(id);
       plant.value = await response.json()
+      humanDate.value = new Date(plant.value.createdAt).toLocaleDateString()
     }
 
     const deletePlant = async () => {
-      if (confirm('Are you sure, bitch?')) {
-        await fetch(`/api/plants/${id}`, {
-          method: 'DELETE'
-        })
+      await deletePlantById(id)
         await router.push('/');
       }
-    }
 
     [getPlantInfo, loadJournalEntries, getLatestImage].forEach((fn: any) => onMounted(fn));
 
     return {
+      humanDate,
+      src,
+      plantImageUrl,
       journalEntries,
+      journalEntry,
       plant,
-      latestImg,
       deletePlant,
       filterTextEntries,
       loadJournalEntries,
       filterAudioEntries,
-      filterImageEntries
+      filterImageEntries,
+      getBackendUrl
     }
   }
 }
@@ -95,6 +137,9 @@ export default {
 
 <template>
   <section class="relative py-16 bg-gray-300">
+    <Popup>
+      <h2>My Popup</h2>
+    </Popup>
     <div class="container mx-auto px-4">
       <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
         <div class="px-6">
@@ -115,9 +160,9 @@ export default {
           </div>
           <div class="text-center mt-12">
             <div class="move-left">
-              <div class="image-cropper">
-                <img :src=latestImg alt="default-plant-image" class="default-plant">
-              </div>
+                  <div class="image-cropper">
+                  <img :src="plantImageUrl" alt="latest-img" class="img">
+                </div>
               <h3 class="text-4xl font-semisolid leading-normal mb-2 text-gray-800 mb-2">
                 {{ plant.name }}
               </h3>
@@ -133,7 +178,7 @@ export default {
                 <div class="move-date">
                   <div class="mb-2 text-gray-700">
                     <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
-                    {{ plant.date }}
+                    <b>{{ humanDate }}</b>
                   </div>
                 </div>
               </div>
@@ -141,21 +186,23 @@ export default {
           </div>
         </div>
         <div class="w-full lg:w-9/12 px-4">
-          <AddJournalButton/> <br/><br/>
+          <AddJournalButton @updateCustomAudio="updateCustomAudio" />
         </div>
-        <div class="mt-10  border-gray-300 text-center">
+
+        <div class="mt-10 py-10 border-t border-gray-300 text-center">
+          <h2>JOURNAL ENTRIES</h2>
           <div class="timeline">
             <button @click="loadJournalEntries" class="filter-img-btn"> All</button>
             <button @click="filterTextEntries" class="filter-txt-btn"> Text</button>
             <button @click="filterAudioEntries" class="filter-audio-btn"> Audio</button>
             <button @click="filterImageEntries" class="filter-img-btn"> Image</button>
             <br/><br/>
-            <h2 class="text-3xl font-semisolid" >JOURNAL ENTRIES</h2>
             <br/>
             <div class="single-plant-container" :key="journalEntry.id" v-for="journalEntry in journalEntries">
               <JournalEntryRow :journalEntry="journalEntry"/>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -163,6 +210,8 @@ export default {
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+
 html {
   background-color: #E2E8F0;
 }
@@ -174,7 +223,7 @@ html {
 
 .container {
   position: relative;
-  top: -31px;
+  top: 20px;
 }
 
 .filter-txt-btn, .filter-audio-btn, .filter-img-btn {
@@ -184,38 +233,37 @@ html {
   cursor: pointer;
   display: inline-block;
   padding: 6px 22px;
-  background-color: #000000;
-  background-image: linear-gradient(315deg, #000000 0%, #414141 74%);
+  background-color: #181A18;
   border-radius: 8px;
   color: #FFF;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   position: relative;
   margin: 5px;
 }
 
 .move-left {
+  position: relative;
+  left: 20px;
   width: 725px;
-  height: 315px;
+  height: 350px;
   margin: auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
 }
 
 .move-date {
   position: relative;
-  top: -35px;
+  top: -26px;
 }
-
 
 .fa-window-close {
   color: #CC2E5D;
-  font-size: 27px;
+  font-size: 23px;
   position: relative;
   top: 10px;
   left: 600px;
   cursor: pointer;
 }
-
 
 .fas {
   position: relative;
@@ -223,11 +271,13 @@ html {
 }
 
 .image-cropper {
-  width: 250px;
-  height: 200x;
+  width: 220px;
+  height: 200px;
   position: relative;
   overflow: hidden;
   margin: auto;
+  top: 5px;
+  border-radius: 20px;
 }
 
 html {
@@ -242,7 +292,6 @@ body {
 img {
   border-style: none;
 }
-
 
 img {
   max-width: 100%;
@@ -350,10 +399,6 @@ img {
   margin-top: 3rem
 }
 
-.-mt-64 {
-  position: relative;
-  bottom: 30px;
-}
 
 
 .px-4 {
@@ -373,7 +418,6 @@ img {
 
 .relative {
   position: relative;
-  top: 10px;
 }
 
 .shadow-xl {
@@ -399,7 +443,10 @@ img {
 }
 
 .text-sm {
-  font-size: 0.875rem
+  font-size: 0.875rem;
+  position: relative;
+  top: 7px;
+  right: 5px;
 }
 
 .text-lg {
@@ -416,6 +463,12 @@ img {
 
 .w-full {
   width: 100%
+}
+h2{
+  font-family: 'Josefin Sans', sans-serif;
+  position: relative;
+  bottom: 10px;
+  color: #181A18;
 }
 
 </style>
