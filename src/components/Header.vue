@@ -1,15 +1,17 @@
 <!--Cannot switch to TypeScript language because are using burger that is not compatible-->
-<script lang="ts">
+<script>
 import GardenJournalLogo from "@/components/GardenJournalLogo.vue";
 import SearchBar from "@/components/SearchBar.vue"
+import {logout} from "@/components/wrapped/gapi";
 
 export default {
   name: "Header",
+  components: {GardenJournalLogo, SearchBar},
 
-  components: {
-    GardenJournalLogo,
-    SearchBar
-  },
+  setup(){
+// @ts-ignore
+    return{logoutWithGoogle: this.$gapi.logout}
+  }
 }
 </script>
 
@@ -18,6 +20,9 @@ export default {
     <div class="inner-header">
       <div class="garden-journal-logo">
         <GardenJournalLogo></GardenJournalLogo>
+      </div>
+      <div>
+        <button class="logout-btn" @click="logoutWithGoogle" role="button">LOG OUT</button>
       </div>
     </div>
   </div>
@@ -28,6 +33,60 @@ export default {
 
 body{
   margin: 0;
+}
+
+/* CSS */
+.logout-btn {
+  opacity: 0.7;
+  position: relative;
+  top: 20px;
+  left: 82em;
+  align-items: center;
+  background-color: #fff;
+  border: 2px solid #000;
+  box-sizing: border-box;
+  color: #000;
+  cursor: pointer;
+  display: inline-flex;
+  fill: #000;
+  font-family: Inter,sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  height: 40px;
+  justify-content: center;
+  letter-spacing: -.8px;
+  line-height: 24px;
+  min-width: 140px;
+  outline: 0;
+  padding: 0 17px;
+  text-align: center;
+  text-decoration: none;
+  transition: all .3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.logout-btn:focus {
+  color: #171e29;
+}
+
+.logout-btn:hover {
+  border-color: #06f;
+  color: #06f;
+  fill: #06f;
+}
+
+.logout-btn:active {
+  border-color: #06f;
+  color: #06f;
+  fill: #06f;
+}
+
+@media (min-width: 768px) {
+  .logout-btn {
+    min-width: 170px;
+  }
 }
 
 .header{
