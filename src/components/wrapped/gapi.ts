@@ -51,3 +51,10 @@ export async function login(): Promise<void> {
   console.log('logged in, redirecting to /');
   window.location.replace('/');
 }
+
+export async function logout(){
+  await googleInitialized;
+  // @ts-ignore
+  await gapi.auth2.getAuthInstance().signOut();
+  window.location.replace('/login')
+}

@@ -10,7 +10,7 @@ export default {
 
   setup(){
 // @ts-ignore
-    return{logoutWithGoogle: this.$gapi.logout}
+    return{logoutWithGoogle: () => {logout()}}
   }
 }
 </script>
