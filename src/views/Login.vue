@@ -6,10 +6,6 @@ import GardenJournalLogo from "@/components/GardenJournalLogo.vue";
 export default {
   name: "Login",
   components: {GardenJournalLogo, GoogleLoginButton},
-  setup() {
-
-  }
-
 
 }
 </script>
@@ -121,7 +117,7 @@ form {
   margin: 2% auto;
   box-shadow: 0 9px 50px hsla(20, 50%, 50%, 0.31);
   padding: 2%;
-  background-image: linear-gradient(-225deg, #f9ea8f 10%, #E2E8F0 80%);
+  background-image: linear-gradient(-225deg, #93A5CF 10%, #E4EfE9 80%);
 }
 
 form .con {

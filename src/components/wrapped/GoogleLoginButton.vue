@@ -1,15 +1,12 @@
 
 <script>
 const router = require("@/router");
-const {onUpdated} = require("vue");
-import {requireNotLoggedIn, login} from '@/components/wrapped/gapi.ts';
 
 export default {
   name: "GoogleLoginButton",
   setup() {
-    requireNotLoggedIn();
 
-    return {loginWithGoogle: login};
+    return {loginWithGoogle: this.$gapi.login};
   }
 }
 </script>
@@ -72,6 +69,4 @@ $button-active-blue: #1669F2;
     background: $button-active-blue;
   }
 }
-
-
 </style>
