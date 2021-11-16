@@ -17,7 +17,7 @@ export default {
 <template>
   <div class="background">
     <div class="overlay">
-      <form>
+      <div id="login-form">
         <div class="con">
           <header class="head-form">
             <GardenJournalLogo class="gj-logo"/>
@@ -53,7 +53,7 @@ export default {
         <div class="entire-google-button-move">
           <GoogleLoginButton/>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 
@@ -113,7 +113,7 @@ body {
   z-index: 1000;
 }
 
-form {
+#login-form {
   width: 450px;
   min-height: 500px;
   height: auto;
@@ -124,7 +124,7 @@ form {
   background-image: linear-gradient(-225deg, #f9ea8f 10%, #E2E8F0 80%);
 }
 
-form .con {
+#login-form .con {
   display: -webkit-flex;
   display: flex;
 
