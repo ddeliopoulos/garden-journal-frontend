@@ -17,8 +17,6 @@
     "element-plus": "^1.0.2-beta.55",
     "filepond-plugin-image-preview": "^4.6.7",
     "json-server": "^0.16.3",
-    "primeicons": "^5.0.0",
-    "primevue": "^3.8.2",
     "vue": "^3.0.0",
     "vue-google-oauth": "^1.0.5",
     "vue-router": "^4.0.0-0",

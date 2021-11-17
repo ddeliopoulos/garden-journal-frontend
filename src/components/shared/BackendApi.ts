@@ -71,7 +71,7 @@ export async function uploadJournalEntry(plantId: number, journalId: string, typ
 }
 
 export async function deletePlantById(plantId: string | RouteParamValue[]) {
-    if (confirm('Are you sure?')) {
+    //if (confirm('Are you sure?')) {
         await fetch(`${getBackendUrl()}/plants/${plantId}`, {
             method: 'DELETE',
             headers: {
@@ -79,7 +79,7 @@ export async function deletePlantById(plantId: string | RouteParamValue[]) {
             },
         })
         await router.push('/');
-    }
+    //}
 }
 
 export async function deleteJournalEntry(journalId: string) {

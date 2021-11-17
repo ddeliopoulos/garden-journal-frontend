@@ -2,11 +2,9 @@
 import WaterDroplet from "@/components/WaterDroplet.vue";
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
-import {deletePlantById, getBackendUrl} from "@/components/shared/BackendApi";
+import {deletePlantById, getBackendUrl, getPlantById} from "@/components/shared/BackendApi";
 import {useRoute} from 'vue-router'
-import {onMounted, ref} from "vue";
-import {getPlantById} from "@/components/shared/BackendApi";
-import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import {defineComponent, onMounted, ref} from "vue";
 
 interface JournalEntry {
   id: string
@@ -25,26 +23,17 @@ interface PlantType {
 }
 
 
-export default {
+export default defineComponent({
   name: 'PlantDetails',
-  components: {ConfirmDialog, JournalEntryRow, AddJournalButton, WaterDroplet},
-
+  components: {JournalEntryRow, AddJournalButton, WaterDroplet},
 
   setup() {
     const route = useRoute()
     const id = route.params.id
-    const plantImageUrl = ref("")
     let src = ""
 
-    const plant = ref<PlantType>({
-      name: "",
-      type: "",
-      createdAt: "",
-      id: ""
-    })
-    console.log("CREATED AT", plant.value.createdAt)
+    const plantImageUrl = ref("")
     const humanDate = ref();
-
     const journalEntries = ref<JournalEntry[]>([])
 
     const journalEntry = ref<JournalEntry>({
@@ -55,6 +44,14 @@ export default {
       mediaId: "",
       data: ""
     })
+
+    const plant = ref<PlantType>({
+      name: "",
+      type: "",
+      createdAt: "",
+      id: ""
+    })
+    console.log("CREATED AT", plant.value.createdAt)
 
 
     const filterEntriesByType = async (type: string | null) => {
@@ -74,17 +71,17 @@ export default {
       console.log("getting latest image")
       let img;
 
-        const images = (await filterEntriesByType('image'));
+      const images = (await filterEntriesByType('image'));
 
-      console.log("latest image value: ",images)
-        if(images.length === 0){
-          src = "/default-plant-img.jpg"
-          console.log(src)
-        } else {
+      console.log("latest image value: ", images)
+      if (images.length === 0) {
+        src = "/default-plant-img.jpg"
+        console.log(src)
+      } else {
 
-          journalEntry.value.mediaId = images[0].mediaId
-          src = getBackendUrl() + '/media/' + journalEntry.value.mediaId
-        }
+        journalEntry.value.mediaId = images[0].mediaId
+        src = getBackendUrl() + '/media/' + journalEntry.value.mediaId
+      }
       plantImageUrl.value = src;
     }
 
@@ -101,7 +98,7 @@ export default {
 
     const deletePlant = async () => {
       await deletePlantById(id)
-      }
+    }
 
     [getPlantInfo, loadJournalEntries, getLatestImage].forEach((fn: any) => onMounted(fn));
 
@@ -120,7 +117,7 @@ export default {
       getBackendUrl
     }
   }
-}
+})
 </script>
 
 <template>
@@ -136,10 +133,6 @@ export default {
             <div class="delete-plant-icon" @click=deletePlant()>
               <i class="far fa-window-close"></i>
             </div>
-<!--            <div class="confirmation-box">-->
-<!--              <ConfirmDialog></ConfirmDialog>-->
-<!--              <Button @click="deletePlant()" icon="pi pi-check" label="Confirm"></Button>-->
-<!--            </div>-->
             <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
             </div>
             <div class="w-full lg:w-4/12 px-4 lg:order-1">
@@ -149,9 +142,9 @@ export default {
           </div>
           <div class="text-center mt-12">
             <div class="move-left">
-                  <div class="image-cropper">
-                  <img :src="plantImageUrl" alt="latest-img" class="img">
-                </div>
+              <div class="image-cropper">
+                <img :src="plantImageUrl" alt="latest-img" class="img">
+              </div>
               <h3 class="text-4xl font-semisolid leading-normal mb-2 text-gray-800 mb-2">
                 {{ plant.name }}
               </h3>
@@ -204,12 +197,15 @@ export default {
 html {
   background-color: #E2E8F0;
 }
+
 .green {
   color: green;
 }
+
 .red {
   color: red;
 }
+
 .plant-info {
   position: relative;
   bottom: 20px;
@@ -394,7 +390,6 @@ img {
 }
 
 
-
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem
@@ -458,7 +453,8 @@ img {
 .w-full {
   width: 100%
 }
-h2{
+
+h2 {
   font-family: 'Josefin Sans', sans-serif;
   position: relative;
   bottom: 10px;
