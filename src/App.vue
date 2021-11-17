@@ -104,8 +104,7 @@ export default defineComponent({
 }
 
 .bm-menu {
-  height: 100vh; /* 100% Full-height */
-  width: 100%; /* 0 width - change this with JavaScript */
+  height: 100%; /* 100% Full-height */ /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
   top: 80px;
   left: 0;

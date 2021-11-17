@@ -3,23 +3,26 @@ import {ref} from "vue";
 
 export default {
   name: "SearchBar.vue",
-  emits: {emitSearchTextRef},
-  setup(){
+  emits: ['emitSearchText'],
+  setup(props: any, {emit}: any){
     const searchText = ref("");
 
-    
+    function setSearchText(){
+      console.log("SET SEARCH TEXT FROM CHILD: ", searchText.value)
+      emit("emitSearchText", searchText.value)
+    }
 
-    return {searchText}
+    return {searchText, setSearchText}
   }
 }
 </script>
 
 <template>
   <div class="search-bar">
-  <form class="search" action="">
-    <input id="searchText" type="search" placeholder="Search here..." required>
-    <button type="submit" id="search">Search</button>
-  </form>
+  <div class="search">
+    <input v-model="searchText" type="search" placeholder="Search for plant..." required>
+    <button @click="setSearchText" type="submit" id="search-btn">Search</button>
+  </div>
   </div>
   <!--  <div class="navbarSearch">-->
 <!--    <input class="form-control navbar-search-input js-navbar-search-input nav-input js-filter-topics"-->

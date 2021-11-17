@@ -16,7 +16,7 @@ export default {
 
 <template>
   <div id="add-plant-btn">
-    <button class="add-plant-button" @click="showAddPlantForm = true">ADD PLANT</button>
+    <button class="add-plant-button" @click="showAddPlantForm = true">Add Plant</button>
     <transition name="fade" appear>
       <div class="plant-form-overlay" v-if="showAddPlantForm" @click="showAddPlantForm = false"></div>
     </transition>
@@ -83,19 +83,28 @@ export default {
 .add-plant-button {
   appearance: none;
   outline: none;
-  border: none;
   cursor: pointer;
   display: inline-block;
-  padding: 6px 12px;
-  background-image: linear-gradient(to right, #141e30, #243b55);
-  color: #FFF;
-  font-size: 20px;
-  font-weight: bolder;
-  box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
+  color: white;
   position: relative;
-  bottom: 4em;
+  bottom: 5em;
   margin: 25px;
-  font-family: 'Open Sans', sans-serif;
+  background-color: #13aa52;
+  border: 1px solid #13aa52;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+  box-sizing: border-box;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 16px;
+  font-weight: bolder;
+  outline: 0;
+  padding: 10px 25px;
+  text-align: center;
+  transform: translateY(0);
+  transition: transform 150ms, box-shadow 150ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
 .add-plant-button:hover {

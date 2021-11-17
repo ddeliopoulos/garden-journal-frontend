@@ -18,15 +18,19 @@ export default {
     plant: {
       type: Object as () => Plant,
       required: true
-    }
+    },
+    searchText: String
   },
 
- setup(props : any){
+
+ setup(props : any, {emit}: any){
 
    let plantId = props.plant.id
    const humanDate = ref(new Date(props.plant.createdAt).toLocaleDateString())
    const latestImg = ref("")
    const plantImageUrl = ref("");
+
+   const searchPlantsUsingBar = ref(props.searchText)
 
    const journalEntry = ref<JournalEntry>({
      journalId: "",
@@ -70,6 +74,7 @@ export default {
    onMounted(getLatestImageOrDefault)
 
     return{
+      searchPlantsUsingBar,
       plantImageUrl,
       getLatestImageOrDefault,
       getBackendUrl,
@@ -80,12 +85,11 @@ export default {
     }
  }
 }
-
 </script>
 
 <template>
   <div class="garden">
-    <div class="plant-card">
+    <div  class="plant-card">
       <router-link style="text-decoration: none; color: inherit;" :to="{name: 'PlantDetails', params: {id: plant.id}}">
         <h2><b></b> {{ plant.name }}</h2>
         <div class="image-cropper">
