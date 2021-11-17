@@ -7,7 +7,6 @@ import './assets/global.css'
 import 'vue-universal-modal/dist/index.css'
 import VueUniversalModal from 'vue-universal-modal'
 
-
 createApp(App).use(ElementPlus).use(router)
     .use(VueUniversalModal, {teleportTarget: '#modals'})
     .mount('#app')

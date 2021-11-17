@@ -22,7 +22,6 @@ interface PlantType {
   id: string
 }
 
-
 export default defineComponent({
   name: 'PlantDetails',
   components: {JournalEntryRow, AddJournalButton, WaterDroplet},

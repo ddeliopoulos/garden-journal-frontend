@@ -3,14 +3,12 @@ import { Slide } from 'vue3-burger-menu';
 
 export default {
   name: "SliderWrapped",
-  components: {
-    Slide
-  }
+  components: {Slide}
 }
 </script>
 
 <template>
-  <Slide>
+  <Slide width="200">
     <slot></slot>
   </Slide>
 </template>

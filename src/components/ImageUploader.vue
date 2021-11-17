@@ -113,7 +113,7 @@ export default {
   display: inline-block;
   padding: 1em;
   line-height: 1.5em;
-  border: dotted 5px hsla(0, 95%, 35%, 1);
+  border: dotted 5px black;
 }
 
 .fa-window-close {

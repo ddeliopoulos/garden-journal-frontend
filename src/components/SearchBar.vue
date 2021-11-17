@@ -3,10 +3,13 @@ import {ref} from "vue";
 
 export default {
   name: "SearchBar.vue",
+  emits: {emitSearchTextRef},
   setup(){
     const searchText = ref("");
 
-    return {}
+    
+
+    return {searchText}
   }
 }
 </script>
@@ -14,7 +17,7 @@ export default {
 <template>
   <div class="search-bar">
   <form class="search" action="">
-    <input type="search" placeholder="Search here..." required>
+    <input id="searchText" type="search" placeholder="Search here..." required>
     <button type="submit" id="search">Search</button>
   </form>
   </div>

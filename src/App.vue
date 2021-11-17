@@ -29,10 +29,14 @@ export default defineComponent({
 </template>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
 #app{
   background-color: #E2E8F0;
+}
+
+.slide-nav{
+  width: 100%;
 }
 
 .logo-container h1 {
@@ -61,6 +65,7 @@ export default defineComponent({
   font-size: 16px;
   font-weight: bold;
 }
+
 .bm-burger-button {
   position: fixed;
   width: 36px;
@@ -69,17 +74,19 @@ export default defineComponent({
   top: 30px;
   cursor: pointer;
   z-index: 99;
-
 }
+
 .bm-burger-bars {
   background-color: #373a47;
 }
+
 .line-style {
   position: absolute;
   height: 20%;
   left: 0;
   right: 0;
 }
+
 .cross-style {
   position: absolute;
   top: 12px;
@@ -90,17 +97,19 @@ export default defineComponent({
 .bm-cross {
   background: #bdc3c7;
 }
+
 .bm-cross-button {
   height: 24px;
   width: 24px;
 }
+
 .bm-menu {
-  height: 100%; /* 100% Full-height */
-  width: 0; /* 0 width - change this with JavaScript */
+  height: 100vh; /* 100% Full-height */
+  width: 100%; /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
   top: 80px;
   left: 0;
-  background-color: rgb(63, 63, 65); /* Black*/
+  background-color: #E2E8F0; /* Black*/
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 20px; /* Place content 60px from the top */
   transition: 0.5s; /*0.5 second transition effect to slide in the sidenav*/
@@ -111,15 +120,18 @@ export default defineComponent({
   margin-left: 10%;
   font-size: 20px;
 }
+
 .bm-item-list > * {
   display: flex;
   text-decoration: none;
   padding: 0.7em;
 }
+
 .bm-item-list > * > span {
   margin-left: 10px;
   font-weight: 700;
-  color: white;
+  color: black;
+  font-family: 'Josefin Sans', sans-serif;
 }
 
 </style>
