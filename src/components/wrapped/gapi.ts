@@ -9,7 +9,7 @@ const googleInitialized = new Promise((resolve, reject) => {
       apiKey: "",
       discoveryDocs: ["https://people.googleapis.com/$discovery/rest?version=v1"],
       clientId: clientId,
-      scope: scopes
+      scope: scopes,
     }).then(resolve)
     .catch(reject);
   });
@@ -47,7 +47,7 @@ export async function login(): Promise<void> {
   await googleInitialized;
   await requireNotLoggedIn();
   // @ts-ignore
-  await gapi.auth2.getAuthInstance().signIn();
+  await gapi.auth2.getAuthInstance().signIn({scope: 'profile email', prompt: 'select_account'});
   console.log('logged in, redirecting to /');
   window.location.replace('/');
 }

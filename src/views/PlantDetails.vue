@@ -1,14 +1,12 @@
 <script lang="ts">
 import WaterDroplet from "@/components/WaterDroplet.vue";
-import router from "@/router";
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
 import {deletePlantById, getBackendUrl} from "@/components/shared/BackendApi";
 import {useRoute} from 'vue-router'
 import {onMounted, ref} from "vue";
 import {getPlantById} from "@/components/shared/BackendApi";
-import Popup from "@/components/Popup.vue";
-
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 
 interface JournalEntry {
   id: string
@@ -29,21 +27,12 @@ interface PlantType {
 
 export default {
   name: 'PlantDetails',
-  components: {Popup, JournalEntryRow, AddJournalButton, WaterDroplet},
+  components: {ConfirmDialog, JournalEntryRow, AddJournalButton, WaterDroplet},
 
-  props: {
-    journalEntry: {
-      type: Object as () => JournalEntry,
-      required: true
-    }
-  },
 
   setup() {
     const route = useRoute()
     const id = route.params.id
-
-    const showDeleteAlert = ref(false)
-
     const plantImageUrl = ref("")
     let src = ""
 
@@ -112,7 +101,6 @@ export default {
 
     const deletePlant = async () => {
       await deletePlantById(id)
-        await router.push('/');
       }
 
     [getPlantInfo, loadJournalEntries, getLatestImage].forEach((fn: any) => onMounted(fn));
@@ -137,9 +125,6 @@ export default {
 
 <template>
   <section class="relative py-16 bg-gray-300">
-    <Popup>
-      <h2>My Popup</h2>
-    </Popup>
     <div class="container mx-auto px-4">
       <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
         <div class="px-6">
@@ -151,6 +136,10 @@ export default {
             <div class="delete-plant-icon" @click=deletePlant()>
               <i class="far fa-window-close"></i>
             </div>
+<!--            <div class="confirmation-box">-->
+<!--              <ConfirmDialog></ConfirmDialog>-->
+<!--              <Button @click="deletePlant()" icon="pi pi-check" label="Confirm"></Button>-->
+<!--            </div>-->
             <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
             </div>
             <div class="w-full lg:w-4/12 px-4 lg:order-1">
@@ -186,7 +175,7 @@ export default {
           </div>
         </div>
         <div class="w-full lg:w-9/12 px-4">
-          <AddJournalButton @updateCustomAudio="updateCustomAudio" />
+          <AddJournalButton/>
         </div>
 
         <div class="mt-10 py-10 border-t border-gray-300 text-center">
@@ -215,7 +204,12 @@ export default {
 html {
   background-color: #E2E8F0;
 }
-
+.green {
+  color: green;
+}
+.red {
+  color: red;
+}
 .plant-info {
   position: relative;
   bottom: 20px;

@@ -8,6 +8,7 @@ import About from "@/views/About.vue";
 import Login from "@/views/Login.vue"
 
 
+// @ts-ignore
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -28,6 +29,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/plant-details/:id',
     name: 'PlantDetails',
+    //@ts-ignore
     component: PlantDetails,
     props: true
   },

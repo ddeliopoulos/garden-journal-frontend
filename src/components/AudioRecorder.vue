@@ -21,7 +21,7 @@ interface PlantType {
 
 export default {
   name: "AudioRecorder",
-  emits: ["closeAudioComponent", "showAudioComponent", "updateCustomAudio"],
+  emits: ["closeAudioComponent", "showAudioComponent"],
   components: {AudioRecording},
 
   setup(props: any, context: any) {
@@ -30,7 +30,6 @@ export default {
     const id = parseInt(route.params.id as string);
 
     const titleOfAudio = ref("")
-
 
     const audioEntry = ref<AudioEntry>({
       createdAt: "",

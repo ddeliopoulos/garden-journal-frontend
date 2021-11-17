@@ -11,6 +11,7 @@ interface PlantType {
   createdAt: string
   id: number
 }
+
 interface JournalEntry {
   dataUrl: string
 }
@@ -40,22 +41,22 @@ export default {
   <div class="relative py-16 bg-gray-300">
     <div class="container mx-auto px-4">
       <div class="move-down">
-      <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
-        <div class="text-center mt-12">
-          <SearchBar></SearchBar>
+        <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
+          <div class="text-center mt-12">
+            <SearchBar></SearchBar>
 
-          <div id="add-plant-button">
-            <AddPlantButton></AddPlantButton>
-          </div>
+            <div id="add-plant-button">
+              <AddPlantButton></AddPlantButton>
+            </div>
 
-              <div class="single-plant-container" :key="plant.id" v-for="plant in plants">
-                <Plant :plant="plant"/>
-              </div>
+            <div class="single-plant-container" :key="plant.id" v-for="plant in plants">
+              <Plant :plant="plant"/>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
 
 </template>
@@ -71,9 +72,8 @@ export default {
 }
 
 
-
-h1{
-padding: 30px;
+h1 {
+  padding: 30px;
 }
 
 hr {
@@ -331,14 +331,14 @@ img {
   width: 100%
 }
 
-.single-plant-container{
+.single-plant-container {
   margin: auto;
   display: inline-block;
   padding: 0 10px 10px 10px;
 }
 
-#plants-title h1{
-  width:500px;
+#plants-title h1 {
+  width: 500px;
   margin: 0 auto;
   text-align: center;
   font-family: Catamaran, serif;

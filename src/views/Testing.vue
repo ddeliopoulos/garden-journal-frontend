@@ -3,19 +3,16 @@
   <div class="bla">
 
 
-  <SearchBar></SearchBar>
   </div>
 </template>
 
 <script lang="ts">
 
-import SearchBar from '@/components/SearchBar.vue'
-
 
 
 export default {
   name: "Testing",
-  components: {SearchBar},
+  components: {},
   setup() {
     const bla = 'color: red';
     return {bla};
