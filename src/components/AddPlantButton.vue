@@ -17,11 +17,11 @@ export default {
 <template>
   <div id="add-plant-btn">
     <button class="add-plant-button" @click="showAddPlantForm = true">Add Plant</button>
-    <transition name="fade" appear>
-      <div class="plant-form-overlay" v-if="showAddPlantForm" @click="showAddPlantForm = false"></div>
+    <transition appear name="fade">
+      <div v-if="showAddPlantForm" class="plant-form-overlay" @click="showAddPlantForm = false"></div>
     </transition>
-    <transition name="slide" appear>
-      <div class="modal" v-if="showAddPlantForm">
+    <transition appear name="slide">
+      <div v-if="showAddPlantForm" class="modal">
         <div class="close-form-button" @click="showAddPlantForm = false"></div>
         <AddPlantForm/>
       </div>

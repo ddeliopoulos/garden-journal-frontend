@@ -2,7 +2,7 @@
 import WaterDroplet from "@/components/WaterDroplet.vue";
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
-import {deletePlantById, getBackendUrl, getPlantById} from "@/components/shared/BackendApi";
+import {deletePlantById, filterEntriesByType, getBackendUrl, getPlantById} from "@/components/shared/BackendApi";
 import {useRoute} from 'vue-router'
 import {defineComponent, onMounted, ref} from "vue";
 
@@ -52,14 +52,7 @@ export default defineComponent({
     })
     console.log("CREATED AT", plant.value.createdAt)
 
-
-    const filterEntriesByType = async (type: string | null) => {
-      const response = await fetch(`${getBackendUrl()}/plants/${id}/journal-entries${type ? `?type=${type}` : ''}`, {
-        method: 'GET'
-      })
-      return await response.json();
-    }
-    const reloadEntriesByType = async (type: string | null) => journalEntries.value = await filterEntriesByType(type);
+    const reloadEntriesByType = async (type: string | null) => journalEntries.value = await filterEntriesByType(type, id);
 
     const filterAudioEntries = async () => await reloadEntriesByType('audio');
     const filterImageEntries = async () => await reloadEntriesByType('image');
@@ -70,7 +63,7 @@ export default defineComponent({
       console.log("getting latest image")
       let img;
 
-      const images = (await filterEntriesByType('image'));
+      const images = (await filterEntriesByType('image', id));
 
       console.log("latest image value: ", images)
       if (images.length === 0) {
@@ -173,13 +166,13 @@ export default defineComponent({
         <div class="mt-10 py-10 border-t border-gray-300 text-center">
           <h2>JOURNAL ENTRIES</h2>
           <div class="timeline">
-            <button @click="loadJournalEntries" class="filter-img-btn"> All</button>
-            <button @click="filterTextEntries" class="filter-txt-btn"> Text</button>
-            <button @click="filterAudioEntries" class="filter-audio-btn"> Audio</button>
-            <button @click="filterImageEntries" class="filter-img-btn"> Image</button>
+            <button class="filter-img-btn" @click="loadJournalEntries"> All</button>
+            <button class="filter-txt-btn" @click="filterTextEntries"> Text</button>
+            <button class="filter-audio-btn" @click="filterAudioEntries"> Audio</button>
+            <button class="filter-img-btn" @click="filterImageEntries"> Image</button>
             <br/><br/>
             <br/>
-            <div class="single-plant-container" :key="journalEntry.id" v-for="journalEntry in journalEntries">
+            <div v-for="journalEntry in journalEntries" :key="journalEntry.id" class="single-plant-container">
               <JournalEntryRow :journalEntry="journalEntry"/>
             </div>
           </div>

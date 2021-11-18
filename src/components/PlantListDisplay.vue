@@ -1,7 +1,7 @@
 <script lang="ts">
 import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
-import {ref, onMounted} from 'vue'
+import {ref} from 'vue'
 import {loadAllPlants} from "@/components/shared/BackendApi";
 import SearchBar from "@/components/SearchBar.vue"
 
@@ -35,8 +35,7 @@ export default {
     }
 
 
-
-    function searchValue (value: any) {
+    function searchValue(value: any) {
       searchBarVal.value = value;
       console.log("USING THIS VALUE TO FILTER :  ", searchBarVal.value)
       showFilteredList.value = true;
@@ -45,13 +44,15 @@ export default {
       })
 
     }
-      function filteredList() {
-      console.log("IAM FILTERING INCLUDING THIS VALUE : ", searchBarVal.value)
-        return plants.value.filter (plant => {
-          return plant.name.toLowerCase().includes(searchBarVal.value.toLowerCase())})
-      }
 
-      loadPlants()
+    function filteredList() {
+      console.log("IAM FILTERING INCLUDING THIS VALUE : ", searchBarVal.value)
+      return plants.value.filter(plant => {
+        return plant.name.toLowerCase().includes(searchBarVal.value.toLowerCase())
+      })
+    }
+
+    loadPlants()
     return {
       searchFilteredList,
       showFilteredList,
@@ -71,23 +72,23 @@ export default {
       <div class="move-down">
 
         <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
-          <button @click="loadPlants()" class="all-plants-btn" role="button">All Plants</button>
+          <button class="all-plants-btn" role="button" @click="loadPlants()">All Plants</button>
 
           <div class="text-center mt-12">
-            <SearchBar @emitSearchText="searchValue" ></SearchBar>
+            <SearchBar @emitSearchText="searchValue"></SearchBar>
             <div id="add-plant-button">
               <AddPlantButton></AddPlantButton>
             </div>
-            <div v-if="showFilteredList" class="single-plant-container" :key="plant.id" v-for="plant in searchFilteredList">
+            <div v-for="plant in searchFilteredList" v-if="showFilteredList" :key="plant.id" class="single-plant-container">
               <Plant :plant="plant"/>
             </div>
-            <div v-else class="single-plant-container" :key="plant.id" v-for="plant in plants">
+            <div v-for="plant in plants" v-else :key="plant.id" class="single-plant-container">
               <Plant :plant="plant"/>
             </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 
 </template>

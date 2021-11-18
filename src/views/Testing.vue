@@ -1,5 +1,5 @@
 <template>
- TESTING PAGE
+  TESTING PAGE
   <div class="bla">
 
 
@@ -7,7 +7,6 @@
 </template>
 
 <script lang="ts">
-
 
 
 export default {
@@ -22,7 +21,7 @@ export default {
 
 <style scoped>
 
-.bla{
+.bla {
   position: relative;
   bottom: 220px;
 }

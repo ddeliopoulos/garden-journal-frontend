@@ -93,13 +93,13 @@ export default {
 <template>
   <div class="audio-recorder">
     <div class="close-audio" @click=emitClose>
-      <button @click="emitShowAudioIcon" class="icon-close-btn">
+      <button class="icon-close-btn" @click="emitShowAudioIcon">
         <i class="far fa-window-close"></i>
       </button>
     </div>
     <h3>Upload Audio</h3> <br/>
     <input id="inputA" accept="audio/*" type="file" @change="updateAudioFile"><br/><br/>
-    <AudioRecording @updateTitle="updateTitle" @updateCustomAudio="updateCustomAudio"/>
+    <AudioRecording @updateCustomAudio="updateCustomAudio" @updateTitle="updateTitle"/>
 
   </div>
 </template>

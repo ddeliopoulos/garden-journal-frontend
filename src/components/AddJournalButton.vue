@@ -10,26 +10,26 @@
   <Modal v-model="isShow" :close="closeModal">
     <div class="modal">
       <div class="close-image">
-        <button @click="closeModal" class="icon-close-btn">
+        <button class="icon-close-btn" @click="closeModal">
           <i class="far fa-window-close"></i>
         </button>
       </div>
       <div class="logo-container">
         <h3>GARDEN<span>JOURNAL</span></h3>
       </div>
-      <button @emitShowAudioIcon="showAudio" class="journal-icon-audio">
-        <img v-show="!showAudio" @click="showAudioComponent()" src="../assets/audio.svg" alt="audio-journal-entry"
-             class="audio-journal" width="75" height="75">
+      <button class="journal-icon-audio" @emitShowAudioIcon="showAudio">
+        <img v-show="!showAudio" alt="audio-journal-entry" class="audio-journal" height="75"
+             src="../assets/audio.svg" width="75" @click="showAudioComponent()">
       </button>
 
-      <button @emitShowImageIcon="showImage" class="journal-icon-img">
-        <img v-show="!showImage" @click="showImageComponent()" src="../assets/image.svg" alt="image-journal-entry"
-             class="image-journal" width="75" height="75">
+      <button class="journal-icon-img" @emitShowImageIcon="showImage">
+        <img v-show="!showImage" alt="image-journal-entry" class="image-journal" height="75"
+             src="../assets/image.svg" width="75" @click="showImageComponent()">
       </button>
 
-      <button @emitShowTextIcon="showDocument" class="journal-icon-txt">
-        <img v-show="!showDocument" @click="showDocumentComponent()" src="../assets/document.svg"
-             alt="text-journal-entry" class="text-journal" width="75" height="75">
+      <button class="journal-icon-txt" @emitShowTextIcon="showDocument">
+        <img v-show="!showDocument" alt="text-journal-entry" class="text-journal"
+             height="75" src="../assets/document.svg" width="75" @click="showDocumentComponent()">
       </button>
 
       <div v-show="showAudio">
@@ -45,7 +45,7 @@
       </div>
       <br/>
 
-      <button @click="onSubmitJournal" class="add-journal-entry-close">
+      <button class="add-journal-entry-close" @click="onSubmitJournal">
         Submit
       </button>
     </div>

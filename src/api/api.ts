@@ -1,11 +1,10 @@
-
 interface JournalEntry {
-    plantId:string,
-    type:string,
-    data:string
+    plantId: string,
+    type: string,
+    data: string
 }
 
-const postJournal = async (entry:JournalEntry) => {
+const postJournal = async (entry: JournalEntry) => {
     await fetch('/api/journal-entries', {
         method: 'POST',
         headers: {

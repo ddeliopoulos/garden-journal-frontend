@@ -93,12 +93,12 @@ export default {
 <template>
   <div class="upload-image">
     <div class="close-image" @click=emitClose>
-      <button @click="emitShowImageIcon" class="icon-close-btn">
+      <button class="icon-close-btn" @click="emitShowImageIcon">
         <i class="far fa-window-close"></i>
       </button>
     </div>
     <h3>Upload Image</h3> <br/>
-    <input type="file" id="img" name="img" @change="updateImageFile" accept="image/png, image/jpeg"> <br/><br/>
+    <input id="img" accept="image/png, image/jpeg" name="img" type="file" @change="updateImageFile"> <br/><br/>
   </div>
 </template>
 

@@ -1,8 +1,7 @@
 <script lang="ts">
 import {onMounted, ref} from "vue";
-import {getBackendUrl, getMediaById} from "@/components/shared/BackendApi";
+import {deleteJournalEntry, getBackendUrl, getMediaById} from "@/components/shared/BackendApi";
 import {useRoute} from "vue-router";
-import {deleteJournalEntry} from "@/components/shared/BackendApi";
 
 interface JournalEntry {
   id: string
@@ -98,7 +97,7 @@ export default {
           <i class="far fa-window-close"></i>
         </div>
         <div class="image-cropper">
-          <img alt="journal-img" :src="getBackendUrl() + '/media/' + journalEntry.mediaId"/>
+          <img :src="getBackendUrl() + '/media/' + journalEntry.mediaId" alt="journal-img"/>
         </div>
       </div>
     </div>
@@ -134,7 +133,7 @@ export default {
 </template>
 
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 
 audio {
   background: linear-gradient(to top left, green, #013220, green);

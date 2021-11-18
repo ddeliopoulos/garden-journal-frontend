@@ -20,7 +20,7 @@ export default defineComponent({
     <router-view/>
   </div>
   <div class="slide-nav">
-    <SliderWrapped :closeOnNavigation="true" >
+    <SliderWrapped :closeOnNavigation="true">
       <router-link to="/"><span><i class="fa fa-home"></i>     My Garden</span></router-link>
       <router-link to="/privacy"><span><i class='fas fa-lock'></i>       Privacy</span></router-link>
       <router-link to="/about"><span>About</span></router-link>
@@ -31,11 +31,11 @@ export default defineComponent({
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
-#app{
+#app {
   background-color: #E2E8F0;
 }
 
-.slide-nav{
+.slide-nav {
   width: 100%;
 }
 

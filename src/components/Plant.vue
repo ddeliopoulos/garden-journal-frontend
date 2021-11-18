@@ -1,7 +1,7 @@
 <script lang="ts" xmlns:text-overflow="http://www.w3.org/1999/xhtml">
 
 import {onMounted, ref} from "vue";
-import {getBackendUrl} from "@/components/shared/BackendApi";
+import {filterEntriesByType, getBackendUrl} from "@/components/shared/BackendApi";
 
 interface Plant {
   id: number
@@ -36,17 +36,11 @@ export default {
       journalId: "",
       mediaId: ""
     })
-    const filterEntriesByType = async (type: string | null) => {
-      const response = await fetch(`${getBackendUrl()}/plants/${plantId}/journal-entries${type ? `?type=${type}` : ''}`, {
-        method: 'GET'
-      })
-      return await response.json();
-    }
 
     const getLatestImageOrDefault = async () => {
       console.log("getting latest image or default")
       let img, src;
-      const images = (await filterEntriesByType('image'));
+      const images = (await filterEntriesByType('image', plantId));
 
       if (images.length === 0) {
         src = "/default-plant-img.jpg"
@@ -90,7 +84,7 @@ export default {
 <template>
   <div class="garden">
     <div class="plant-card">
-      <router-link style="text-decoration: none; color: inherit;" :to="{name: 'PlantDetails', params: {id: plant.id}}">
+      <router-link :to="{name: 'PlantDetails', params: {id: plant.id}}" style="text-decoration: none; color: inherit;">
         <h2><b></b> {{ plant.name }}</h2>
         <div class="image-cropper">
           <img :src="plantImageUrl" alt="default-plant-image" class="default-plant">

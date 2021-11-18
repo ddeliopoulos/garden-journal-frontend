@@ -17,7 +17,7 @@ export default {
 
 <template>
   <div id="home">
-      <PlantListDisplay :plants="plants"></PlantListDisplay>
+    <PlantListDisplay :plants="plants"></PlantListDisplay>
   </div>
 </template>
 
@@ -28,7 +28,8 @@ export default {
   margin: 0;
   padding: 0;
 }
-html{
+
+html {
   background-color: #E2E8F0;
 }
 </style>

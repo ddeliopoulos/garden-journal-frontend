@@ -21,6 +21,16 @@ export async function getPlantById(plantId: string | RouteParamValue[]) {
     })
 }
 
+export async function filterEntriesByType(type: string | null, plantId: string | RouteParamValue[]) {
+    const response = await fetch(`${getBackendUrl()}/plants/${plantId}/journal-entries${type ? `?type=${type}` : ''}`, {
+        method: 'GET',
+        headers: {
+            'X-Auth-Token': (await getAuthToken()), 'Content-type': 'application/json',
+        },
+    })
+    return await response.json();
+}
+
 export async function getMediaById(mediaId: string) {
     return await fetch(`${getBackendUrl()}/media/${mediaId}`, {
         method: 'GET',
@@ -72,13 +82,13 @@ export async function uploadJournalEntry(plantId: number, journalId: string, typ
 
 export async function deletePlantById(plantId: string | RouteParamValue[]) {
     //if (confirm('Are you sure?')) {
-        await fetch(`${getBackendUrl()}/plants/${plantId}`, {
-            method: 'DELETE',
-            headers: {
-                'X-Auth-Token': (await getAuthToken()), 'Content-type': 'application/json',
-            },
-        })
-        await router.push('/');
+    await fetch(`${getBackendUrl()}/plants/${plantId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-Auth-Token': (await getAuthToken()), 'Content-type': 'application/json',
+        },
+    })
+    await router.push('/');
     //}
 }
 

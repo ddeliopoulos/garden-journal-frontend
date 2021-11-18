@@ -26,7 +26,7 @@ export default {
         <GardenJournalLogo></GardenJournalLogo>
       </div>
       <div>
-        <button class="logout-btn" @click="logoutWithGoogle" role="button">LOG OUT</button>
+        <button class="logout-btn" role="button" @click="logoutWithGoogle">LOG OUT</button>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <script>
-import { Slide } from 'vue3-burger-menu';
+import {Slide} from 'vue3-burger-menu';
 
 export default {
   name: "SliderWrapped",

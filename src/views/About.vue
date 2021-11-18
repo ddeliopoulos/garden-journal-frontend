@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-<h1>ABOUT THE WONDERFUL GARDEN JOURNAL</h1>
+  <h1>ABOUT THE WONDERFUL GARDEN JOURNAL</h1>
 </template>
 
 <style scoped>

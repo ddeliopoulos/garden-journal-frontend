@@ -3,18 +3,18 @@
     <button :disabled="disableBtn" class="btn-start" @click="startRecording">Start</button>
     <button class="btn-stop" @click="stopRecording">Stop</button>
     <div v-if="audioTitle.length !== 0" class="title">
-      Audio: {{audioTitle}}
+      Audio: {{ audioTitle }}
     </div>
     <div id="myModal" ref="myModal" class="modal">
 
       <!-- Modal content -->
-      <div v-if="modal" class="modal-content" >
-        <span v-if="!closeTitleBox" @click="closeTitleBox" class="close">&times;</span>
+      <div v-if="modal" class="modal-content">
+        <span v-if="!closeTitleBox" class="close" @click="closeTitleBox">&times;</span>
         <p>Name audio: </p>
-        <input type="text"
-               v-model="audioTitle">
+        <input v-model="audioTitle"
+               type="text">
         <br/>
-        <button  @click="onSubmitTitle" > submit </button>
+        <button @click="onSubmitTitle"> submit</button>
       </div>
 
     </div>
@@ -28,9 +28,9 @@ declare var MediaRecorder: any;
 
 export default {
   name: "AudioRecording",
-  emits:['updateTitle','updateCustomAudio'],
+  emits: ['updateTitle', 'updateCustomAudio'],
 
-  setup(props: any, context : any) {
+  setup(props: any, context: any) {
     console.log("STARTING AudioRecorder.VUE")
 
     let mediaRecorder: any;
@@ -41,8 +41,7 @@ export default {
     const disableBtn = ref(false)
 
 
-
-    function onSubmitTitle (){
+    function onSubmitTitle() {
       disableBtn.value = true;
       context.emit('updateTitle', audioTitle.value)
       modal.value = false;
@@ -77,7 +76,7 @@ export default {
       }
       mediaRecorder.start()
     }
-    
+
     const stopRecording = async () => {
       console.log("stopping recording...")
       mediaRecorder.stop();
@@ -85,7 +84,7 @@ export default {
 
     console.log('starting component dooty');
 
-    return {closeTitleBox, modal, audioTitle,disableBtn,onSubmitTitle,startRecording, stopRecording}
+    return {closeTitleBox, modal, audioTitle, disableBtn, onSubmitTitle, startRecording, stopRecording}
   }
 }
 </script>
@@ -98,7 +97,7 @@ export default {
   z-index: 1; /* Sit on top */
   left: 45%;
   top: 15%;
-/* Full height */
+  /* Full height */
 }
 
 /* Modal Content/Box */

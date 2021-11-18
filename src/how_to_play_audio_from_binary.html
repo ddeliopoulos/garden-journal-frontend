@@ -21,7 +21,7 @@
                     // document.getElementById('blaButton').onclick = () => audio.play();
 
                     let link = document.createElement('audio');
-                    const blobbo = new Blob([request.response], {type:'audio/mpeg'});
+                    const blobbo = new Blob([request.response], {type: 'audio/mpeg'});
                     link.src = URL.createObjectURL(blobbo);
                     document.getElementById('blaButton').onclick = () => link.play();
                 }

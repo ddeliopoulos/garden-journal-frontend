@@ -9,9 +9,11 @@ interface textEntry {
   type: string
   mediaId: string;
 }
+
 interface JournalEntries {
   id: string
 }
+
 interface PlantType {
   plantId: string
 }
@@ -62,27 +64,27 @@ export default {
 }
 </script>
 
-    <template>
-      <div class="text-component-container">
-        <div class="close-image" @click=emitClose>
-          <button @click="emitShowTextIcon" class="icon-close-btn">
-            <i class="far fa-window-close"></i>
-          </button>
-        </div>
-        <h3>Write Entry</h3>
-        <div class="form-group shadow-textarea">
-          <p id="three">
-            <textarea v-model='textEntry.data' name="styled-textarea" id="styled" rows="3" placeholder="Write something here..."></textarea>
-          </p>
-        </div>
-      </div>
-    </template>
+<template>
+  <div class="text-component-container">
+    <div class="close-image" @click=emitClose>
+      <button class="icon-close-btn" @click="emitShowTextIcon">
+        <i class="far fa-window-close"></i>
+      </button>
+    </div>
+    <h3>Write Entry</h3>
+    <div class="form-group shadow-textarea">
+      <p id="three">
+        <textarea id="styled" v-model='textEntry.data' name="styled-textarea" placeholder="Write something here..." rows="3"></textarea>
+      </p>
+    </div>
+  </div>
+</template>
 
 
-<style scoped >
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap');
 
-h3{
+h3 {
   text-align: center;
   position: relative;
   top: -1rem;
@@ -93,7 +95,7 @@ h3{
   width: 100%;
   margin-top: 5%;
   text-align: center;
-  background: hsla(213, 24%, 93%,1);
+  background: hsla(213, 24%, 93%, 1);
   border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   display: inline-block;
   padding: 1em;

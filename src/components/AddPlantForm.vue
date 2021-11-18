@@ -34,19 +34,19 @@ export default {
 <template>
   <div class="container">
     <label>Plant Name: </label>
-    <input type="text" placeholder="Name of plant"
-           v-model="plant.name"
-           required>
+    <input v-model="plant.name" placeholder="Name of plant"
+           required
+           type="text">
     <br/>
     <label>Plant Type: </label>
-    <input type="text" placeholder="Type of plant"
-           v-model="plant.type">
+    <input v-model="plant.type" placeholder="Type of plant"
+           type="text">
     <br/>
     <label>Date Planted: </label>
-    <input type="date"
-           v-model="plant.createdAt">
+    <input v-model="plant.createdAt"
+           type="date">
     <br/>
-    <button @click="onFormSubmit" class="button">Submit</button>
+    <button class="button" @click="onFormSubmit">Submit</button>
   </div>
 </template>
 
