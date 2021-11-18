@@ -82,6 +82,10 @@ export default defineComponent({
     //   console.log(props.journalEntry.data)
     // }
 
+    const goBack = () => {
+      window.history.back();
+    }
+
     const getPlantInfo = async () => {
       const response = await getPlantById(id);
       plant.value = await response.json()
@@ -101,6 +105,7 @@ export default defineComponent({
       journalEntries,
       journalEntry,
       plant,
+      goBack,
       deletePlant,
       filterTextEntries,
       loadJournalEntries,
@@ -115,6 +120,7 @@ export default defineComponent({
 <template>
   <section class="relative py-16 bg-gray-300">
     <div class="container mx-auto px-4">
+      <div class="move-down">
       <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
         <div class="px-6">
           <div class="flex flex-wrap justify-center">
@@ -123,12 +129,13 @@ export default defineComponent({
               </div>
             </div>
             <div class="delete-plant-icon" @click=deletePlant()>
-              <i class="far fa-window-close"></i>
+              <i class="far fa-trash-alt fa-lg"></i>
             </div>
             <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
             </div>
             <div class="w-full lg:w-4/12 px-4 lg:order-1">
             </div>
+            <button class="all-plants-btn" role="button" @click="goBack()">Go Back</button>
           </div>
           <div class="add-journal-button">
           </div>
@@ -162,7 +169,6 @@ export default defineComponent({
         <div class="w-full lg:w-9/12 px-4">
           <AddJournalButton/>
         </div>
-
         <div class="mt-10 py-10 border-t border-gray-300 text-center">
           <h2>JOURNAL ENTRIES</h2>
           <div class="timeline">
@@ -176,9 +182,9 @@ export default defineComponent({
               <JournalEntryRow :journalEntry="journalEntry"/>
             </div>
           </div>
-
         </div>
       </div>
+    </div>
     </div>
   </section>
 </template>
@@ -186,21 +192,82 @@ export default defineComponent({
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
+.move-down{
+  position: relative;
+  top: 20px;
+}
+
 html {
   background-color: #E2E8F0;
 }
-
-.green {
-  color: green;
+.all-plants-btn {
+  appearance: none;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  right: 565px;
+  bottom: 3px;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
 }
 
-.red {
-  color: red;
+.all-plants-btn:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
 }
 
+.all-plants-btn:disabled {
+  background-color: #FAFBFC;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+.all-plants-btn:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+.all-plants-btn:focus {
+  outline: 1px transparent;
+}
+
+.all-plants-btn:before {
+  display: none;
+}
+
+.all-plants-btn::-webkit-details-marker {
+  display: none;
+}
 .plant-info {
   position: relative;
   bottom: 20px;
+}
+
+.delete-plant-icon {
+  cursor: pointer;
+  position: relative;
+  top: 15px;
+  left: 600px;
 }
 
 .container {
@@ -236,15 +303,6 @@ html {
 .move-date {
   position: relative;
   top: -26px;
-}
-
-.fa-window-close {
-  color: #CC2E5D;
-  font-size: 23px;
-  position: relative;
-  top: 10px;
-  left: 600px;
-  cursor: pointer;
 }
 
 .fas {

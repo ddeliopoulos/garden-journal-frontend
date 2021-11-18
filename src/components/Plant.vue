@@ -1,4 +1,4 @@
-<script lang="ts" xmlns:text-overflow="http://www.w3.org/1999/xhtml">
+<script lang="ts">
 
 import {onMounted, ref} from "vue";
 import {filterEntriesByType, getBackendUrl} from "@/components/shared/BackendApi";
@@ -22,8 +22,7 @@ export default {
     searchText: String
   },
 
-
-  setup(props: any, {emit}: any) {
+  setup(props: any) {
 
     let plantId = props.plant.id
     const humanDate = ref(new Date(props.plant.createdAt).toLocaleDateString())

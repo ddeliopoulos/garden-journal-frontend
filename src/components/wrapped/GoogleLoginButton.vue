@@ -16,13 +16,12 @@ export default {
 <template>
   <button id="google-login" @click="loginWithGoogle">
     <img alt="img" class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
-    <p class="btn-text"><b>Sign in with google</b></p>
+    <p class="btn-text"><b>Sign in with Google</b></p>
   </button>
 </template>
 
 <style lang="scss" scoped>
-
-@import url(https://fonts.googleapis.com/css?family=Roboto:500);
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
 
 $white: #fff;
@@ -60,7 +59,7 @@ $button-active-blue: #1669F2;
     color: $white;
     font-size: 14px;
     letter-spacing: 0.2px;
-    font-family: "Roboto", serif;
+    font-family: 'Josefin Sans', sans-serif;
   }
 
   &:hover {

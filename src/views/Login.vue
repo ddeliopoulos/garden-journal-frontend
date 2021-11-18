@@ -25,30 +25,6 @@ export default {
             <p class="welcome">Welcome to your Garden Journal</p>
           </header>
           <br>
-          <!--          <div class="field-set">-->
-          <!--            <span class="input-item">-->
-          <!--           <i class="fa fa-user-circle"></i>-->
-          <!--         </span>-->
-          <!--            <input class="form-input" id="txt-input" type="text" placeholder="Email Address" required>-->
-
-          <!--            <br>-->
-          <!--            <span class="input-item">-->
-          <!--        <i class="fa fa-key"></i>-->
-          <!--       </span>-->
-          <!--            <input class="form-input" type="password" placeholder="Password" id="pwd" name="password" required>-->
-          <!--            <span>-->
-          <!--        <i class="fa fa-eye" aria-hidden="true" type="button" id="eye"></i>-->
-
-          <!--     </span>-->
-          <!--            <br>-->
-          <!--            <button class="log-in"> Log In</button>-->
-          <!--          </div>-->
-          <!--          <div class="other">-->
-          <!--          <button class="btn submits frgt-pass">Forgot Password</button>-->
-          <!--          <button class="btn submits sign-up">Sign Up-->
-          <!--            <i class="fa fa-user-plus" aria-hidden="true"></i>-->
-          <!--          </button>-->
-          <!--          </div>-->
         </div>
         <div class="entire-google-button-move">
           <GoogleLoginButton/>
@@ -60,8 +36,7 @@ export default {
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Abel|Abril+Fatface|Alegreya|Arima+Madurai|Dancing+Script|Dosis|Merriweather|Oleo+Script|Overlock|PT+Serif|Pacifico|Playball|Playfair+Display|Share|Unica+One|Vibur');
-
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 * {
   padding: 0;
   margin: 0;
@@ -88,7 +63,7 @@ body {
   position: fixed;
   background-image: linear-gradient(to right, #141e30, #243b55);
   /*   the main font */
-  font-family: 'Abel', sans-serif;
+  font-family: 'Josefin Sans', sans-serif;
   opacity: .95;
 
 }
@@ -103,7 +78,10 @@ body {
 .welcome {
   position: relative;
   right: 12px;
-  top: 100px
+  top: 100px;
+  font-weight: bolder;
+  font-family: 'Josefin Sans', sans-serif;
+
 }
 
 .overlay {
@@ -115,13 +93,12 @@ body {
 
 #login-form {
   width: 450px;
-  min-height: 500px;
+  min-height: 425px;
   height: auto;
   border-radius: 5px;
   margin: 2% auto;
-  box-shadow: 0 9px 50px hsla(20, 50%, 50%, 0.31);
+  box-shadow: 0 9px 50px hsla(20, 90%, 50%, 0.1);
   padding: 2%;
-  background-image: linear-gradient(-225deg, #93A5CF 10%, #E4EfE9 80%);
 }
 
 #login-form .con {
@@ -144,7 +121,7 @@ header {
 
 header h2 {
   font-size: 250%;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Josefin Sans', sans-serif;
   color: #3e403f;
 }
 
@@ -185,7 +162,7 @@ input[class="form-input"] {
   padding: 15px;
 
   font-size: 16px;
-  font-family: 'Abel', sans-serif;
+  font-family: 'Josefin Sans', sans-serif;
   color: #5E6472;
 
   outline: none;
