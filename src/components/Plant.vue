@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" xmlns:text-overflow="http://www.w3.org/1999/xhtml">
 
 import {onMounted, ref} from "vue";
 import {getBackendUrl} from "@/components/shared/BackendApi";
@@ -23,57 +23,57 @@ export default {
   },
 
 
- setup(props : any, {emit}: any){
+  setup(props: any, {emit}: any) {
 
-   let plantId = props.plant.id
-   const humanDate = ref(new Date(props.plant.createdAt).toLocaleDateString())
-   const latestImg = ref("")
-   const plantImageUrl = ref("");
+    let plantId = props.plant.id
+    const humanDate = ref(new Date(props.plant.createdAt).toLocaleDateString())
+    const latestImg = ref("")
+    const plantImageUrl = ref("");
 
-   const searchPlantsUsingBar = ref(props.searchText)
+    const searchPlantsUsingBar = ref(props.searchText)
 
-   const journalEntry = ref<JournalEntry>({
-     journalId: "",
-     mediaId: ""
-   })
-   const filterEntriesByType = async (type: string | null) => {
-     const response = await fetch(`${getBackendUrl()}/plants/${plantId}/journal-entries${type ? `?type=${type}` : ''}`, {
-       method: 'GET'
-     })
-     return await response.json();
-   }
+    const journalEntry = ref<JournalEntry>({
+      journalId: "",
+      mediaId: ""
+    })
+    const filterEntriesByType = async (type: string | null) => {
+      const response = await fetch(`${getBackendUrl()}/plants/${plantId}/journal-entries${type ? `?type=${type}` : ''}`, {
+        method: 'GET'
+      })
+      return await response.json();
+    }
 
-   const getLatestImageOrDefault = async () => {
-     console.log("getting latest image or default")
-     let img, src;
-     const images = (await filterEntriesByType('image'));
+    const getLatestImageOrDefault = async () => {
+      console.log("getting latest image or default")
+      let img, src;
+      const images = (await filterEntriesByType('image'));
 
-     if(images.length === 0){
-       src = "/default-plant-img.jpg"
-     } else {
-       journalEntry.value.mediaId = images[0].mediaId
-       src = getBackendUrl() + '/media/' + journalEntry.value.mediaId
-     }
-     plantImageUrl.value = src;
-   }
-   //
-   // const getLatestImage = async () => {
-   //   const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image`, {
-   //     method: 'GET',
-   //     headers: {
-   //       'Content-type': 'application/json',
-   //       'X-Auth-Token': gapi.getAuthToken()
-   //     },
-   //   })
-   //   journalEntry.value = await response.json();
-   //
-   //   latestImg.value = journalEntry.value[0].dataUrl
-   //
-   // }
+      if (images.length === 0) {
+        src = "/default-plant-img.jpg"
+      } else {
+        journalEntry.value.mediaId = images[0].mediaId
+        src = getBackendUrl() + '/media/' + journalEntry.value.mediaId
+      }
+      plantImageUrl.value = src;
+    }
+    //
+    // const getLatestImage = async () => {
+    //   const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image`, {
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-type': 'application/json',
+    //       'X-Auth-Token': gapi.getAuthToken()
+    //     },
+    //   })
+    //   journalEntry.value = await response.json();
+    //
+    //   latestImg.value = journalEntry.value[0].dataUrl
+    //
+    // }
 
-   onMounted(getLatestImageOrDefault)
+    onMounted(getLatestImageOrDefault)
 
-    return{
+    return {
       searchPlantsUsingBar,
       plantImageUrl,
       getLatestImageOrDefault,
@@ -83,37 +83,36 @@ export default {
       latestImg,
       journalEntry
     }
- }
+  }
 }
 </script>
 
 <template>
   <div class="garden">
-    <div  class="plant-card">
+    <div class="plant-card">
       <router-link style="text-decoration: none; color: inherit;" :to="{name: 'PlantDetails', params: {id: plant.id}}">
         <h2><b></b> {{ plant.name }}</h2>
         <div class="image-cropper">
-            <img :src="plantImageUrl" alt="default-plant-image" class="default-plant">
+          <img :src="plantImageUrl" alt="default-plant-image" class="default-plant">
         </div>
         <div class="type-date-display">
           <p class="type-date">
             <b>
-            {{ plant.type }}
-          <br/>
-            {{ humanDate }}
+              {{ plant.type }}
+              <br/>
+              {{ humanDate }}
             </b>
           </p>
         </div>
       </router-link>
     </div>
   </div>
-
 </template>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
-.type-date-display{
+.type-date-display {
   padding: 10px 0 10px 0;
 }
 
@@ -123,15 +122,22 @@ export default {
   padding: 0;
 }
 
-h2{
+h2 {
   padding: 10px 0 10px 0;
   position: relative;
   top: 1px;
 }
 
-p{
+.plant-card {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+p {
   position: relative;
-  top:5px;
+  top: 5px;
+  text-overflow: ellipsis
 }
 
 p, h2 {
@@ -140,7 +146,7 @@ p, h2 {
   display: inline;
   font-family: 'Josefin Sans', sans-serif;
   overflow: hidden;
-  white-space:nowrap;
+  white-space: nowrap;
   font-weight: bolder;
   position: relative;
 }
@@ -165,6 +171,7 @@ p, h2 {
 }
 
 .garden {
+
   position: relative;
   bottom: 6em;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */

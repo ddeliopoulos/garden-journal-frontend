@@ -21,8 +21,8 @@ export default defineComponent({
   </div>
   <div class="slide-nav">
     <SliderWrapped :closeOnNavigation="true" >
-      <router-link to="/"><span>My Garden</span></router-link>
-      <router-link to="/privacy"><span>Privacy</span></router-link>
+      <router-link to="/"><span><i class="fa fa-home"></i>     My Garden</span></router-link>
+      <router-link to="/privacy"><span><i class='fas fa-lock'></i>       Privacy</span></router-link>
       <router-link to="/about"><span>About</span></router-link>
     </SliderWrapped>
   </div>

@@ -20,8 +20,7 @@ export default {
 <template>
   <div class="search-bar">
   <div class="search">
-    <input v-model="searchText" type="search" placeholder="Search for plant..." required>
-    <button @click="setSearchText" type="submit" id="search-btn">Search</button>
+    <input v-model="searchText" type="search" placeholder="Search for plant..." @keyup="setSearchText" required>
   </div>
   </div>
   <!--  <div class="navbarSearch">-->
