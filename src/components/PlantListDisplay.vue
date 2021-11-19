@@ -4,6 +4,7 @@ import AddPlantButton from "@/components/AddPlantButton.vue"
 import {ref} from 'vue'
 import {loadAllPlants} from "@/components/shared/BackendApi";
 import SearchBar from "@/components/SearchBar.vue"
+import {getAuthToken, getBasicProfile, isLoggedIn} from "@/components/wrapped/gapi";
 
 interface PlantType {
   name: string
@@ -34,7 +35,6 @@ export default {
       plants.value = await response.json();
     }
 
-
     function searchValue(value: any) {
       searchBarVal.value = value;
       console.log("USING THIS VALUE TO FILTER :  ", searchBarVal.value)
@@ -42,7 +42,6 @@ export default {
       searchFilteredList.value = plants.value.filter(plant => {
         return plant.name.toLowerCase().includes(searchBarVal.value.toLowerCase())
       })
-
     }
 
     function filteredList() {
@@ -51,6 +50,10 @@ export default {
         return plant.name.toLowerCase().includes(searchBarVal.value.toLowerCase())
       })
     }
+
+    //const token = async ()=> await getAuthToken()
+
+    getBasicProfile().then(console.log)
 
     loadPlants()
     return {
@@ -94,13 +97,11 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
 
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 10px;
 }
-
 
 
 h1 {

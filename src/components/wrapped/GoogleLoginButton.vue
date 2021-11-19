@@ -1,13 +1,16 @@
 <script>
 const router = require("@/router");
 const {onUpdated} = require("vue");
-import {requireNotLoggedIn, login} from '@/components/wrapped/gapi.ts';
+import {requireNotLoggedIn, login, getBasicProfile} from '@/components/wrapped/gapi.ts';
 
 export default {
   name: "GoogleLoginButton",
   setup() {
     requireNotLoggedIn();
 
+    const loginReturn = async () => await login();
+
+    console.log(loginReturn)
     return {loginWithGoogle: login};
   }
 }

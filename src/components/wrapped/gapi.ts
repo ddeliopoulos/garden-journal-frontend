@@ -15,6 +15,16 @@ const googleInitialized = new Promise((resolve, reject) => {
     });
 });
 
+export async function getBasicProfile() {
+    const token = await getAccessToken();
+
+    const response =  await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${token}`, {
+        method: 'GET',
+        headers: {'Content-type': 'application/json'},
+    })
+     return await response.json();
+}
+
 export async function isLoggedIn(): Promise<boolean> {
     await googleInitialized;
 
@@ -28,6 +38,19 @@ export async function getAuthToken(): Promise<string> {
     if (await isLoggedIn()) {
         // @ts-ignore
         return (gapi as any).auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+    } else {
+        console.error('token not present, redirecting to /login');
+        window.location.replace('/login');
+        return 'NOT SIGNED IN YET MATE';
+    }
+}
+
+export async function getAccessToken(): Promise<string> {
+    await googleInitialized;
+
+    if (await isLoggedIn()) {
+        // @ts-ignore
+        return (gapi as any).auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
     } else {
         console.error('token not present, redirecting to /login');
         window.location.replace('/login');
