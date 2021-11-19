@@ -1,110 +1,97 @@
-<template>
-  <div class="container">
-    <h1>Add a Plant!</h1>
-    <label>Plant Name: </label>
-      <input type="text"
-             v-model="name"
-             required>
+<script lang="ts">
+import {ref} from "vue";
+import {uploadNewPlant} from '@/components/shared/BackendApi';
 
-    <label>Plant Type: </label>
-      <input type="text"
-             v-model="type">
+interface Plant {
+  name: string
+  type: string
+  createdAt: string
+}
 
-    <label>Date Planted: </label>
-      <input type="text"
-             v-model="date">
-
-    <button @click="onFormSubmit" class="button">Submit</button>
-  </div>
-</template>
-
-<script>
-//emit an event from the button component
 export default {
-  name: 'AddPlantForm',
-  emits: ['plant-update'],
 
- data(){
-    return {
-      name: '',
-      type: '',
-      date: '',
+  setup() {
+    const plant = ref<Plant>({
+      name: "",
+      type: "",
+      createdAt: ""
+    })
+
+    const onFormSubmit = async () => {
+      await uploadNewPlant(plant.value.name, plant.value.type, (new Date(plant.value.createdAt)).getTime())
+
+      window.location.reload()
+
+      plant.value.name = "";
+      plant.value.type = "";
+      plant.value.createdAt = "";
     }
- },
-
-  methods: {
-    async onFormSubmit() {
-      const response = await fetch('/api/plants', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: this.name,
-          type: this.type,
-          date: this.date,
-        }),
-      })
-
-      const data = await response.json()
-
-      this.$emit('plant-update', data)
-
-    }
+    return {onFormSubmit, plant}
   }
 }
 </script>
 
+<template>
+  <div class="container">
+    <label>Plant Name: </label>
+    <input v-model="plant.name" placeholder="Name of plant"
+           required
+           type="text">
+    <br/>
+    <label>Plant Type: </label>
+    <input v-model="plant.type" placeholder="Type of plant"
+           type="text">
+    <br/>
+    <label>Date Planted: </label>
+    <input v-model="plant.createdAt"
+           type="date">
+    <br/>
+    <button class="button" @click="onFormSubmit">Submit</button>
+  </div>
+</template>
 
 <style scoped>
-.container {
-  width: 25%;
-  margin: 30px auto;
-  background-color: white;
-  text-align: left;
-  padding: 40px;
-  border-radius: 10px;
-  float: left;
-  border: 1px solid steelblue;
-}
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap');
 
 label {
-  color: #aaa;
-  display: inline-block;
-  margin: 25px 0 15px;
+  padding: 5px;
+  display: block;
   font-size: 1em;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: bold;
+  float: left;
 }
 
 input {
-  display: block;
-  padding: 10px 6px;
-  width: 100%;
-  box-sizing: border-box;
+  width: 25%;
   border: none;
-  border-bottom: 1px solid #ddd;
-  color: #555;
+  border-bottom: 2px solid #ddd;
+  font-size: 16px;
+  margin: 15px 15px 15px 55px;
 }
-
 
 button {
+  appearance: none;
+  outline: none;
+  border: none;
   cursor: pointer;
-  background: #0066A2;
-  color: white;
-  border-style: outset;
-  border-color: #0066A2;
-  height: 50px;
-  width: 100px;
-  font: bold 15px arial, sans-serif;
-  text-shadow: none;
-  margin-top: 25px;
-  margin-left: 180px;
+  display: inline-block;
+  padding: 6px 12px;
+  background-image: linear-gradient(to right, #141e30, #243b55);
+  border-radius: 8px;
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 700;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  position: relative;
+  top: 18px;
 }
 
-h2 {
+h1 {
   text-align: center;
-  padding-top: -20px;
+  margin: 10px auto;
+  font-family: Catamaran, serif;
+  text-decoration: underline;
 }
 </style>

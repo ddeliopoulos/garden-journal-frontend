@@ -1,0 +1,34 @@
+<html>
+<body>
+<button id="blaButton">bla</button>
+</body>
+
+<script>
+
+    (async () => {
+        const request = new XMLHttpRequest();
+        request.open("GET", "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3");
+        request.responseType = "arraybuffer";
+        request.onreadystatechange = () => {
+            if (request.readyState === 4) {
+                if (request.status === 200) {
+
+                    const data = btoa(
+                        new Uint8Array(request.response)
+                            .reduce((data, byte) => data + String.fromCharCode(byte), '')
+                    );
+                    const audio = new Audio("data:audio/mpeg;base64," + data);
+                    // document.getElementById('blaButton').onclick = () => audio.play();
+
+                    let link = document.createElement('audio');
+                    const blobbo = new Blob([request.response], {type: 'audio/mpeg'});
+                    link.src = URL.createObjectURL(blobbo);
+                    document.getElementById('blaButton').onclick = () => link.play();
+                }
+            }
+        };
+        request.send();
+    })();
+
+</script>
+</html>

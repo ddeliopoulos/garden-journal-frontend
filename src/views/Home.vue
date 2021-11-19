@@ -1,18 +1,35 @@
+<script lang="ts">
+import PlantListDisplay from '../components/PlantListDisplay.vue'
+
+export default {
+  name: 'App',
+  components: {
+    PlantListDisplay,
+  },
+
+  data() {
+    return {
+      plants: [],
+    }
+  },
+}
+</script>
+
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div id="home">
+    <PlantListDisplay :plants="plants"></PlantListDisplay>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+<style>
 
-export default defineComponent({
-  name: 'Home',
-  components: {
-    HelloWorld,
-  },
-});
-</script>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: #E2E8F0;
+}
+</style>
