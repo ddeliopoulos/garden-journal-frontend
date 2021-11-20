@@ -2,6 +2,7 @@
 
 import {onMounted, ref} from "vue";
 import {filterEntriesByType, getBackendUrl} from "@/components/shared/BackendApi";
+import WaterButton from "/src/components/WaterButton.vue"
 
 interface Plant {
   id: number
@@ -14,6 +15,7 @@ interface JournalEntry {
 }
 
 export default {
+  components: {WaterButton},
   props: {
     plant: {
       type: Object as () => Plant,
@@ -35,6 +37,10 @@ export default {
       journalId: "",
       mediaId: ""
     })
+
+    const waterPlant = () => {
+      window.history.back();
+    }
 
     const getLatestImageOrDefault = async () => {
       console.log("getting latest image or default")
@@ -70,6 +76,7 @@ export default {
       searchPlantsUsingBar,
       plantImageUrl,
       getLatestImageOrDefault,
+      waterPlant,
       getBackendUrl,
       humanDate,
       plantId,
@@ -99,6 +106,9 @@ export default {
         </div>
       </router-link>
     </div>
+    <button @click="waterPlant()" id="water-btn">
+      <WaterButton></WaterButton>
+    </button>
   </div>
 </template>
 
@@ -113,6 +123,11 @@ export default {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+#water-btn {
+  position: relative;
+  top: 6px;
 }
 
 h2 {
@@ -164,11 +179,11 @@ p, h2 {
 }
 
 .garden {
-
   position: relative;
   bottom: 6em;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   width: 190px;
+  height: 280px;
 }
 
 h4 {

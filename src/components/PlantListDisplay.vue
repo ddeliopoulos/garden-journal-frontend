@@ -1,10 +1,11 @@
 <script lang="ts">
 import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
+import SearchBar from "@/components/SearchBar.vue"
 import {ref} from 'vue'
 import {loadAllPlants} from "@/components/shared/BackendApi";
-import SearchBar from "@/components/SearchBar.vue"
-import {getAuthToken, getBasicProfile, isLoggedIn} from "@/components/wrapped/gapi";
+import {getBasicProfile} from "@/components/wrapped/gapi";
+import WaterButton from "/src/components/WaterButton.vue"
 
 interface PlantType {
   name: string
@@ -19,7 +20,7 @@ interface JournalEntry {
 
 export default {
   name: "PlantListDisplay",
-  components: {Plant, AddPlantButton, SearchBar},
+  components: {WaterButton, Plant, AddPlantButton, SearchBar},
 
   setup() {
     const plants = ref<PlantType[]>([]);
@@ -90,7 +91,6 @@ export default {
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>
