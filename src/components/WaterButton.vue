@@ -1,31 +1,46 @@
 <template>
-  <div class="center">
-    <div class="circle">
-      <div class="wave"></div>
+    <div class="center">
+      <div class="circle">
+        <div class="wave"></div>
+      </div>
     </div>
-  </div>
-
-
 
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import {defineComponent} from "vue";
+import Popup from "@/components/Popup.vue";
+
+export default defineComponent({
   name: "WaterButton",
+  components: {Popup},
 
   setup() {
+    console.log("setting up water button")
+
+    return {}
 
 
   }
 
-}
+})
 </script>
 
 <style scoped lang="css">
 
 
-* {margin: 0; padding: 0; box-sizing: border-box;}
-body {width: 100%; height: 100vh; background-color: #262626;}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  background-color: #262626;
+}
+
 .center {
   width: 40px;
   height: 40px;
@@ -34,6 +49,7 @@ body {width: 100%; height: 100vh; background-color: #262626;}
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .circle {
   position: relative;
   width: 100%;
@@ -50,6 +66,7 @@ body {width: 100%; height: 100vh; background-color: #262626;}
   cursor: url("https://i.postimg.cc/yNLChR5G/watering-can-small.png") 50 20, not-allowed;
 
 }
+
 .wave {
   background-color: #3f68c5;
   position: absolute;
@@ -62,10 +79,16 @@ body {width: 100%; height: 100vh; background-color: #262626;}
   transition: all .5s ease;
   animation: wave 10s linear infinite;
 }
+
 @keyframes wave {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(3600deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(3600deg);
+  }
 }
+
 .circle:hover .wave {
   top: 0%;
 }
@@ -80,8 +103,8 @@ body {width: 100%; height: 100vh; background-color: #262626;}
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content/Box */

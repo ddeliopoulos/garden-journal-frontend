@@ -264,7 +264,7 @@ html {
 }
 
 .delete-plant-icon {
-  cursor: pointer;
+  cursor: url("https://i.stack.imgur.com/bUGV0.png"), auto;
   position: relative;
   top: 15px;
   left: 600px;

@@ -2,10 +2,11 @@
 import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
 import SearchBar from "@/components/SearchBar.vue"
-import {ref} from 'vue'
+import {defineComponent, PropType, ref} from 'vue'
 import {loadAllPlants} from "@/components/shared/BackendApi";
 import {getBasicProfile} from "@/components/wrapped/gapi";
 import WaterButton from "/src/components/WaterButton.vue"
+import Popup from "@/components/Popup.vue";
 
 interface PlantType {
   name: string
@@ -18,9 +19,12 @@ interface JournalEntry {
   dataUrl: string
 }
 
-export default {
+export default defineComponent({
   name: "PlantListDisplay",
-  components: {WaterButton, Plant, AddPlantButton, SearchBar},
+  components: {WaterButton, Popup, Plant, AddPlantButton, SearchBar},
+  props: {
+    togglePopup: Function as PropType<() => void>
+  },
 
   setup() {
     const plants = ref<PlantType[]>([]);
@@ -67,7 +71,7 @@ export default {
       filteredList
     }
   }
-}
+})
 </script>
 
 <template>

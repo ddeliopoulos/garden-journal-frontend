@@ -7,9 +7,12 @@
   <br/>
   <br/>
   <br/>
-  <button>OPEN POP UP</button>
-  <Popup>
-    <h2>INSIDE THE POPUP</h2>
+  <button @click="() => togglePopup('buttonTrigger')">OPEN POPUP</button>
+
+  <Popup
+      v-if="popupTriggers.buttonTrigger"
+      :togglePopup="() => togglePopup('buttonTrigger')">
+    <h2>My Button Popup</h2>
   </Popup>
 
 </template>
@@ -17,16 +20,23 @@
 <script lang="ts">
 import WaterButton from "/src/components/WaterButton.vue"
 import Popup from "@/components/Popup.vue";
+import {defineComponent, ref} from "vue";
 
-export default {
+export default defineComponent({
   name: "Testing",
   components: {Popup, WaterButton},
   setup() {
+    const popupTriggers = ref ({
+      buttonTrigger: false,
+    });
 
+    function togglePopup(){
+      popupTriggers.value.buttonTrigger = !popupTriggers.value.buttonTrigger
+    }
 
-    return {Popup}
+    return {Popup, popupTriggers, togglePopup}
   }
-}
+})
 </script>
 
 <style>

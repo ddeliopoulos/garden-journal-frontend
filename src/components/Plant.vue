@@ -1,8 +1,9 @@
 <script lang="ts">
 
-import {onMounted, ref} from "vue";
-import {filterEntriesByType, getBackendUrl} from "@/components/shared/BackendApi";
+import {defineComponent, onMounted, ref} from "vue";
+import {filterEntriesByType, getBackendUrl, uploadJournalEntry, uploadMedia} from "@/components/shared/BackendApi";
 import WaterButton from "/src/components/WaterButton.vue"
+import Popup from "@/components/Popup.vue";
 
 interface Plant {
   id: number
@@ -12,10 +13,12 @@ interface Plant {
 interface JournalEntry {
   journalId: string
   mediaId: string
+  type: string
+  data: string
 }
 
-export default {
-  components: {WaterButton},
+export default defineComponent({
+  components: {WaterButton, Popup},
   props: {
     plant: {
       type: Object as () => Plant,
@@ -30,16 +33,25 @@ export default {
     const humanDate = ref(new Date(props.plant.createdAt).toLocaleDateString())
     const latestImg = ref("")
     const plantImageUrl = ref("");
-
     const searchPlantsUsingBar = ref(props.searchText)
 
     const journalEntry = ref<JournalEntry>({
       journalId: "",
-      mediaId: ""
+      mediaId: "",
+      type: "",
+      data: ""
     })
 
-    const waterPlant = () => {
-      window.history.back();
+    const popupTriggers = ref ({
+      buttonTrigger: false,
+    });
+
+    const togglePopup = async () => {
+      console.log("Attempting to post a Text Journal")
+      const dataUploadResponse = await uploadMedia(journalEntry.value.type, journalEntry.value.data)
+      journalEntry.value.mediaId = await (dataUploadResponse.text());
+      await uploadJournalEntry(plantId, journalEntry.value.journalId, journalEntry.value.type, journalEntry.value.mediaId)
+      popupTriggers.value.buttonTrigger = !popupTriggers.value.buttonTrigger
     }
 
     const getLatestImageOrDefault = async () => {
@@ -73,10 +85,12 @@ export default {
     onMounted(getLatestImageOrDefault)
 
     return {
+      Popup,
+      popupTriggers,
+      togglePopup,
       searchPlantsUsingBar,
       plantImageUrl,
       getLatestImageOrDefault,
-      waterPlant,
       getBackendUrl,
       humanDate,
       plantId,
@@ -84,7 +98,7 @@ export default {
       journalEntry
     }
   }
-}
+})
 </script>
 
 <template>
@@ -106,9 +120,14 @@ export default {
         </div>
       </router-link>
     </div>
-    <button @click="waterPlant()" id="water-btn">
+    <button @click="() => togglePopup('buttonTrigger')" id="water-btn" >
       <WaterButton></WaterButton>
     </button>
+    <Popup
+        v-if="popupTriggers.buttonTrigger"
+        :togglePopup="() => togglePopup('buttonTrigger')">
+      <h2>Journal entry posted for watering plant!</h2>
+    </Popup>
   </div>
 </template>
 

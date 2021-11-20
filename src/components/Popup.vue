@@ -2,20 +2,40 @@
   <div class="popup">
     <div class="popup-inner">
       <slot/>
-      <button class="popup-close">
-        close popup
-      </button>
+<!--      <button class="popup-close" @click="togglePopup()">-->
+        <i class="fas fa-times fa-lg"  @click="togglePopup()"></i>
+<!--      </button>-->
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "Popup"
-}
+<script lang="ts">
+import {defineComponent, PropType} from "vue";
+
+export default defineComponent({
+  name: "Popup",
+  props: {
+    togglePopup: Function as PropType<() => void>
+  },
+
+  setup(){
+    console.log("setting up popup")
+
+
+
+    return {}
+  }
+
+})
 </script>
 
 <style scoped lang="scss">
+.fas{
+  position: relative;
+  bottom: 30px;
+  left: 25px;
+  cursor: pointer;
+}
 
 .popup{
   position: fixed;
