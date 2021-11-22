@@ -1,5 +1,4 @@
 <script lang="ts">
-import WaterDroplet from "@/components/WaterDroplet.vue";
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
 import {deletePlantById, filterEntriesByType, getBackendUrl, getPlantById} from "@/components/shared/BackendApi";
@@ -25,7 +24,7 @@ interface PlantType {
 
 export default defineComponent({
   name: 'PlantDetails',
-  components: {JournalEntryRow, AddJournalButton, WaterDroplet, Popup},
+  components: {JournalEntryRow, AddJournalButton, Popup},
 
   setup() {
     const route = useRoute()
@@ -58,9 +57,10 @@ export default defineComponent({
 
     const filterAudioEntries = async () => await reloadEntriesByType('audio');
     const filterImageEntries = async () => await reloadEntriesByType('image');
+    const filterWaterEntries = async () => await reloadEntriesByType('watering');
     const filterTextEntries = async () => await reloadEntriesByType('text');
+
     const loadJournalEntries = async () => await reloadEntriesByType(null);
-    console.log("JID: ", journalEntry.value.id)
 
     const getLatestImage = async () => {
       console.log("getting latest image")
@@ -84,7 +84,14 @@ export default defineComponent({
     //   props.journalEntry.data = event;
     //   console.log(props.journalEntry.data)
     // }
+    const buttonTrigger = ref (false);
 
+    const togglePopup = async () => {
+      if(!buttonTrigger.value){
+        setTimeout(()=>{ buttonTrigger.value = !buttonTrigger.value; }, 2500);
+      }
+      buttonTrigger.value = !buttonTrigger.value
+    }
     const goBack = () => {
       window.history.back();
     }
@@ -102,12 +109,15 @@ export default defineComponent({
     [getPlantInfo, loadJournalEntries, getLatestImage].forEach((fn: any) => onMounted(fn));
 
     return {
+      buttonTrigger,
+      togglePopup,
       humanDate,
       src,
       plantImageUrl,
       journalEntries,
       journalEntry,
       plant,
+      filterWaterEntries,
       goBack,
       deletePlant,
       filterTextEntries,
@@ -131,14 +141,17 @@ export default defineComponent({
               <div class="relative">
               </div>
             </div>
-<!--            <Popup-->
-<!--                v-if="buttonTrigger"-->
-<!--                :togglePopup="() => togglePopup('buttonTrigger')" >-->
-<!--              <h2>Journal entry posted for watering plant!</h2>-->
-<!--              <br/>-->
-<!--              <button class="post-watering-btn" @click="postTextJournal">POST</button>-->
-<!--            </Popup>-->
-            <div class="delete-plant-icon" @click=deletePlant()>
+
+
+            <Popup
+                v-if="buttonTrigger"
+                :togglePopup="() => togglePopup('buttonTrigger')" >
+              <h2><br/>Are you sure you want to delete? <button @click="deletePlant" class="delete-plant-btn">DELETE</button> </h2>
+              <br/>
+            </Popup>
+
+
+            <div class="delete-plant-icon" @click="togglePopup()">
               <i class="far fa-trash-alt fa-lg"></i>
             </div>
             <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
@@ -186,6 +199,7 @@ export default defineComponent({
             <button class="filter-txt-btn" @click="filterTextEntries"> Text</button>
             <button class="filter-audio-btn" @click="filterAudioEntries"> Audio</button>
             <button class="filter-img-btn" @click="filterImageEntries"> Image</button>
+            <button class="filter-water-btn" @click="filterWaterEntries"> Watered</button>
             <br/><br/>
             <br/>
             <div v-for="journalEntry in journalEntries" :key="journalEntry.id" class="single-plant-container">
@@ -210,7 +224,7 @@ export default defineComponent({
 html {
   background-color: #E2E8F0;
 }
-.all-plants-btn {
+.all-plants-btn, .delete-plant-btn {
   appearance: none;
   background-color: #FAFBFC;
   border: 1px solid rgba(27, 31, 35, 0.15);
@@ -227,8 +241,6 @@ html {
   list-style: none;
   padding: 6px 16px;
   position: relative;
-  right: 565px;
-  bottom: 3px;
   transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
   user-select: none;
   -webkit-user-select: none;
@@ -238,34 +250,34 @@ html {
   word-wrap: break-word;
 }
 
-.all-plants-btn:hover {
+.all-plants-btn, .delete-plant-btn:hover {
   background-color: #F3F4F6;
   text-decoration: none;
   transition-duration: 0.1s;
 }
 
-.all-plants-btn:disabled {
+.all-plants-btn, .delete-plant-btn:disabled {
   background-color: #FAFBFC;
   border-color: rgba(27, 31, 35, 0.15);
   color: #959DA5;
   cursor: default;
 }
 
-.all-plants-btn:active {
+.all-plants-btn, .delete-plant-btn:active {
   background-color: #EDEFF2;
   box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
   transition: none 0s;
 }
 
-.all-plants-btn:focus {
+.all-plants-btn, .delete-plant-btn:focus {
   outline: 1px transparent;
 }
 
-.all-plants-btn:before {
+.all-plants-btn, .delete-plant-btn:before {
   display: none;
 }
 
-.all-plants-btn::-webkit-details-marker {
+.all-plants-btn, .delete-plant-btn::-webkit-details-marker {
   display: none;
 }
 
@@ -286,7 +298,7 @@ html {
   top: 20px;
 }
 
-.filter-txt-btn, .filter-audio-btn, .filter-img-btn {
+.filter-txt-btn, .filter-audio-btn, .filter-img-btn, .filter-water-btn {
   appearance: none;
   outline: none;
   border: none;

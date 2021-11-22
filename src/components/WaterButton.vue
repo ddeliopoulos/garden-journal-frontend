@@ -32,15 +32,11 @@ export default defineComponent({
 
 
     const uploadWaterJournalEntry = async () => {
+      console.log("Attempting to post a Watering Journal")
       const journalId = await uploadWateringEntry(props.plant.id)
-
       const jId = await journalId.json();
-      console.log("what the fuck is jid? " , await jId)
       emit('journalId', jId)
-
-      console.log("Attempting to post a Text Journal")
-      setTimeout(()=> console.log("Undo?"), 10000)
-      console.log("Text Successfully Posted!")
+      console.log("Watering Journal Successfully Posted!")
     };
 
 

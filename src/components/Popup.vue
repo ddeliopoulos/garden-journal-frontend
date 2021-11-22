@@ -3,7 +3,7 @@
     <div class="popup-inner">
       <slot/>
 <!--      <button class="popup-close" @click="togglePopup()">-->
-        <i class="fas fa-times fa-lg" @click="togglePopup()"></i>
+<!--        <i class="fas fa-times fa-lg" @click="togglePopup()"></i>-->
 <!--      </button>-->
     </div>
   </div>

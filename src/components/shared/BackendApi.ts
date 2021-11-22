@@ -65,7 +65,7 @@ export async function uploadMedia(type: string, data: any): Promise<Response> {
     });
 }
 
-export async function uploadWateringEntry(plantId: number  | RouteParamValue[]) {
+export async function uploadWateringEntry(plantId: number | RouteParamValue[]) {
     return await uploadJournalEntry(plantId, "watering", "");
 }
 
@@ -86,7 +86,6 @@ export async function uploadJournalEntry(plantId: number | RouteParamValue[], ty
 }
 
 export async function deletePlantById(plantId: string | RouteParamValue[]) {
-    if (confirm('Are you sure?')) {
     await fetch(`${getBackendUrl()}/plants/${plantId}`, {
         method: 'DELETE',
         headers: {
@@ -94,7 +93,6 @@ export async function deletePlantById(plantId: string | RouteParamValue[]) {
         },
     })
     await router.push('/');
-    }
 }
 
 export async function deleteJournalEntry(journalId: string | RouteParamValue[]) {

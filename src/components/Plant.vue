@@ -53,7 +53,7 @@ export default defineComponent({
 
     const togglePopup = async () => {
       if(!buttonTrigger.value){
-        setTimeout(()=>{ buttonTrigger.value = !buttonTrigger.value; }, 3000);
+        setTimeout(()=>{ buttonTrigger.value = !buttonTrigger.value; }, 2500);
       }
       buttonTrigger.value = !buttonTrigger.value
     }
