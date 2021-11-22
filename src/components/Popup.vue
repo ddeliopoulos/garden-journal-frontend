@@ -2,9 +2,6 @@
   <div class="popup">
     <div class="popup-inner">
       <slot/>
-<!--      <button class="popup-close" @click="togglePopup()">-->
-<!--        <i class="fas fa-times fa-lg" @click="togglePopup()"></i>-->
-<!--      </button>-->
     </div>
   </div>
 </template>
@@ -25,24 +22,25 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .fas{
-  position: relative;
-  bottom: 60px;
-  cursor: pointer;
-  left: 145px;
+  position: absolute;
+  top: -100px;
+  left: 300px;
+}
 
+.eh{
+  position: relative;
 }
 
 .popup{
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 20px;
+  bottom: 20px;
   z-index: 99;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+
 
   .popup-inner{
     background: white;

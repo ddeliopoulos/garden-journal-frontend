@@ -14,6 +14,7 @@ interface textEntry {
   createdAt: string
   mediaId: string;
 }
+
 interface JournalEntries {
   id: string
 }
@@ -49,17 +50,19 @@ export default defineComponent({
     const saveJournalId = async (event: any) => {
       journalId.value.id = event;
     }
-    const buttonTrigger = ref (false);
+    const buttonTrigger = ref(false);
 
     const togglePopup = async () => {
-      if(!buttonTrigger.value){
-        setTimeout(()=>{ buttonTrigger.value = !buttonTrigger.value; }, 2500);
+      if (!buttonTrigger.value) {
+        setTimeout(() => {
+          buttonTrigger.value = false
+        }, 2500);
       }
       buttonTrigger.value = !buttonTrigger.value
     }
 
     const deleteWaterJournal = async () => {
-     await deleteJournalEntry(journalId.value.id)
+      await deleteJournalEntry(journalId.value.id)
     }
 
     // const postTextJournal = async () => {
@@ -102,7 +105,8 @@ export default defineComponent({
       plantId,
       latestImg,
       textEntry,
-      journalId}
+      journalId
+    }
   }
 })
 </script>
@@ -126,13 +130,16 @@ export default defineComponent({
         </div>
       </router-link>
     </div>
-    <button @click="togglePopup();" id="water-btn" >
+    <button @click="togglePopup();" id="water-btn">
       <WaterButton @journalId="saveJournalId" :plant="plant"></WaterButton>
     </button>
     <Popup
         v-if="buttonTrigger"
-        :togglePopup="() => togglePopup('buttonTrigger')" >
-      <h2>Journal posted. <button @click="deleteWaterJournal" class="undo-journal-watering">Undo</button> </h2>
+        :togglePopup="() => togglePopup('buttonTrigger')">
+      <h2>Journal posted.
+        <button @click="deleteWaterJournal" class="undo-journal-watering">Undo</button>
+      </h2>
+      <i class="fas fa-times fa-lg" @click="togglePopup()"></i>
       <br/>
     </Popup>
   </div>
@@ -141,6 +148,12 @@ export default defineComponent({
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
+.fas {
+  position: relative;
+  top: -35px;
+  right: -25px;
+  cursor: pointer;
+}
 
 .undo-journal-watering {
   appearance: none;

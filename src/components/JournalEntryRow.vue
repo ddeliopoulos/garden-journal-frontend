@@ -157,7 +157,7 @@ export default defineComponent({  props: {
 }
 
 .delete-plant-icon {
-  cursor: url("https://i.stack.imgur.com/bUGV0.png"), auto;
+  cursor: pointer;
   position: relative;
   top: 10px;
   right: 246px;

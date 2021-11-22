@@ -142,7 +142,7 @@ body {
   -moz-backface-visibility: hidden;
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
-  cursor: url("https://i.postimg.cc/yNLChR5G/watering-can-small.png") 50 20, pointer;
+  cursor: url("/watering-can-small.png") 50 20, pointer;
 }
 
 .wave {
