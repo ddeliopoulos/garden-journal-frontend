@@ -10,11 +10,14 @@ interface Plant {
   createdAt: string
 }
 
-interface JournalEntry {
-  journalId: string
-  mediaId: string
-  type: string
+interface textEntry {
+  createdAt: string
   data: string
+  type: string
+  mediaId: string;
+}
+interface JournalEntries {
+  id: string
 }
 
 export default defineComponent({
@@ -35,24 +38,35 @@ export default defineComponent({
     const plantImageUrl = ref("");
     const searchPlantsUsingBar = ref(props.searchText)
 
-    const journalEntry = ref<JournalEntry>({
-      journalId: "",
-      mediaId: "",
-      type: "",
-      data: ""
+    console.log(props.plant.id)
+
+    const textEntry = ref<textEntry>({
+      createdAt: "",
+      data: "You've watered your plant!",
+      type: "text/plain",
+      mediaId: ""
+    });
+    const journalId = ref<JournalEntries>({
+      id: "",
     })
 
-    const popupTriggers = ref ({
-      buttonTrigger: false,
-    });
+
+    const buttonTrigger = ref (false);
 
     const togglePopup = async () => {
-      console.log("Attempting to post a Text Journal")
-      const dataUploadResponse = await uploadMedia(journalEntry.value.type, journalEntry.value.data)
-      journalEntry.value.mediaId = await (dataUploadResponse.text());
-      await uploadJournalEntry(plantId, journalEntry.value.journalId, journalEntry.value.type, journalEntry.value.mediaId)
-      popupTriggers.value.buttonTrigger = !popupTriggers.value.buttonTrigger
-    }
+      console.log("IM IN THE PARENT PROP METHOD")
+      buttonTrigger.value = !buttonTrigger.value
+    };
+
+
+    // const postTextJournal = async () => {
+    //   console.log("Attempting to post a Text Journal")
+    //   const dataUploadResponse = await uploadMedia(textEntry.value.type, textEntry.value.data)
+    //   textEntry.value.mediaId = await (dataUploadResponse.text());
+    //   await uploadJournalEntry(plantId, journalId.value.id, textEntry.value.type, textEntry.value.mediaId )
+    //   window.location.reload()
+    //   console.log("Text Successfully Posted!")
+    // };
 
     const getLatestImageOrDefault = async () => {
       console.log("getting latest image or default")
@@ -62,8 +76,8 @@ export default defineComponent({
       if (images.length === 0) {
         src = "/default-plant-img.jpg"
       } else {
-        journalEntry.value.mediaId = images[0].mediaId
-        src = getBackendUrl() + '/media/' + journalEntry.value.mediaId
+        textEntry.value.mediaId = images[0].mediaId
+        src = getBackendUrl() + '/media/' + textEntry.value.mediaId
       }
       plantImageUrl.value = src;
     }
@@ -85,8 +99,10 @@ export default defineComponent({
     onMounted(getLatestImageOrDefault)
 
     return {
+
+      //postTextJournal,
       Popup,
-      popupTriggers,
+      buttonTrigger,
       togglePopup,
       searchPlantsUsingBar,
       plantImageUrl,
@@ -95,8 +111,8 @@ export default defineComponent({
       humanDate,
       plantId,
       latestImg,
-      journalEntry
-    }
+      textEntry,
+      journalId}
   }
 })
 </script>
@@ -120,19 +136,80 @@ export default defineComponent({
         </div>
       </router-link>
     </div>
-    <button @click="() => togglePopup('buttonTrigger')" id="water-btn" >
-      <WaterButton></WaterButton>
+    <button @click="togglePopup();" id="water-btn" >
+      <WaterButton :plant="plant"></WaterButton>
     </button>
     <Popup
-        v-if="popupTriggers.buttonTrigger"
-        :togglePopup="() => togglePopup('buttonTrigger')">
-      <h2>Journal entry posted for watering plant!</h2>
+        v-if="buttonTrigger"
+        :togglePopup="() => togglePopup('buttonTrigger')" >
+      <h2>Journal posted. <button>Undo</button> </h2>
+      <br/>
+      <button class="post-watering-btn">POST</button>
     </Popup>
   </div>
 </template>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+
+
+.post-watering-btn {
+  appearance: none;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  top: 15px;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+.post-watering-btn:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.post-watering-btn:disabled {
+  background-color: #FAFBFC;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+.post-watering-btn:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+.post-watering-btn:focus {
+  outline: 1px transparent;
+}
+
+.post-watering-btn:before {
+  display: none;
+}
+
+.post-watering-btn::-webkit-details-marker {
+  display: none;
+}
 
 .type-date-display {
   padding: 10px 0 10px 0;

@@ -36,7 +36,8 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/plant-list',
         name: 'PlantList',
-        component: AddPlantForm
+        component: AddPlantForm,
+        props: true
 
     },
     {

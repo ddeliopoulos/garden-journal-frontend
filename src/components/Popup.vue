@@ -3,7 +3,7 @@
     <div class="popup-inner">
       <slot/>
 <!--      <button class="popup-close" @click="togglePopup()">-->
-        <i class="fas fa-times fa-lg"  @click="togglePopup()"></i>
+        <i class="fas fa-times fa-lg" @click="togglePopup()">inside </i>
 <!--      </button>-->
     </div>
   </div>
@@ -12,28 +12,22 @@
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
 
+
 export default defineComponent({
   name: "Popup",
   props: {
-    togglePopup: Function as PropType<() => void>
-  },
-
-  setup(){
-    console.log("setting up popup")
-
-
-
-    return {}
+    togglePopup: {
+      type: Function as PropType<() => void>
+    },
   }
-
 })
 </script>
 
 <style scoped lang="scss">
 .fas{
   position: relative;
-  bottom: 30px;
-  left: 25px;
+  bottom: 60px;
+  left: 225px;
   cursor: pointer;
 }
 

@@ -1,10 +1,10 @@
 <script lang="ts">
-import {onMounted, ref} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
 import {deleteJournalEntry, getBackendUrl, getMediaById} from "@/components/shared/BackendApi";
 import {useRoute} from "vue-router";
 
 interface JournalEntry {
-  id: string
+  id: number
   plantId: string
   createdAt: string
   type: string
@@ -12,8 +12,7 @@ interface JournalEntry {
   data: string
 }
 
-export default {
-  props: {
+export default defineComponent({  props: {
     journalEntry: {
       type: Object as () => JournalEntry,
       required: true
@@ -34,10 +33,6 @@ export default {
       plantId: ""
     })
 
-
-    //console.log(props.journalEntry, props.journalEntry.mediaId)
-    // const journalEntries = ref<JournalEntry[]>([]);
-
     const enlargeImg = ref(false)
 
     const enlargeImage = async () => {
@@ -45,7 +40,7 @@ export default {
     }
 
     const deleteJournal = async () => {
-      await deleteJournalEntry(journalEntry.value.id);
+      await deleteJournalEntry(props.journalEntry.id);
     }
 
     const loadTextMedia = ref<any>("")
@@ -80,7 +75,7 @@ export default {
       getBackendUrl
     }
   }
-}
+})
 </script>
 
 <template>
@@ -92,10 +87,11 @@ export default {
     </div>
 
     <div v-if="journalEntry.type.startsWith('image')">
+      <div class="delete-plant-icon" @click=deleteJournal()>
+        <i class="far fa-trash-alt fa-lg"></i>
+      </div>
       <div class="modal">
-        <div class="delete-plant-icon" @click=deleteJournal()>
-          <i class="far fa-window-close"></i>
-        </div>
+
         <div class="image-cropper">
           <img :src="getBackendUrl() + '/media/' + journalEntry.mediaId" alt="journal-img"/>
         </div>
@@ -105,7 +101,7 @@ export default {
     <div v-else-if="journalEntry.type.startsWith('audio')">
       <div class="audio-container">
         <div class="delete-plant-icon" @click=deleteJournal()>
-          <i class="far fa-window-close"></i>
+          <i class="far fa-trash-alt fa-lg"></i>
         </div>
         <h3 class="audio-title">AUDIO#: {{ journalEntry.id }}</h3>
         <audio id="audio-controls" controls>
@@ -120,7 +116,7 @@ export default {
     <div v-else-if="journalEntry.type.startsWith('text')">
       <div class="text-container">
         <div class="delete-plant-icon" @click=deleteJournal()>
-          <i class="far fa-window-close"></i>
+          <i class="far fa-trash-alt fa-lg"></i>
         </div>
         <div class="text-entry"><br/>
           {{ loadTextMedia }}
@@ -134,6 +130,13 @@ export default {
 
 
 <style lang="scss" scoped>
+
+.delete-plant-icon {
+  cursor: url("https://i.stack.imgur.com/bUGV0.png"), auto;
+  position: relative;
+  top: 10px;
+  right: 246px;
+}
 
 audio {
   background: linear-gradient(to top left, green, #013220, green);

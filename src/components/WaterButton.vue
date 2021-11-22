@@ -1,6 +1,6 @@
 <template>
     <div class="center">
-      <div class="circle">
+      <div class="circle" @click="uploadWaterJournalEntry">
         <div class="wave"></div>
       </div>
     </div>
@@ -10,15 +10,33 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import Popup from "@/components/Popup.vue";
+import {uploadWateringEntry} from "@/components/shared/BackendApi";
 
+interface Plant {
+  id: number
+}
 export default defineComponent({
   name: "WaterButton",
   components: {Popup},
+  props: {
+    plant: {
+      type: Object as () => Plant,
+      required: true
+    },
+  },
 
-  setup() {
+  setup(props) {
     console.log("setting up water button")
 
-    return {}
+    const uploadWaterJournalEntry = async () => {
+      await uploadWateringEntry(props.plant.id)
+      console.log("Attempting to post a Text Journal")
+      window.location.reload()
+      console.log("Text Successfully Posted!")
+    };
+
+
+    return {uploadWaterJournalEntry}
 
 
   }
@@ -41,6 +59,65 @@ body {
   background-color: #262626;
 }
 
+.post-watering-btn {
+  appearance: none;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  top: 15px;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+.post-watering-btn:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.post-watering-btn:disabled {
+  background-color: #FAFBFC;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+.post-watering-btn:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+.post-watering-btn:focus {
+  outline: 1px transparent;
+}
+
+.post-watering-btn:before {
+  display: none;
+}
+
+.post-watering-btn::-webkit-details-marker {
+  display: none;
+}
+
+
 .center {
   width: 40px;
   height: 40px;
@@ -62,9 +139,7 @@ body {
   -moz-backface-visibility: hidden;
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
-  /*cursor:pointer;*/
-  cursor: url("https://i.postimg.cc/yNLChR5G/watering-can-small.png") 50 20, not-allowed;
-
+  cursor: url("https://i.postimg.cc/yNLChR5G/watering-can-small.png") 50 20, pointer;
 }
 
 .wave {

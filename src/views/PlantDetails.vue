@@ -5,6 +5,7 @@ import JournalEntryRow from "@/components/JournalEntryRow.vue";
 import {deletePlantById, filterEntriesByType, getBackendUrl, getPlantById} from "@/components/shared/BackendApi";
 import {useRoute} from 'vue-router'
 import {defineComponent, onMounted, ref} from "vue";
+import Popup from "@/components/Popup.vue";
 
 interface JournalEntry {
   id: string
@@ -24,7 +25,7 @@ interface PlantType {
 
 export default defineComponent({
   name: 'PlantDetails',
-  components: {JournalEntryRow, AddJournalButton, WaterDroplet},
+  components: {JournalEntryRow, AddJournalButton, WaterDroplet, Popup},
 
   setup() {
     const route = useRoute()
@@ -54,10 +55,12 @@ export default defineComponent({
 
     const reloadEntriesByType = async (type: string | null) => journalEntries.value = await filterEntriesByType(type, id);
 
+
     const filterAudioEntries = async () => await reloadEntriesByType('audio');
     const filterImageEntries = async () => await reloadEntriesByType('image');
     const filterTextEntries = async () => await reloadEntriesByType('text');
     const loadJournalEntries = async () => await reloadEntriesByType(null);
+    console.log("JID: ", journalEntry.value.id)
 
     const getLatestImage = async () => {
       console.log("getting latest image")
@@ -128,6 +131,13 @@ export default defineComponent({
               <div class="relative">
               </div>
             </div>
+<!--            <Popup-->
+<!--                v-if="buttonTrigger"-->
+<!--                :togglePopup="() => togglePopup('buttonTrigger')" >-->
+<!--              <h2>Journal entry posted for watering plant!</h2>-->
+<!--              <br/>-->
+<!--              <button class="post-watering-btn" @click="postTextJournal">POST</button>-->
+<!--            </Popup>-->
             <div class="delete-plant-icon" @click=deletePlant()>
               <i class="far fa-trash-alt fa-lg"></i>
             </div>
@@ -258,6 +268,7 @@ html {
 .all-plants-btn::-webkit-details-marker {
   display: none;
 }
+
 .plant-info {
   position: relative;
   bottom: 20px;

@@ -24,7 +24,7 @@ export default {
 
   setup(props: any, context: any) {
     const route = useRoute()
-    const id = parseInt(route.params.id as string);
+    const id = Number(route.params.id)
 
 
     const imageEntry = ref<ImageEntry>({
@@ -69,8 +69,8 @@ export default {
       const dataUploadResponse = await uploadMedia(imageEntry.value.data?.type!!, imageEntry.value.data)
 
       imageEntry.value.mediaId = await (dataUploadResponse.text());
-      await uploadJournalEntry(id, journalId.value.id, imageEntry.value.type, imageEntry.value.mediaId)
-
+      await uploadJournalEntry(id, imageEntry.value.type, imageEntry.value.mediaId)
+      console.log("image journal id works?: ",journalId.value.id)
       window.location.reload()
       context.emit('getLatestImage', imageEntry.value.mediaId)
       context.emit('getLatestImage', imageEntry.value.mediaId)

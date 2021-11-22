@@ -27,7 +27,7 @@ export default {
   setup(props: any, context: any) {
     console.log("STARTING AudioRecorder.VUE")
     const route = useRoute()
-    const id = parseInt(route.params.id as string);
+    const id = Number(route.params.id)
 
     const titleOfAudio = ref("")
 
@@ -66,7 +66,7 @@ export default {
       console.log("Attempting to post an Audio Journal")
       const dataUploadResponse = await uploadMedia(audioEntry.value.data?.type!!, audioEntry.value.data);
       audioEntry.value.mediaId = await (dataUploadResponse.text());
-      await uploadJournalEntry(id, journalId.value.id, audioEntry.value.type, audioEntry.value.mediaId)
+      await uploadJournalEntry(id, audioEntry.value.type, audioEntry.value.mediaId)
       window.location.reload()
       console.log("Audio Successfully Posted")
     }
