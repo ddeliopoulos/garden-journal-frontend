@@ -3,7 +3,7 @@
     <div class="popup-inner">
       <slot/>
 <!--      <button class="popup-close" @click="togglePopup()">-->
-        <i class="fas fa-times fa-lg" @click="togglePopup()">inside </i>
+        <i class="fas fa-times fa-lg" @click="togglePopup()"></i>
 <!--      </button>-->
     </div>
   </div>
@@ -27,8 +27,9 @@ export default defineComponent({
 .fas{
   position: relative;
   bottom: 60px;
-  left: 225px;
   cursor: pointer;
+  left: 145px;
+
 }
 
 .popup{

@@ -40,6 +40,7 @@ export async function getMediaById(mediaId: string) {
     })
 }
 
+
 export async function uploadNewPlant(plantName: string, plantType: string, timeCreated: number) {
     await fetch(`${getBackendUrl()}/plants`, {
         method: 'POST',
@@ -65,12 +66,12 @@ export async function uploadMedia(type: string, data: any): Promise<Response> {
 }
 
 export async function uploadWateringEntry(plantId: number  | RouteParamValue[]) {
-    return await uploadJournalEntry(plantId, "", 'watering');
+    return await uploadJournalEntry(plantId, "watering", "");
 }
 
 // TODO: remove journal ID
 export async function uploadJournalEntry(plantId: number | RouteParamValue[], type: string, mediaId: string | null) {
-    await fetch(`${getBackendUrl()}/plants/${plantId}/journal-entries`, {
+    return await fetch(`${getBackendUrl()}/plants/${plantId}/journal-entries`, {
         method: 'POST',
         headers: {
             'X-Auth-Token': (await getAuthToken()), 'Content-type': 'application/json',

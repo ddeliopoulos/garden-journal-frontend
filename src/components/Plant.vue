@@ -1,7 +1,7 @@
 <script lang="ts">
 
 import {defineComponent, onMounted, ref} from "vue";
-import {filterEntriesByType, getBackendUrl, uploadJournalEntry, uploadMedia} from "@/components/shared/BackendApi";
+import {deleteJournalEntry, filterEntriesByType, getBackendUrl} from "@/components/shared/BackendApi";
 import WaterButton from "/src/components/WaterButton.vue"
 import Popup from "@/components/Popup.vue";
 
@@ -12,8 +12,6 @@ interface Plant {
 
 interface textEntry {
   createdAt: string
-  data: string
-  type: string
   mediaId: string;
 }
 interface JournalEntries {
@@ -42,22 +40,27 @@ export default defineComponent({
 
     const textEntry = ref<textEntry>({
       createdAt: "",
-      data: "You've watered your plant!",
-      type: "text/plain",
       mediaId: ""
     });
     const journalId = ref<JournalEntries>({
       id: "",
     })
 
-
+    const saveJournalId = async (event: any) => {
+      journalId.value.id = event;
+    }
     const buttonTrigger = ref (false);
 
     const togglePopup = async () => {
-      console.log("IM IN THE PARENT PROP METHOD")
+      if(!buttonTrigger.value){
+        setTimeout(()=>{ buttonTrigger.value = !buttonTrigger.value; }, 3000);
+      }
       buttonTrigger.value = !buttonTrigger.value
-    };
+    }
 
+    const deleteWaterJournal = async () => {
+     await deleteJournalEntry(journalId.value.id)
+    }
 
     // const postTextJournal = async () => {
     //   console.log("Attempting to post a Text Journal")
@@ -81,26 +84,13 @@ export default defineComponent({
       }
       plantImageUrl.value = src;
     }
-    //
-    // const getLatestImage = async () => {
-    //   const response = await fetch(`${getBackendUrl()}/journal-entries?plantId=${plantId}&_sort=createdAt&_order=desc&type=image`, {
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-type': 'application/json',
-    //       'X-Auth-Token': gapi.getAuthToken()
-    //     },
-    //   })
-    //   journalEntry.value = await response.json();
-    //
-    //   latestImg.value = journalEntry.value[0].dataUrl
-    //
-    // }
+
 
     onMounted(getLatestImageOrDefault)
 
     return {
-
-      //postTextJournal,
+      saveJournalId,
+      deleteWaterJournal,
       Popup,
       buttonTrigger,
       togglePopup,
@@ -137,14 +127,13 @@ export default defineComponent({
       </router-link>
     </div>
     <button @click="togglePopup();" id="water-btn" >
-      <WaterButton :plant="plant"></WaterButton>
+      <WaterButton @journalId="saveJournalId" :plant="plant"></WaterButton>
     </button>
     <Popup
         v-if="buttonTrigger"
         :togglePopup="() => togglePopup('buttonTrigger')" >
-      <h2>Journal posted. <button>Undo</button> </h2>
+      <h2>Journal posted. <button @click="deleteWaterJournal" class="undo-journal-watering">Undo</button> </h2>
       <br/>
-      <button class="post-watering-btn">POST</button>
     </Popup>
   </div>
 </template>
@@ -153,7 +142,7 @@ export default defineComponent({
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
 
-.post-watering-btn {
+.undo-journal-watering {
   appearance: none;
   background-color: #FAFBFC;
   border: 1px solid rgba(27, 31, 35, 0.15);
@@ -170,7 +159,6 @@ export default defineComponent({
   list-style: none;
   padding: 6px 16px;
   position: relative;
-  top: 15px;
   transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
   user-select: none;
   -webkit-user-select: none;
@@ -180,34 +168,34 @@ export default defineComponent({
   word-wrap: break-word;
 }
 
-.post-watering-btn:hover {
+.undo-journal-watering:hover {
   background-color: #F3F4F6;
   text-decoration: none;
   transition-duration: 0.1s;
 }
 
-.post-watering-btn:disabled {
+.undo-journal-watering:disabled {
   background-color: #FAFBFC;
   border-color: rgba(27, 31, 35, 0.15);
   color: #959DA5;
   cursor: default;
 }
 
-.post-watering-btn:active {
+.undo-journal-watering:active {
   background-color: #EDEFF2;
   box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
   transition: none 0s;
 }
 
-.post-watering-btn:focus {
+.undo-journal-watering:focus {
   outline: 1px transparent;
 }
 
-.post-watering-btn:before {
+.undo-journal-watering:before {
   display: none;
 }
 
-.post-watering-btn::-webkit-details-marker {
+.undo-journal-watering::-webkit-details-marker {
   display: none;
 }
 

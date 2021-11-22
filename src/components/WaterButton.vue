@@ -15,9 +15,11 @@ import {uploadWateringEntry} from "@/components/shared/BackendApi";
 interface Plant {
   id: number
 }
+
 export default defineComponent({
   name: "WaterButton",
   components: {Popup},
+  emits: ['journalId'],
   props: {
     plant: {
       type: Object as () => Plant,
@@ -25,13 +27,19 @@ export default defineComponent({
     },
   },
 
-  setup(props) {
+  setup(props, {emit}) {
     console.log("setting up water button")
 
+
     const uploadWaterJournalEntry = async () => {
-      await uploadWateringEntry(props.plant.id)
+      const journalId = await uploadWateringEntry(props.plant.id)
+
+      const jId = await journalId.json();
+      console.log("what the fuck is jid? " , await jId)
+      emit('journalId', jId)
+
       console.log("Attempting to post a Text Journal")
-      window.location.reload()
+      setTimeout(()=> console.log("Undo?"), 10000)
       console.log("Text Successfully Posted!")
     };
 
@@ -59,7 +67,7 @@ body {
   background-color: #262626;
 }
 
-.post-watering-btn {
+.circle {
   appearance: none;
   background-color: #FAFBFC;
   border: 1px solid rgba(27, 31, 35, 0.15);
@@ -76,7 +84,6 @@ body {
   list-style: none;
   padding: 6px 16px;
   position: relative;
-  top: 15px;
   transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
   user-select: none;
   -webkit-user-select: none;
@@ -86,34 +93,34 @@ body {
   word-wrap: break-word;
 }
 
-.post-watering-btn:hover {
+.circle:hover {
   background-color: #F3F4F6;
   text-decoration: none;
   transition-duration: 0.1s;
 }
 
-.post-watering-btn:disabled {
+.circle:disabled {
   background-color: #FAFBFC;
   border-color: rgba(27, 31, 35, 0.15);
   color: #959DA5;
   cursor: default;
 }
 
-.post-watering-btn:active {
+.circle:active {
   background-color: #EDEFF2;
   box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
   transition: none 0s;
 }
 
-.post-watering-btn:focus {
+.circle:focus {
   outline: 1px transparent;
 }
 
-.post-watering-btn:before {
+.circle:before {
   display: none;
 }
 
-.post-watering-btn::-webkit-details-marker {
+.circle::-webkit-details-marker {
   display: none;
 }
 

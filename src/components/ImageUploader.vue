@@ -69,10 +69,9 @@ export default {
       const dataUploadResponse = await uploadMedia(imageEntry.value.data?.type!!, imageEntry.value.data)
 
       imageEntry.value.mediaId = await (dataUploadResponse.text());
-      await uploadJournalEntry(id, imageEntry.value.type, imageEntry.value.mediaId)
-      console.log("image journal id works?: ",journalId.value.id)
+      const journalId = await uploadJournalEntry(id, imageEntry.value.type, imageEntry.value.mediaId)
+
       window.location.reload()
-      context.emit('getLatestImage', imageEntry.value.mediaId)
       context.emit('getLatestImage', imageEntry.value.mediaId)
       context.emit('setTimeStampOnJournal', imageEntry.value.createdAt)
       console.log("Image Successfully Posted")

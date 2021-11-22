@@ -123,6 +123,21 @@ export default defineComponent({  props: {
         </div>
       </div>
     </div>
+
+    <div v-else-if="journalEntry.type.startsWith('water')">
+      <div class="delete-plant-icon" @click=deleteJournal()>
+        <i class="far fa-trash-alt fa-lg"></i>
+      </div>
+      <div class="modal">
+        <div class="plant-watered-text">
+        Plant Watered.
+        </div>
+        <div class="image-cropper-watering">
+          <img src="/watering-can-small.png"  alt=""/>
+        </div>
+      </div>
+    </div>
+
     <div v-else>No supporto for this typo! {{ journalEntry.type }}</div>
   </div>
 
@@ -130,6 +145,16 @@ export default defineComponent({  props: {
 
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+
+.plant-watered-text{
+  top:50px;
+  position: relative;
+  right: 100px;
+  font-size: 20px;
+  font-family: 'Josefin Sans', sans-serif;
+
+}
 
 .delete-plant-icon {
   cursor: url("https://i.stack.imgur.com/bUGV0.png"), auto;
@@ -181,13 +206,14 @@ audio {
 
 .text-entry {
   float: left;
-  text-align: left;
   display: inline-block;
   margin: 10px 25px 25px;
   line-height: 1em;
   position: relative;
   top: -5px;
-  color: black;
+  color: darkblue;
+  font-family: 'Josefin Sans', sans-serif;
+
 }
 
 .timestamp {
@@ -206,6 +232,17 @@ audio {
   overflow: hidden;
   margin: auto;
   border-radius: 20px;
+}
+
+.image-cropper-watering{
+  width: 120px;
+  height: 120px;
+  position: relative;
+  bottom: 20px;
+  overflow: hidden;
+  margin: auto;
+  border-radius: 20px;
+  left: 70px;
 }
 
 img {
