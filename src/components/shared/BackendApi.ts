@@ -41,7 +41,7 @@ export async function getMediaById(mediaId: string) {
 }
 
 
-export async function uploadNewPlant(plantName: string, plantType: string, timeCreated: number) {
+export async function uploadNewPlant(plantName: string, plantType: string, timeCreated: number, plantFrequency: string) {
     await fetch(`${getBackendUrl()}/plants`, {
         method: 'POST',
         headers: {
@@ -51,6 +51,7 @@ export async function uploadNewPlant(plantName: string, plantType: string, timeC
             name: plantName,
             type: plantType,
             createdAt: (new Date(timeCreated)).getTime(),
+            frequency: plantFrequency
         }),
     })
 }

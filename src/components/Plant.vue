@@ -37,7 +37,6 @@ export default defineComponent({
     const plantImageUrl = ref("");
     const searchPlantsUsingBar = ref(props.searchText)
 
-    console.log(props.plant.id)
 
     const textEntry = ref<textEntry>({
       createdAt: "",
@@ -216,6 +215,11 @@ export default defineComponent({
   padding: 10px 0 10px 0;
 }
 
+.type-date{
+  position: relative;
+  top: -10px
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -237,6 +241,7 @@ h2 {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  height: 210px;
 }
 
 p {
@@ -280,7 +285,7 @@ p, h2 {
   bottom: 6em;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   width: 190px;
-  height: 280px;
+  height: 270px;
 }
 
 h4 {

@@ -1,58 +1,85 @@
 <script lang="ts">
-import {ref} from "vue";
+import {defineComponent, ref} from "vue";
 import {uploadNewPlant} from '@/components/shared/BackendApi';
 
 interface Plant {
   name: string
   type: string
   createdAt: string
+  frequency: string
 }
 
-export default {
+export default defineComponent({
 
   setup() {
     const plant = ref<Plant>({
       name: "",
       type: "",
-      createdAt: ""
+      createdAt: "",
+      frequency: ""
     })
 
+
+
+
     const onFormSubmit = async () => {
-      await uploadNewPlant(plant.value.name, plant.value.type, (new Date(plant.value.createdAt)).getTime())
+      console.log("DAYS TO MILLIS BEFORE",plant.value.frequency)
+
+      const daysToMillis = (parseInt(plant.value.frequency) * 24 * 60 * 60 * 1000)
+
+
+      await uploadNewPlant(plant.value.name, plant.value.type, (new Date(plant.value.createdAt)).getTime(), daysToMillis.toString())
+      console.log("DAYS TO MILLIS AFTER",daysToMillis)
 
       window.location.reload()
 
       plant.value.name = "";
       plant.value.type = "";
       plant.value.createdAt = "";
+      plant.value.frequency = ""
     }
     return {onFormSubmit, plant}
   }
-}
+})
 </script>
 
 <template>
   <div class="container">
-    <label>Plant Name: </label>
+    <label>Plant name: </label>
     <input v-model="plant.name" placeholder="Name of plant"
            required
            type="text">
     <br/>
-    <label>Plant Type: </label>
+    <label>Plant type: </label>
     <input v-model="plant.type" placeholder="Type of plant"
            type="text">
     <br/>
-    <label>Date Planted: </label>
+    <label>Date planted: </label>
     <input v-model="plant.createdAt"
            type="date">
     <br/>
+    <label>Schedule: </label>
+    <input v-model="plant.frequency" name="schedule" min="0" ><br/>
+    <small id="hint_id_schedule" class="form-text text-muted">
+      &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;
+      the number of days between waterings
+    <i>(e.g.  7)</i>
+    </small>
+   <br/>
     <button class="button" @click="onFormSubmit">Submit</button>
   </div>
+
 </template>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap');
-
+.text-muted {
+  color: #6c757d!important;
+}
+.small {
+  font-size: 80%;
+  font-weight: 400;
+}
 label {
   padding: 5px;
   display: block;

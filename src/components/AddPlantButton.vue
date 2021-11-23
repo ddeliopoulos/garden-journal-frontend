@@ -1,8 +1,8 @@
 <script lang="ts">
 import AddPlantForm from "@/components/AddPlantForm.vue";
-import {ref} from "vue";
+import {defineComponent, ref} from "vue";
 
-export default {
+export default defineComponent({
   name: 'AddPlantButton',
   components: {AddPlantForm},
 
@@ -11,7 +11,7 @@ export default {
 
     return {showAddPlantForm}
   }
-}
+})
 </script>
 
 <template>
@@ -30,6 +30,8 @@ export default {
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -39,10 +41,11 @@ export default {
 .close-form-button {
   position: absolute;
   right: 15px;
-  top: 12px;
+  top: -5px;
   width: 25px;
   height: 25px;
   opacity: 0.3;
+  cursor: pointer;
 }
 
 .close-form-button:hover {
@@ -78,6 +81,8 @@ export default {
   background-color: #FFF;
   border-radius: 16px;
   padding: 25px;
+  font-family: 'Josefin Sans', sans-serif;
+
 }
 
 .add-plant-button {

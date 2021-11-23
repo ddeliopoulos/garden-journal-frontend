@@ -28,8 +28,6 @@ export default defineComponent({
   },
 
   setup(props, {emit}) {
-    console.log("setting up water button")
-
 
     const uploadWaterJournalEntry = async () => {
       console.log("Attempting to post a Watering Journal")
@@ -80,6 +78,7 @@ body {
   list-style: none;
   padding: 6px 16px;
   position: relative;
+  bottom: -5px;
   transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
   user-select: none;
   -webkit-user-select: none;
