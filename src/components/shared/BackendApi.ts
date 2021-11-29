@@ -40,8 +40,9 @@ export async function getMediaById(mediaId: string) {
     })
 }
 
-export async function uploadNewPlant(plantName: string, plantType: string, timeCreated: number) {
-    await fetch(`${getBackendUrl()}/plants`, {
+
+export async function uploadNewPlant(plantName: string, plantType: string, timeCreated: number, plantFrequency: string) {
+    return await fetch(`${getBackendUrl()}/plants`, {
         method: 'POST',
         headers: {
             'X-Auth-Token': (await getAuthToken()), 'Content-type': 'application/json',
@@ -50,6 +51,7 @@ export async function uploadNewPlant(plantName: string, plantType: string, timeC
             name: plantName,
             type: plantType,
             createdAt: (new Date(timeCreated)).getTime(),
+            frequency: plantFrequency
         }),
     })
 }
@@ -64,14 +66,18 @@ export async function uploadMedia(type: string, data: any): Promise<Response> {
     });
 }
 
-export async function uploadJournalEntry(plantId: number, journalId: string, type: string, mediaId: string) {
-    await fetch(`${getBackendUrl()}/plants/${plantId}/journal-entries`, {
+export async function uploadWateringEntry(plantId: number | RouteParamValue[]) {
+    return await uploadJournalEntry(plantId, "watering", "");
+}
+
+// TODO: remove journal ID
+export async function uploadJournalEntry(plantId: number | RouteParamValue[], type: string, mediaId: string | null) {
+    return await fetch(`${getBackendUrl()}/plants/${plantId}/journal-entries`, {
         method: 'POST',
         headers: {
             'X-Auth-Token': (await getAuthToken()), 'Content-type': 'application/json',
         },
         body: JSON.stringify({
-            id: journalId,
             plantId: plantId,
             createdAt: Date.now(),
             type: type,
@@ -81,7 +87,6 @@ export async function uploadJournalEntry(plantId: number, journalId: string, typ
 }
 
 export async function deletePlantById(plantId: string | RouteParamValue[]) {
-    if (confirm('Are you sure?')) {
     await fetch(`${getBackendUrl()}/plants/${plantId}`, {
         method: 'DELETE',
         headers: {
@@ -89,10 +94,9 @@ export async function deletePlantById(plantId: string | RouteParamValue[]) {
         },
     })
     await router.push('/');
-    }
 }
 
-export async function deleteJournalEntry(journalId: string) {
+export async function deleteJournalEntry(journalId: string | RouteParamValue[]) {
     await fetch(`${getBackendUrl()}/journal-entries/${journalId}`, {
         method: 'DELETE',
         headers: {

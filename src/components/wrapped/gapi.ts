@@ -16,13 +16,11 @@ const googleInitialized = new Promise((resolve, reject) => {
 });
 
 export async function getBasicProfile() {
-    const token = await getAccessToken();
-
-    const response =  await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${token}`, {
-        method: 'GET',
-        headers: {'Content-type': 'application/json'},
-    })
-     return await response.json();
+    await googleInitialized;
+    // @ts-ignore
+    const auth2 = gapi.auth2.getAuthInstance();
+    // @ts-ignore
+    return auth2.currentUser.get().getBasicProfile();
 }
 
 export async function isLoggedIn(): Promise<boolean> {

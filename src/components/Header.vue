@@ -3,20 +3,34 @@
 import GardenJournalLogo from "@/components/GardenJournalLogo.vue";
 import SearchBar from "@/components/SearchBar.vue"
 import {logout} from "@/components/wrapped/gapi";
+import {getBasicProfile} from "@/components/wrapped/gapi";
+import {defineComponent, ref} from 'vue'
 
-export default {
+
+export default defineComponent({
   name: "Header",
   components: {GardenJournalLogo, SearchBar},
 
   setup() {
+    const userEmail = ref("")
+    const userImageUrl = ref("")
+
+    getBasicProfile().then(profile => {
+      userEmail.value = profile.getEmail();
+      userImageUrl.value = profile.getImageUrl();
+    });
+    console.log("userEmail ", userEmail.value)
+
 // @ts-ignore
     return {
       logoutWithGoogle: () => {
         logout()
-      }
+      },
+      userEmail,
+      userImageUrl
     }
   }
-}
+})
 </script>
 
 <template>
@@ -28,6 +42,9 @@ export default {
       <div>
         <button class="logout-btn" role="button" @click="logoutWithGoogle">LOG OUT</button>
       </div>
+      <div class="account-info">
+        <h3>User: {{userEmail}} </h3>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +54,12 @@ export default {
 
 body {
   margin: 0;
+}
+
+.account-info {
+  position: relative;
+  right: -930px;
+  top: -10px;
 }
 
 /* CSS */
@@ -94,6 +117,7 @@ body {
   padding-bottom: 3px;
   z-index: 99;
   position: fixed;
+  display: inline;
 
 }
 

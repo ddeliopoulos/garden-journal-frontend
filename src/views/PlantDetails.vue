@@ -1,10 +1,11 @@
 <script lang="ts">
-import WaterDroplet from "@/components/WaterDroplet.vue";
 import AddJournalButton from "@/components/AddJournalButton.vue"
 import JournalEntryRow from "@/components/JournalEntryRow.vue";
 import {deletePlantById, filterEntriesByType, getBackendUrl, getPlantById} from "@/components/shared/BackendApi";
 import {useRoute} from 'vue-router'
 import {defineComponent, onMounted, ref} from "vue";
+import Popup from "@/components/Popup.vue";
+import {isLoggedIn} from "@/components/wrapped/gapi";
 
 interface JournalEntry {
   id: string
@@ -24,7 +25,7 @@ interface PlantType {
 
 export default defineComponent({
   name: 'PlantDetails',
-  components: {JournalEntryRow, AddJournalButton, WaterDroplet},
+  components: {JournalEntryRow, AddJournalButton, Popup},
 
   setup() {
     const route = useRoute()
@@ -50,12 +51,15 @@ export default defineComponent({
       createdAt: "",
       id: ""
     })
+
     console.log("CREATED AT", plant.value.createdAt)
 
     const reloadEntriesByType = async (type: string | null) => journalEntries.value = await filterEntriesByType(type, id);
 
+
     const filterAudioEntries = async () => await reloadEntriesByType('audio');
     const filterImageEntries = async () => await reloadEntriesByType('image');
+    const filterWaterEntries = async () => await reloadEntriesByType('watering');
     const filterTextEntries = async () => await reloadEntriesByType('text');
     const loadJournalEntries = async () => await reloadEntriesByType(null);
 
@@ -81,7 +85,16 @@ export default defineComponent({
     //   props.journalEntry.data = event;
     //   console.log(props.journalEntry.data)
     // }
+    const buttonTrigger = ref(false);
 
+    const togglePopup = async () => {
+      if (!buttonTrigger.value) {
+        setTimeout(() => {
+          buttonTrigger.value = false;
+        }, 2500);
+      }
+      buttonTrigger.value = !buttonTrigger.value
+    }
     const goBack = () => {
       window.history.back();
     }
@@ -99,12 +112,15 @@ export default defineComponent({
     [getPlantInfo, loadJournalEntries, getLatestImage].forEach((fn: any) => onMounted(fn));
 
     return {
+      buttonTrigger,
+      togglePopup,
       humanDate,
       src,
       plantImageUrl,
       journalEntries,
       journalEntry,
       plant,
+      filterWaterEntries,
       goBack,
       deletePlant,
       filterTextEntries,
@@ -121,70 +137,86 @@ export default defineComponent({
   <section class="relative py-16 bg-gray-300">
     <div class="container mx-auto px-4">
       <div class="move-down">
-      <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
-        <div class="px-6">
-          <div class="flex flex-wrap justify-center">
-            <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-              <div class="relative">
-              </div>
-            </div>
-            <div class="delete-plant-icon" @click=deletePlant()>
-              <i class="far fa-trash-alt fa-lg"></i>
-            </div>
-            <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-            </div>
-            <div class="w-full lg:w-4/12 px-4 lg:order-1">
-            </div>
-            <button class="all-plants-btn" role="button" @click="goBack()">Go Back</button>
-          </div>
-          <div class="add-journal-button">
-          </div>
-          <div class="text-center mt-12">
-            <div class="move-left">
-              <div class="image-cropper">
-                <img :src="plantImageUrl" alt="latest-img" class="img">
-              </div>
-              <h3 class="text-4xl font-semisolid leading-normal mb-2 text-gray-800 mb-2">
-                {{ plant.name }}
-              </h3>
-              <div class="plant-info">
-                <div class="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
-                  <i class="fa fa-leaf mr-2 text-lg text-gray-500"></i>
-                  {{ plant.type }}
+        <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
+          <div class="px-6">
+            <div class="flex flex-wrap justify-center">
+              <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
+                <div class="relative">
                 </div>
-                <div class="fas fa-map-marker-alt mb-2 text-gray-700 mt-10">
-                  <i class=" mr-2 text-lg text-gray-500"></i>
-                  PA, United States
+              </div>
+
+
+              <Popup
+                  v-if="buttonTrigger"
+                  :togglePopup="() => togglePopup('buttonTrigger')">
+                <h2><br/>Delete plant?
+                  <button @click="deletePlant" class="delete-plant-btn">DELETE</button>
+                </h2>
+                <div class="pos-x">
+                  <i class="fas fa-times fa-lg" @click="togglePopup()"></i>
+                  <br/>
                 </div>
-                <div class="move-date">
-                  <div class="mb-2 text-gray-700">
-                    <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
-                    <b>{{ humanDate }}</b>
+              </Popup>
+
+
+              <div class="delete-plant-icon" @click="togglePopup()">
+                <i class="far fa-trash-alt fa-lg"></i>
+              </div>
+              <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
+              </div>
+              <div class="w-full lg:w-4/12 px-4 lg:order-1">
+              </div>
+              <button class="go-back-btn" role="button" @click="goBack()">Go Back</button>
+            </div>
+            <div class="add-journal-button">
+            </div>
+            <div class="text-center mt-12">
+              <div class="move-left">
+                <div class="image-cropper">
+                  <img :src="plantImageUrl" alt="latest-img" class="img">
+                </div>
+                <h3 class="text-4xl font-semisolid leading-normal mb-2 text-gray-800 mb-2">
+                  {{ plant.name }}
+                </h3>
+                <div class="plant-info">
+                  <div class="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
+                    <i class="fa fa-leaf mr-2 text-lg text-gray-500"></i>
+                    {{ plant.type }}
+                  </div>
+                  <div class="fas fa-map-marker-alt mb-2 text-gray-700 mt-10">
+                    <i class=" mr-2 text-lg text-gray-500"></i>
+                    PA, United States
+                  </div>
+                  <div class="move-date">
+                    <div class="mb-2 text-gray-700">
+                      <i class="fa fa-calendar mr-2 text-lg text-gray-500"></i>
+                      <b>{{ humanDate }}</b>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="w-full lg:w-9/12 px-4">
-          <AddJournalButton/>
-        </div>
-        <div class="mt-10 py-10 border-t border-gray-300 text-center">
-          <h2>JOURNAL ENTRIES</h2>
-          <div class="timeline">
-            <button class="filter-img-btn" @click="loadJournalEntries"> All</button>
-            <button class="filter-txt-btn" @click="filterTextEntries"> Text</button>
-            <button class="filter-audio-btn" @click="filterAudioEntries"> Audio</button>
-            <button class="filter-img-btn" @click="filterImageEntries"> Image</button>
-            <br/><br/>
-            <br/>
-            <div v-for="journalEntry in journalEntries" :key="journalEntry.id" class="single-plant-container">
-              <JournalEntryRow :journalEntry="journalEntry"/>
+          <div class="w-full lg:w-9/12 px-4">
+            <AddJournalButton/>
+          </div>
+          <div class="mt-10 py-10 border-t border-gray-300 text-center">
+            <h2>JOURNAL ENTRIES</h2>
+            <div class="timeline">
+              <button class="filter-img-btn" @click="loadJournalEntries"> All</button>
+              <button class="filter-txt-btn" @click="filterTextEntries"> Text</button>
+              <button class="filter-audio-btn" @click="filterAudioEntries"> Audio</button>
+              <button class="filter-img-btn" @click="filterImageEntries"> Image</button>
+              <button class="filter-water-btn" @click="filterWaterEntries"> Watered</button>
+              <br/><br/>
+              <br/>
+              <div v-for="journalEntry in journalEntries" :key="journalEntry.id" class="single-plant-container">
+                <JournalEntryRow :journalEntry="journalEntry"/>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </section>
 </template>
@@ -192,7 +224,7 @@ export default defineComponent({
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
-.move-down{
+.move-down {
   position: relative;
   top: 20px;
 }
@@ -200,7 +232,8 @@ export default defineComponent({
 html {
   background-color: #E2E8F0;
 }
-.all-plants-btn {
+
+.go-back-btn {
   appearance: none;
   background-color: #FAFBFC;
   border: 1px solid rgba(27, 31, 35, 0.15);
@@ -217,8 +250,6 @@ html {
   list-style: none;
   padding: 6px 16px;
   position: relative;
-  right: 565px;
-  bottom: 3px;
   transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
   user-select: none;
   -webkit-user-select: none;
@@ -228,36 +259,101 @@ html {
   word-wrap: break-word;
 }
 
-.all-plants-btn:hover {
+.go-back-btn:hover {
   background-color: #F3F4F6;
   text-decoration: none;
   transition-duration: 0.1s;
 }
 
-.all-plants-btn:disabled {
+.go-back-btn:disabled {
   background-color: #FAFBFC;
   border-color: rgba(27, 31, 35, 0.15);
   color: #959DA5;
   cursor: default;
 }
 
-.all-plants-btn:active {
+.go-back-btn:active {
   background-color: #EDEFF2;
   box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
   transition: none 0s;
 }
 
-.all-plants-btn:focus {
+.go-back-btn:focus {
   outline: 1px transparent;
 }
 
-.all-plants-btn:before {
+.go-back-btn:before {
   display: none;
 }
 
-.all-plants-btn::-webkit-details-marker {
+.go-back-btn::-webkit-details-marker {
   display: none;
 }
+
+.pos-x {
+  position: relative;
+  top: -50px;
+  right: -225px;
+
+}
+
+.delete-plant-btn {
+  appearance: none;
+  background-color: #FAFBFC;
+  border: 3px solid red;
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: red;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+.delete-plant-btn:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.delete-plant-btn:disabled {
+  background-color: #FAFBFC;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+.delete-plant-btn:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+.delete-plant-btn:focus {
+  outline: 1px transparent;
+}
+
+.delete-plant-btn:before {
+  display: none;
+}
+
+.delete-plant-btn::-webkit-details-marker {
+  display: none;
+}
+
 .plant-info {
   position: relative;
   bottom: 20px;
@@ -275,7 +371,7 @@ html {
   top: 20px;
 }
 
-.filter-txt-btn, .filter-audio-btn, .filter-img-btn {
+.filter-txt-btn, .filter-audio-btn, .filter-img-btn, .filter-water-btn {
   appearance: none;
   outline: none;
   border: none;
@@ -308,6 +404,8 @@ html {
 .fas {
   position: relative;
   top: -35px;
+  right: -25px;
+  cursor: pointer;
 }
 
 .image-cropper {

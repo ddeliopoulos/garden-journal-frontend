@@ -1,39 +1,62 @@
 <script lang="ts">
 import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
-import {ref} from 'vue'
-import {loadAllPlants} from "@/components/shared/BackendApi";
 import SearchBar from "@/components/SearchBar.vue"
-import {getAuthToken, getBasicProfile, isLoggedIn} from "@/components/wrapped/gapi";
+import {defineComponent, PropType, ref} from 'vue'
+import {filterEntriesByType, loadAllPlants} from "@/components/shared/BackendApi";
+import {getBasicProfile} from "@/components/wrapped/gapi";
+import Popup from "@/components/Popup.vue";
+
+interface JournalEntry {
+  id: string
+  plantId: string
+  createdAt: string
+  type: string
+  mediaId: string
+  data: string
+}
 
 interface PlantType {
   name: string
   type: string
   createdAt: string
   id: number
+  frequency: string
 }
 
 interface JournalEntry {
   dataUrl: string
 }
 
-export default {
+export default defineComponent({
   name: "PlantListDisplay",
-  components: {Plant, AddPlantButton, SearchBar},
+  components: {Popup, Plant, AddPlantButton, SearchBar},
+  props: {
+    togglePopup: Function as PropType<() => void>
+  },
 
   setup() {
+    const userEmail = ref("")
+    const pId = ref()
+    const dTM = ref()
     const plants = ref<PlantType[]>([]);
     const searchBarVal = ref("");
     const searchFilteredList = ref<PlantType[]>([]);
     const showFilteredList = ref(false);
+    const journalEntries = ref<JournalEntry[]>([])
 
-    console.log(searchBarVal.value)
+    getBasicProfile().then(profile => {
+      userEmail.value = profile.getEmail();
+    });
+    console.log("userEmail ", userEmail.value)
 
     const loadPlants = async () => {
       showFilteredList.value = false;
       const response = await loadAllPlants()
       plants.value = await response.json();
     }
+
+
 
     function searchValue(value: any) {
       searchBarVal.value = value;
@@ -53,7 +76,15 @@ export default {
 
     //const token = async ()=> await getAuthToken()
 
-    getBasicProfile().then(console.log)
+
+    const daysToMilis = async (event: any) => {
+      dTM.value = await event
+      console.log("mill EMITTED?: ", dTM.value)
+    }
+    const plantId = async (event: any) => {
+      pId.value = await event
+      console.log("id EMITTED?: ", pId.value)
+    }
 
     loadPlants()
     return {
@@ -63,10 +94,13 @@ export default {
       searchValue,
       searchBarVal,
       plants,
-      filteredList
+      filteredList,
+      daysToMilis,
+      plantId,
+      userEmail
     }
   }
-}
+})
 </script>
 
 <template>
@@ -77,7 +111,7 @@ export default {
           <div class="text-center mt-12">
             <SearchBar @emitSearchText="searchValue"></SearchBar>
             <div id="add-plant-button">
-              <AddPlantButton></AddPlantButton>
+              <AddPlantButton @daysToMillisToPlantDisplay="daysToMilis" @plantIdToPlantDisplay="plantId"></AddPlantButton>
             </div>
             <div v-for="plant in searchFilteredList" v-if="showFilteredList" :key="plant.id" class="single-plant-container">
               <Plant :plant="plant"/>
@@ -96,7 +130,15 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
-
+.red-droplet{
+  background: red;
+}
+.green-droplet{
+  background: green;
+}
+.yellow-droplet{
+  background: yellow;
+}
 * {
   box-sizing: border-box;
   margin: 0;

@@ -24,7 +24,7 @@ export default {
 
   setup(props: any, context: any) {
     const route = useRoute()
-    const id = parseInt(route.params.id as string);
+    const id = Number(route.params.id)
 
     const textEntry = ref<textEntry>({
       createdAt: "",
@@ -49,7 +49,7 @@ export default {
       console.log("Attempting to post a Text Journal")
       const dataUploadResponse = await uploadMedia(textEntry.value.type, textEntry.value.data)
       textEntry.value.mediaId = await (dataUploadResponse.text());
-      await uploadJournalEntry(id, journalId.value.id, textEntry.value.type, textEntry.value.mediaId)
+      await uploadJournalEntry(id, textEntry.value.type, textEntry.value.mediaId)
       window.location.reload()
       console.log("Text Successfully Posted!")
     }
@@ -83,6 +83,7 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
 h3 {
   text-align: center;
@@ -123,7 +124,7 @@ button.icon-close-btn {
 
 textarea#styled {
   font-size: 19px;
-  font-family: 'Gochi Hand', cursive;
+  font-family: 'Josefin Sans', sans-serif;
   width: 500px;
   height: 215px;
   border: 3px solid #cccccc;

@@ -1,17 +1,37 @@
 <script lang="ts">
 import AddPlantForm from "@/components/AddPlantForm.vue";
-import {ref} from "vue";
+import {defineComponent, ref} from "vue";
 
-export default {
+export default defineComponent({
   name: 'AddPlantButton',
   components: {AddPlantForm},
+  emits: ["plantIdToPlantDisplay", "daysToMillisToPlantDisplay"],
 
-  setup() {
+  setup(props, {emit}) {
     const showAddPlantForm = ref(false);
+    const plantId = ref()
+    const daysToMillisSchedule = ref()
 
-    return {showAddPlantForm}
+    const setDaysToMillis = async (event: any) => {
+      daysToMillisSchedule.value = event
+      console.log("DID I GET THE mill EMITTED: ", daysToMillisSchedule.value)
+      emit("daysToMillisToPlantDisplay", daysToMillisSchedule.value)
+
+    }
+    const setPlantId = async (event: any) => {
+      plantId.value = event
+      console.log("DID I GET THE id EMITTED: ", plantId.value)
+      emit("plantIdToPlantDisplay", plantId.value)
+
+    }
+
+    return {
+      showAddPlantForm,
+      setDaysToMillis,
+      setPlantId,
+    }
   }
-}
+})
 </script>
 
 <template>
@@ -23,13 +43,15 @@ export default {
     <transition appear name="slide">
       <div v-if="showAddPlantForm" class="modal">
         <div class="close-form-button" @click="showAddPlantForm = false"></div>
-        <AddPlantForm/>
+        <AddPlantForm @daysToMillis="setDaysToMillis" @plantId="setPlantId"/>
       </div>
     </transition>
   </div>
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -39,10 +61,11 @@ export default {
 .close-form-button {
   position: absolute;
   right: 15px;
-  top: 12px;
+  top: -5px;
   width: 25px;
   height: 25px;
   opacity: 0.3;
+  cursor: pointer;
 }
 
 .close-form-button:hover {
@@ -78,6 +101,9 @@ export default {
   background-color: #FFF;
   border-radius: 16px;
   padding: 25px;
+  font-family: 'Josefin Sans', sans-serif;
+  box-shadow: 0 4px 8px 2px rgba(0, 0, 0, 0.6); /* this adds the "card" effect */
+
 }
 
 .add-plant-button {
@@ -118,7 +144,7 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 98;
-  background-color: rgba(0, 0, 0, 0.3);
+
 }
 
 .fade-enter-active,

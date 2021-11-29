@@ -5,11 +5,7 @@ import SliderWrapped from "@/components/wrapped/SliderWrapped.vue";
 
 export default defineComponent({
   name: 'App',
-
-  components: {
-    Header, SliderWrapped,
-
-  },
+  components: {Header, SliderWrapped},
 })
 </script>
 
@@ -21,7 +17,7 @@ export default defineComponent({
   </div>
   <div class="slide-nav">
     <SliderWrapped :closeOnNavigation="true">
-      <router-link to="/"><span class="icons" ><i class="fa fa-home"></i>My Garden</span></router-link>
+      <router-link to="/"><span class="icons"><i class="fa fa-home"></i>My Garden</span></router-link>
       <router-link to="/privacy"><span class="icons"><i class="fas fa-lock"></i>Privacy</span></router-link>
       <router-link to="/about"><span class="icons-ab"><i class="fa fa-info-circle" style="font-size:20px"></i>
 About</span></router-link>
@@ -36,9 +32,9 @@ About</span></router-link>
   background-color: #E2E8F0;
 }
 
-.icons i{
-  padding-right: 5px;/*space before the red outline*/
-  margin-right: 5px;/*also between the red and blue*/
+.icons i {
+  padding-right: 5px; /*space before the red outline*/
+  margin-right: 5px; /*also between the red and blue*/
 }
 
 .slide-nav {
