@@ -5,7 +5,6 @@ import SearchBar from "@/components/SearchBar.vue"
 import {defineComponent, PropType, ref} from 'vue'
 import {filterEntriesByType, loadAllPlants} from "@/components/shared/BackendApi";
 import {getBasicProfile} from "@/components/wrapped/gapi";
-import WaterButton from "/src/components/WaterButton.vue"
 import Popup from "@/components/Popup.vue";
 
 interface JournalEntry {
@@ -31,17 +30,12 @@ interface JournalEntry {
 
 export default defineComponent({
   name: "PlantListDisplay",
-  components: {WaterButton, Popup, Plant, AddPlantButton, SearchBar},
+  components: {Popup, Plant, AddPlantButton, SearchBar},
   props: {
     togglePopup: Function as PropType<() => void>
   },
 
   setup() {
-    const redDrop = ref(false)
-    const yellowDrop = ref(false)
-    const greenDrop = ref(false)
-    
-
     const userEmail = ref("")
     const pId = ref()
     const dTM = ref()
@@ -56,28 +50,10 @@ export default defineComponent({
     });
     console.log("userEmail ", userEmail.value)
 
-    const determinePlantThirstColor = async (frequency: number, timeElapsed: number) => {
-      if (timeElapsed < frequency) greenDrop.value = true;
-      else if(timeElapsed < (frequency + 43200000)) yellowDrop.value = true;
-      else if(timeElapsed >= (frequency + 43200000)) redDrop.value = true;
-      else console.log("Can't determine, something up.")
-
-    }
     const loadPlants = async () => {
       showFilteredList.value = false;
       const response = await loadAllPlants()
       plants.value = await response.json();
-
-      for (let i = 0; i < plants.value.length; ++i) {
-        const latestWatered = await filterEntriesByType("water", plants.value[i].id.toString());
-        if (latestWatered == 0) console.log("WATER YOUR PLANTS! YOU HAVE NOT YET")
-        else {
-          console.log(latestWatered[i].createdAt)
-          const timeElapsed = Date.now() - parseInt(latestWatered[i].createdAt)
-          await determinePlantThirstColor(parseInt(plants.value[i].frequency), timeElapsed)
-
-        }
-      }
     }
 
 
@@ -133,7 +109,6 @@ export default defineComponent({
       <div class="move-down">
         <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
           <div class="text-center mt-12">
-            <div class='div' v-bind:class="[isActive ? 'red' : 'blue']" @click="toggleClass()"></div>
             <SearchBar @emitSearchText="searchValue"></SearchBar>
             <div id="add-plant-button">
               <AddPlantButton @daysToMillisToPlantDisplay="daysToMilis" @plantIdToPlantDisplay="plantId"></AddPlantButton>

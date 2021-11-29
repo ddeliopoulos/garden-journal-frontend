@@ -6,8 +6,11 @@ import WaterButton from "/src/components/WaterButton.vue"
 import Popup from "@/components/Popup.vue";
 
 interface Plant {
-  id: number
+  name: string
+  type: string
   createdAt: string
+  id: number
+  frequency: string
 }
 
 interface textEntry {
@@ -37,17 +40,37 @@ export default defineComponent({
     const plantImageUrl = ref("");
     const searchPlantsUsingBar = ref(props.searchText)
 
-
     const textEntry = ref<textEntry>({
       createdAt: "",
       mediaId: ""
     });
+
     const journalId = ref<JournalEntries>({
       id: "",
     })
 
+    const waterDropletColor = ref("gray");
+    const updateWaterDropletColor = () => filterEntriesByType("water", props.plant.id).then(allWaterEntries => {
+      console.log("ALL ENTRIES: ",allWaterEntries)
+
+      if  (allWaterEntries.length === 0) return;
+
+      const timeElapsed = Date.now() - parseInt(allWaterEntries[0].createdAt)
+      if (timeElapsed < props.plant.frequency) waterDropletColor.value = "green"
+      else if(timeElapsed < (props.plant.frequency + 43200000)) waterDropletColor.value = "yellow"
+      else if(timeElapsed >= (props.plant.frequency + 43200000)) waterDropletColor.value = "red"
+      else console.log("Can't determine, something up.")
+
+      console.log("WATERCOLOR: ", waterDropletColor.value)
+
+
+    });
+    updateWaterDropletColor();
+
     const saveJournalId = async (event: any) => {
       journalId.value.id = event;
+      await updateWaterDropletColor();
+
     }
     const buttonTrigger = ref(false);
 
@@ -104,7 +127,8 @@ export default defineComponent({
       plantId,
       latestImg,
       textEntry,
-      journalId
+      journalId,
+      waterDropletColor
     }
   }
 })
@@ -130,7 +154,7 @@ export default defineComponent({
       </router-link>
     </div>
     <button @click="togglePopup();" id="water-btn">
-      <WaterButton @journalId="saveJournalId" :plant="plant"></WaterButton>
+      <WaterButton @journalId="saveJournalId" :waterDropletColor="waterDropletColor" :plant="plant"></WaterButton>
     </button>
     <Popup
         v-if="buttonTrigger"

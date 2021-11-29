@@ -1,6 +1,6 @@
 <template>
     <div class="center">
-      <div class="circle" @click="uploadWaterJournalEntry">
+      <div :class="`circle circle-${waterDropletColor}`"  @click="uploadWaterJournalEntry">
         <div class="wave"></div>
       </div>
     </div>
@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, ref, toRefs} from "vue";
 import Popup from "@/components/Popup.vue";
 import {uploadWateringEntry} from "@/components/shared/BackendApi";
 
@@ -25,9 +25,15 @@ export default defineComponent({
       type: Object as () => Plant,
       required: true
     },
+    waterDropletColor: String
   },
 
   setup(props, {emit}) {
+
+    console.log("im in button",props.waterDropletColor)
+
+    const {waterDropletColor} = toRefs(props)
+
 
     const uploadWaterJournalEntry = async () => {
       console.log("Attempting to post a Watering Journal")
@@ -38,7 +44,7 @@ export default defineComponent({
     };
 
 
-    return {uploadWaterJournalEntry}
+    return {uploadWaterJournalEntry, waterDropletColor}
 
 
   }
@@ -208,4 +214,26 @@ body {
   cursor: pointer;
 }
 
+.circle-red {
+  background-color: red;
+}
+
+.circle-red:hover {
+  background-color: red;
+}
+
+.circle-green {
+  background-color: green;
+}
+
+.circle-green:hover {
+  background-color: green;
+}
+
+.circle-yellow {
+  background-color: yellow;
+}
+.circle-yellow:hover {
+  background-color: yellow;
+}
 </style>
