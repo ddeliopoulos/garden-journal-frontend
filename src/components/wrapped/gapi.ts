@@ -1,5 +1,5 @@
-const clientId = "826903811377-7vc3unief3g7bbn341cr06kbfvbb49no.apps.googleusercontent.com";
-const scopes = 'profile';
+const clientId = process.env.VUE_APP_CLIENT_ID
+const scopes = process.env.VUE_APP_SCOPES
 
 const googleInitialized = new Promise((resolve, reject) => {
     // @ts-ignore
