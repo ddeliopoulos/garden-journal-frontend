@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
-    "backend": "json-server --watch db.json --port 8080"
+    "backend": "json-server --watch db.json --port 8080",
+    "start": "vue-cli-service serve --mode production"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
