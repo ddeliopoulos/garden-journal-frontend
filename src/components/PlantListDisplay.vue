@@ -3,16 +3,26 @@ import Plant from '@/components/Plant.vue'
 import AddPlantButton from "@/components/AddPlantButton.vue"
 import SearchBar from "@/components/SearchBar.vue"
 import {defineComponent, PropType, ref} from 'vue'
-import {loadAllPlants} from "@/components/shared/BackendApi";
+import {filterEntriesByType, loadAllPlants} from "@/components/shared/BackendApi";
 import {getBasicProfile} from "@/components/wrapped/gapi";
 import WaterButton from "/src/components/WaterButton.vue"
 import Popup from "@/components/Popup.vue";
+
+interface JournalEntry {
+  id: string
+  plantId: string
+  createdAt: string
+  type: string
+  mediaId: string
+  data: string
+}
 
 interface PlantType {
   name: string
   type: string
   createdAt: string
   id: number
+  frequency: string
 }
 
 interface JournalEntry {
@@ -27,18 +37,50 @@ export default defineComponent({
   },
 
   setup() {
+    const redDrop = ref(false)
+    const yellowDrop = ref(false)
+    const greenDrop = ref(false)
+    
+
+    const userEmail = ref("")
+    const pId = ref()
+    const dTM = ref()
     const plants = ref<PlantType[]>([]);
     const searchBarVal = ref("");
     const searchFilteredList = ref<PlantType[]>([]);
     const showFilteredList = ref(false);
+    const journalEntries = ref<JournalEntry[]>([])
 
-    console.log(searchBarVal.value)
+    getBasicProfile().then(profile => {
+      userEmail.value = profile.getEmail();
+    });
+    console.log("userEmail ", userEmail.value)
 
+    const determinePlantThirstColor = async (frequency: number, timeElapsed: number) => {
+      if (timeElapsed < frequency) greenDrop.value = true;
+      else if(timeElapsed < (frequency + 43200000)) yellowDrop.value = true;
+      else if(timeElapsed >= (frequency + 43200000)) redDrop.value = true;
+      else console.log("Can't determine, something up.")
+
+    }
     const loadPlants = async () => {
       showFilteredList.value = false;
       const response = await loadAllPlants()
       plants.value = await response.json();
+
+      for (let i = 0; i < plants.value.length; ++i) {
+        const latestWatered = await filterEntriesByType("water", plants.value[i].id.toString());
+        if (latestWatered == 0) console.log("WATER YOUR PLANTS! YOU HAVE NOT YET")
+        else {
+          console.log(latestWatered[i].createdAt)
+          const timeElapsed = Date.now() - parseInt(latestWatered[i].createdAt)
+          await determinePlantThirstColor(parseInt(plants.value[i].frequency), timeElapsed)
+
+        }
+      }
     }
+
+
 
     function searchValue(value: any) {
       searchBarVal.value = value;
@@ -58,7 +100,15 @@ export default defineComponent({
 
     //const token = async ()=> await getAuthToken()
 
-    getBasicProfile().then(console.log)
+
+    const daysToMilis = async (event: any) => {
+      dTM.value = await event
+      console.log("mill EMITTED?: ", dTM.value)
+    }
+    const plantId = async (event: any) => {
+      pId.value = await event
+      console.log("id EMITTED?: ", pId.value)
+    }
 
     loadPlants()
     return {
@@ -68,7 +118,10 @@ export default defineComponent({
       searchValue,
       searchBarVal,
       plants,
-      filteredList
+      filteredList,
+      daysToMilis,
+      plantId,
+      userEmail
     }
   }
 })
@@ -80,9 +133,10 @@ export default defineComponent({
       <div class="move-down">
         <div class="relative flex flex-col bg-white w-full shadow-xl rounded-lg -mt-64">
           <div class="text-center mt-12">
+            <div class='div' v-bind:class="[isActive ? 'red' : 'blue']" @click="toggleClass()"></div>
             <SearchBar @emitSearchText="searchValue"></SearchBar>
             <div id="add-plant-button">
-              <AddPlantButton></AddPlantButton>
+              <AddPlantButton @daysToMillisToPlantDisplay="daysToMilis" @plantIdToPlantDisplay="plantId"></AddPlantButton>
             </div>
             <div v-for="plant in searchFilteredList" v-if="showFilteredList" :key="plant.id" class="single-plant-container">
               <Plant :plant="plant"/>
@@ -95,12 +149,21 @@ export default defineComponent({
       </div>
     </div>
   </div>
+
 </template>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
 
-
+.red-droplet{
+  background: red;
+}
+.green-droplet{
+  background: green;
+}
+.yellow-droplet{
+  background: yellow;
+}
 * {
   box-sizing: border-box;
   margin: 0;

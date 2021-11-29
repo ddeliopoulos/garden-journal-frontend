@@ -5,6 +5,7 @@ import {deletePlantById, filterEntriesByType, getBackendUrl, getPlantById} from 
 import {useRoute} from 'vue-router'
 import {defineComponent, onMounted, ref} from "vue";
 import Popup from "@/components/Popup.vue";
+import {isLoggedIn} from "@/components/wrapped/gapi";
 
 interface JournalEntry {
   id: string
@@ -50,6 +51,7 @@ export default defineComponent({
       createdAt: "",
       id: ""
     })
+
     console.log("CREATED AT", plant.value.createdAt)
 
     const reloadEntriesByType = async (type: string | null) => journalEntries.value = await filterEntriesByType(type, id);
@@ -59,7 +61,6 @@ export default defineComponent({
     const filterImageEntries = async () => await reloadEntriesByType('image');
     const filterWaterEntries = async () => await reloadEntriesByType('watering');
     const filterTextEntries = async () => await reloadEntriesByType('text');
-
     const loadJournalEntries = async () => await reloadEntriesByType(null);
 
     const getLatestImage = async () => {

@@ -42,7 +42,7 @@ export async function getMediaById(mediaId: string) {
 
 
 export async function uploadNewPlant(plantName: string, plantType: string, timeCreated: number, plantFrequency: string) {
-    await fetch(`${getBackendUrl()}/plants`, {
+    return await fetch(`${getBackendUrl()}/plants`, {
         method: 'POST',
         headers: {
             'X-Auth-Token': (await getAuthToken()), 'Content-type': 'application/json',

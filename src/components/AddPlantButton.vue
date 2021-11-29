@@ -5,11 +5,31 @@ import {defineComponent, ref} from "vue";
 export default defineComponent({
   name: 'AddPlantButton',
   components: {AddPlantForm},
+  emits: ["plantIdToPlantDisplay", "daysToMillisToPlantDisplay"],
 
-  setup() {
+  setup(props, {emit}) {
     const showAddPlantForm = ref(false);
+    const plantId = ref()
+    const daysToMillisSchedule = ref()
 
-    return {showAddPlantForm}
+    const setDaysToMillis = async (event: any) => {
+      daysToMillisSchedule.value = event
+      console.log("DID I GET THE mill EMITTED: ", daysToMillisSchedule.value)
+      emit("daysToMillisToPlantDisplay", daysToMillisSchedule.value)
+
+    }
+    const setPlantId = async (event: any) => {
+      plantId.value = event
+      console.log("DID I GET THE id EMITTED: ", plantId.value)
+      emit("plantIdToPlantDisplay", plantId.value)
+
+    }
+
+    return {
+      showAddPlantForm,
+      setDaysToMillis,
+      setPlantId,
+    }
   }
 })
 </script>
@@ -23,7 +43,7 @@ export default defineComponent({
     <transition appear name="slide">
       <div v-if="showAddPlantForm" class="modal">
         <div class="close-form-button" @click="showAddPlantForm = false"></div>
-        <AddPlantForm/>
+        <AddPlantForm @daysToMillis="setDaysToMillis" @plantId="setPlantId"/>
       </div>
     </transition>
   </div>
@@ -82,6 +102,7 @@ export default defineComponent({
   border-radius: 16px;
   padding: 25px;
   font-family: 'Josefin Sans', sans-serif;
+  box-shadow: 0 4px 8px 2px rgba(0, 0, 0, 0.6); /* this adds the "card" effect */
 
 }
 
@@ -123,7 +144,7 @@ export default defineComponent({
   right: 0;
   bottom: 0;
   z-index: 98;
-  background-color: rgba(0, 0, 0, 0.3);
+
 }
 
 .fade-enter-active,
