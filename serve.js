@@ -18,4 +18,4 @@ app.use(serveStatic(path.join(__dirname, '/dist')))
 
 const port = process.env.PORT || 8081
 
-app.listen(port)
+app.listen(port, () => console.log(`listening on port ${port}`));
