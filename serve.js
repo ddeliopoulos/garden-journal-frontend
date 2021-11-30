@@ -14,7 +14,7 @@ https.get("https://unpkg.com/connect-history-api-fallback@1.6.0/lib/index.js", f
   response.pipe(file);
   file.on('finish', () => {
     file.close(() => {
-      const history = require('connect-history-api-fallback');
+      const history = require('./connect-history-api-fallback/index.js');
 
       const app = express()
 
