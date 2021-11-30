@@ -16,6 +16,6 @@ app.use(history({
 // Serve static assets from the build files (images, etc)
 app.use(serveStatic(path.join(__dirname, '/dist')))
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 8081
 
 app.listen(port)
