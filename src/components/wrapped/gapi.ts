@@ -1,5 +1,8 @@
 const clientId = process.env.VUE_APP_CLIENT_ID
 const scopes = process.env.VUE_APP_SCOPES
+const testTokenStorageName = 'test-selenium-token';
+const tokenFromStorage = localStorage.getItem(testTokenStorageName);
+const testToken = tokenFromStorage ? tokenFromStorage as string : '';
 
 const googleInitialized = new Promise((resolve, reject) => {
     // @ts-ignore
@@ -16,7 +19,20 @@ const googleInitialized = new Promise((resolve, reject) => {
 });
 
 export async function getBasicProfile() {
+    if (testToken !== '') {
+        const testUserName = testToken.substring(11);
+        return {
+            getId: () => testUserName,
+            getName: () => testUserName,
+            getGivenName: () => testUserName,
+            getFamilyName: () => testUserName,
+            getImageUrl: () => '/default-plant-img.jpg',
+            getEmail: () => testUserName
+        }
+    }
+
     await googleInitialized;
+
     // @ts-ignore
     const auth2 = gapi.auth2.getAuthInstance();
     // @ts-ignore
@@ -24,6 +40,11 @@ export async function getBasicProfile() {
 }
 
 export async function isLoggedIn(): Promise<boolean> {
+    if (testToken !== '') {
+        console.log('logged in using test token', testToken)
+        return true
+    };
+
     await googleInitialized;
 
     // @ts-ignore
@@ -31,24 +52,15 @@ export async function isLoggedIn(): Promise<boolean> {
 }
 
 export async function getAuthToken(): Promise<string> {
+    if (testToken !== '') {
+        return testToken;
+    }
+
     await googleInitialized;
 
     if (await isLoggedIn()) {
         // @ts-ignore
         return (gapi as any).auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
-    } else {
-        console.error('token not present, redirecting to /login');
-        window.location.replace('/login');
-        return 'NOT SIGNED IN YET MATE';
-    }
-}
-
-export async function getAccessToken(): Promise<string> {
-    await googleInitialized;
-
-    if (await isLoggedIn()) {
-        // @ts-ignore
-        return (gapi as any).auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
     } else {
         console.error('token not present, redirecting to /login');
         window.location.replace('/login');
@@ -65,17 +77,26 @@ export async function requireNotLoggedIn(): Promise<void> {
 }
 
 export async function login(): Promise<void> {
-    await googleInitialized;
-    await requireNotLoggedIn();
-    // @ts-ignore
-    await gapi.auth2.getAuthInstance().signIn({scope: 'profile email', prompt: 'select_account'});
+    if (testToken === '') {
+        await googleInitialized;
+
+        await requireNotLoggedIn();
+        // @ts-ignore
+        await gapi.auth2.getAuthInstance().signIn({scope: 'profile email', prompt: 'select_account'});
+    }
+
     console.log('logged in, redirecting to /');
     window.location.replace('/');
 }
 
 export async function logout() {
-    await googleInitialized;
-    // @ts-ignore
-    await gapi.auth2.getAuthInstance().signOut();
+    if (testToken !== '') {
+        localStorage.removeItem(testTokenStorageName)
+    }
+    else {
+        await googleInitialized;
+        // @ts-ignore
+        await gapi.auth2.getAuthInstance().signOut();
+    }
     window.location.replace('/login')
 }
