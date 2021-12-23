@@ -107,6 +107,6 @@ export async function deleteJournalEntry(journalId: string | RouteParamValue[]) 
 }
 
 export function getBackendUrl(): string {
-    return "http://localhost:8080";
+    return process.env.VUE_APP_BACKEND_URL
 }
 

@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <h1>Private shit</h1>
+  <h1>Private Things</h1>
 </template>
 
 <style scoped>

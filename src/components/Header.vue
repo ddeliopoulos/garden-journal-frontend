@@ -43,7 +43,7 @@ export default defineComponent({
         <button class="logout-btn" role="button" @click="logoutWithGoogle">LOG OUT</button>
       </div>
       <div class="account-info">
-        <h3>User: {{userEmail}} </h3>
+        <h3 id="username">User: {{userEmail}} </h3>
       </div>
     </div>
   </div>
@@ -56,10 +56,15 @@ body {
   margin: 0;
 }
 
+/*#username{*/
+/*  display: inline-block;*/
+/*}*/
+
 .account-info {
   position: relative;
   right: -930px;
   top: -10px;
+  display: inline-block;
 }
 
 /* CSS */
